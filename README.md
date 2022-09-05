@@ -1,3 +1,58 @@
+# Finetune LXMERT on Sports-VQA
+
+The logic for generating the sports split on VQA 2.0 was taken from [vqa-outliers](https://github.com/siddk/vqa-outliers/tree/9cb877ec6848301aec68dc31a2ebd121c521b33e). 
+
+## Pre-trained models
+The pre-trained model (870 MB) is available at http://nlp.cs.unc.edu/data/model_LXRT.pth, and can be downloaded with:
+```bash
+mkdir -p snap/pretrained 
+wget https://nlp.cs.unc.edu/data/model_LXRT.pth -P snap/pretrained
+```
+
+### General 
+The code requires **Python 3** and please install the Python dependencies with the command:
+```bash
+pip install -r requirements.txt
+```
+
+By the way, a Python 3 virtual environment could be set up and run with:
+```bash
+virtualenv name_of_environment -p python3
+source name_of_environment/bin/activate
+```
+
+### VQA
+#### Fine-tuning
+1. Please make sure the LXMERT pre-trained model is either [downloaded](#pre-trained-models) or [pre-trained](#pre-training).
+
+2. Download the re-distributed json files for VQA 2.0 dataset. The raw VQA 2.0 dataset could be downloaded from the [official website](https://visualqa.org/download.html).
+    ```bash
+    mkdir -p data/vqa
+    wget https://nlp.cs.unc.edu/data/lxmert_data/vqa/train.json -P data/vqa/
+    wget https://nlp.cs.unc.edu/data/lxmert_data/vqa/nominival.json -P  data/vqa/
+    wget https://nlp.cs.unc.edu/data/lxmert_data/vqa/minival.json -P data/vqa/
+    ```
+3. Download faster-rcnn features for MS COCO train2014 (17 GB) and val2014 (8 GB) images (VQA 2.0 is collected on MS COCO dataset).
+The image features are
+also available on Google Drive and Baidu Drive (see [Alternative Download](#alternative-dataset-and-features-download-links) for details).
+    ```bash
+    mkdir -p data/mscoco_imgfeat
+    wget https://nlp.cs.unc.edu/data/lxmert_data/mscoco_imgfeat/train2014_obj36.zip -P data/mscoco_imgfeat
+    unzip data/mscoco_imgfeat/train2014_obj36.zip -d data/mscoco_imgfeat && rm data/mscoco_imgfeat/train2014_obj36.zip
+    wget https://nlp.cs.unc.edu/data/lxmert_data/mscoco_imgfeat/val2014_obj36.zip -P data/mscoco_imgfeat
+    unzip data/mscoco_imgfeat/val2014_obj36.zip -d data && rm data/mscoco_imgfeat/val2014_obj36.zip
+    ```
+
+4. Before fine-tuning on whole VQA 2.0 training set, verifying the script and model on a small training set (512 images) is recommended. 
+The first argument `0` is GPU id. The second argument `vqa_lxr955_tiny` is the name of this experiment.
+    ```bash
+    bash run/vqa_finetune.bash 0 vqa_lxr955_tiny --tiny --subset sports
+    ```
+5. If no bug came out, then the model is ready to be trained on the VQA sports corpus:
+    ```bash
+    bash run/vqa_finetune.bash 0 vqa_lxr955_sports --subset sports
+    ```
+
 # LXMERT: Learning Cross-Modality Encoder Representations from Transformers
 
 **Our servers break again :(. I have updated the links so that they should work fine now. Sorry for the inconvenience. Please let me for any further issues. Thanks! --Hao, Dec 03**
