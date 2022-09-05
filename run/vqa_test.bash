@@ -1,4 +1,6 @@
 # The name of this experiment.
+source /opt/anaconda3/etc/profile.d/conda.sh
+conda activate lxmert
 name=$2
 
 # Save logs and models under snap/vqa; make backup.

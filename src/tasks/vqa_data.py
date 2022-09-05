@@ -44,26 +44,83 @@ class VQADataset:
             "sent": "What is this photo taken looking through?"
         }
     """
-    def __init__(self, splits: str):
+    def __init__(self, splits: str, subset: str):
         self.name = splits
         self.splits = splits.split(',')
+        self.subset = subset
+        if subset == 'sports':
+            self.filtered = [
+                "football",
+                "soccer",
+                "volleyball",
+                "basketball",
+                "tennis",
+                "badminton",
+                "baseball",
+                "softball",
+                "hockey",
+                "golf",
+                "racing",
+                "rugby",
+                "boxing",
+                "horse racing",
+                "swimming",
+                "skiing",
+                "snowboarding",
+                "water skiing",
+                "bowling",
+                "biking",
+                ]
 
-        # Loading datasets
-        self.data = []
-        for split in self.splits:
-            self.data.extend(json.load(open("data/vqa/%s.json" % split)))
-        print("Load %d data from split(s) %s." % (len(self.data), self.name))
+            
 
-        # Convert list to dict (for evaluation)
-        self.id2datum = {
-            datum['question_id']: datum
-            for datum in self.data
-        }
+            # Answers
+            # self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
+            # self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
+            self.ans2label = json.load(open("data/vqa/trainval_sports_ans2label.json"))
+            self.label2ans = json.load(open("data/vqa/trainval_sports_label2ans.json"))
+            assert len(self.ans2label) == len(self.label2ans)
 
-        # Answers
-        self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
-        self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
-        assert len(self.ans2label) == len(self.label2ans)
+            
+            # Loading datasets
+            loaded_data = []
+            for split in self.splits:
+                loaded_data.extend(json.load(open("data/vqa/%s.json" % split)))
+            #print("Load %d data from split(s) %s." % (len(self.data), self.name))
+            self.data = []
+            for datum in loaded_data:
+                sports_ans =False
+                if 'label' in datum:
+                    for target in datum['label']:
+                        if target in self.filtered:
+                            sports_ans = True
+                    if sports_ans == True:
+                        self.data.append(datum)
+            print("Load %d data from split(s) %s." % (len(self.data), self.name))
+            
+
+            # Convert list to dict (for evaluation)
+            self.id2datum = {
+                datum['question_id']: datum
+                for datum in self.data
+            }
+        else:
+            # Loading datasets
+            self.data = []
+            for split in self.splits:
+                self.data.extend(json.load(open("data/vqa/%s.json" % split)))
+            print("Load %d data from split(s) %s." % (len(self.data), self.name))
+
+            # Convert list to dict (for evaluation)
+            self.id2datum = {
+                datum['question_id']: datum
+                for datum in self.data
+            }
+
+            # Answers
+            self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
+            self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
+            assert len(self.ans2label) == len(self.label2ans)
 
     @property
     def num_answers(self):
@@ -139,13 +196,26 @@ class VQATorchDataset(Dataset):
         np.testing.assert_array_less(boxes, 1+1e-5)
         np.testing.assert_array_less(-boxes, 0+1e-5)
 
+        # # Provide label (target)
+        # if 'label' in datum:
+        #     label = datum['label']
+        #     target = torch.zeros(self.raw_dataset.num_answers)
+        #     for ans, score in label.items():
+        #         target[self.raw_dataset.ans2label[ans]] = score
+        #     return ques_id, feats, boxes, ques, target
+        # else:
+        #     return ques_id, feats, boxes, ques
         # Provide label (target)
         if 'label' in datum:
             label = datum['label']
             target = torch.zeros(self.raw_dataset.num_answers)
             for ans, score in label.items():
-                target[self.raw_dataset.ans2label[ans]] = score
-            return ques_id, feats, boxes, ques, target
+                if self.raw_dataset.subset != None:
+                    if ans in self.raw_dataset.filtered:
+                        target[self.raw_dataset.ans2label[ans]] = score
+                else:
+                    target[self.raw_dataset.ans2label[ans]] = score
+            return ques_id, feats, boxes, ques, target, img_id
         else:
             return ques_id, feats, boxes, ques
 

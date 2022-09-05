@@ -8,17 +8,16 @@ import torch
 import torch.nn as nn
 from torch.utils.data.dataloader import DataLoader
 from tqdm import tqdm
-
+import numpy as np
 from param import args
 from pretrain.qa_answer_table import load_lxmert_qa
 from tasks.vqa_model import VQAModel
 from tasks.vqa_data import VQADataset, VQATorchDataset, VQAEvaluator
-
 DataTuple = collections.namedtuple("DataTuple", 'dataset loader evaluator')
 
 
-def get_data_tuple(splits: str, bs:int, shuffle=False, drop_last=False) -> DataTuple:
-    dset = VQADataset(splits)
+def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=False) -> DataTuple:
+    dset = VQADataset(splits, subset)
     tset = VQATorchDataset(dset)
     evaluator = VQAEvaluator(dset)
     data_loader = DataLoader(
@@ -34,11 +33,11 @@ class VQA:
     def __init__(self):
         # Datasets
         self.train_tuple = get_data_tuple(
-            args.train, bs=args.batch_size, shuffle=True, drop_last=True
-        )
+            args.train, args.subset, bs=args.batch_size, shuffle=False, drop_last=True
+        ) # changed shuffle from True to False
         if args.valid != "":
             self.valid_tuple = get_data_tuple(
-                args.valid, bs=1024,
+                args.valid, args.subset, bs=1024,
                 shuffle=False, drop_last=False
             )
         else:
@@ -82,32 +81,67 @@ class VQA:
         iter_wrapper = (lambda x: tqdm(x, total=len(loader))) if args.tqdm else (lambda x: x)
 
         best_valid = 0.
+        all_loss = []
+        valid_scores = []
+        train_scores = []
         for epoch in range(args.epochs):
             quesid2ans = {}
-            for i, (ques_id, feats, boxes, sent, target) in iter_wrapper(enumerate(loader)):
+            probabilities = [] # probabilities extracted from logits at ground truth value
+            probabilities_sigmoid = []
+            correct_preds = [] # If the model got the prediction correct (i.e. max probability matched ground truth value)
+            ques_ids = []
+            img_ids = []
+            for i, (ques_id, feats, boxes, sent, target, img_id) in iter_wrapper(enumerate(loader)):
 
                 self.model.train()
                 self.optim.zero_grad()
 
                 feats, boxes, target = feats.cuda(), boxes.cuda(), target.cuda()
                 logit = self.model(feats, boxes, sent)
+                sigmoid_probs = torch.sigmoid(logit)
+
+                score_gt, label_gt = target.max(1) # Extract ground truth label, in VQA 2.0, this is the label with highest confidence score
+                gt_preds_probability = torch.squeeze(logit.gather(1, label_gt.unsqueeze(1)))
+                gt_preds_probability_sigmoid = torch.squeeze(sigmoid_probs.gather(1, label_gt.unsqueeze(1)))
+                probabilities.extend(gt_preds_probability.cpu().detach().numpy())
+                probabilities_sigmoid.extend(gt_preds_probability_sigmoid.cpu().detach().numpy())
+
                 assert logit.dim() == target.dim() == 2
                 loss = self.bce_loss(logit, target)
                 loss = loss * logit.size(1)
+                all_loss.append(loss.detach().cpu().numpy())
+
 
                 loss.backward()
                 nn.utils.clip_grad_norm_(self.model.parameters(), 5.)
                 self.optim.step()
 
                 score, label = logit.max(1)
+                correct_preds_bool = label==label_gt
+                correct_preds.extend(correct_preds_bool.cpu().detach().numpy()) 
+
                 for qid, l in zip(ques_id, label.cpu().numpy()):
                     ans = dset.label2ans[l]
                     quesid2ans[qid.item()] = ans
+                ques_ids.extend(ques_id)
+                img_ids.extend(img_id)
+
+                if i%1000 ==0:
+                    for idx, question in enumerate(sent):
+                        ans_gt = dset.label2ans[label_gt.cpu().numpy()[idx]]
+                        preds = dset.label2ans[label.cpu().numpy()[idx]]
+                        preds_str = "Image ID: " + img_id[idx] + "\n Question: " + question + "\n ans_gt: " + ans_gt + "\n preds: " + preds + "\n"
+                        with open(self.output + "/log_preds.log", 'a') as preds_file:
+                            preds_file.write(preds_str)
+                            preds_file.flush()  
 
             log_str = "\nEpoch %d: Train %0.2f\n" % (epoch, evaluator.evaluate(quesid2ans) * 100.)
+            train_scores.append((evaluator.evaluate(quesid2ans) * 100.))
+
 
             if self.valid_tuple is not None:  # Do Validation
                 valid_score = self.evaluate(eval_tuple)
+                valid_scores.append(valid_score)
                 if valid_score > best_valid:
                     best_valid = valid_score
                     self.save("BEST")
@@ -120,6 +154,31 @@ class VQA:
             with open(self.output + "/log.log", 'a') as f:
                 f.write(log_str)
                 f.flush()
+            with open(self.output+"/log_probabilities.csv", 'a') as j:
+                j.write('\n')
+                np.savetxt(j, probabilities, newline = ", ")
+                j.flush()
+            with open(self.output+"/ques_ids.csv", 'a') as questions:
+                questions.write('\n')
+                np.savetxt(questions, ques_ids, newline = ", ")
+                questions.flush()
+            with open(self.output+"/img_ids.csv", 'a') as images:
+                img_ids_type = [str(i) for i in img_ids]
+                images.write('\n')
+                np.savetxt(images, img_ids_type, newline=", ", fmt='%s')
+                images.flush()
+            with open(self.output+"/log_probabilities_sigmoid.csv", 'a') as k:
+                k.write('\n')
+                np.savetxt(k, probabilities_sigmoid, newline = ", ")
+                k.flush()
+            with open(self.output+"/correct_preds.csv", 'a') as m:
+                m.write('\n')
+                np.savetxt(m, correct_preds, newline = ", ")
+                m.flush()
+        print("LOSS: ", all_loss)
+        print("VALID_SCORES: ", valid_scores)
+        print("TRAIN_SCORES: ", train_scores)
+
 
         self.save("LAST")
 
@@ -156,7 +215,7 @@ class VQA:
     def oracle_score(data_tuple):
         dset, loader, evaluator = data_tuple
         quesid2ans = {}
-        for i, (ques_id, feats, boxes, sent, target) in enumerate(loader):
+        for i, (ques_id, feats, boxes, sent, target, img_id) in enumerate(loader):
             _, label = target.max(1)
             for qid, l in zip(ques_id, label.cpu().numpy()):
                 ans = dset.label2ans[l]
@@ -187,7 +246,7 @@ if __name__ == "__main__":
         args.fast = args.tiny = False       # Always loading all data in test
         if 'test' in args.test:
             vqa.predict(
-                get_data_tuple(args.test, bs=950,
+                get_data_tuple(args.test, args.subset, bs=950,
                                shuffle=False, drop_last=False),
                 dump=os.path.join(args.output, 'test_predict.json')
             )
@@ -195,7 +254,7 @@ if __name__ == "__main__":
             # Since part of valididation data are used in pre-training/fine-tuning,
             # only validate on the minival set.
             result = vqa.evaluate(
-                get_data_tuple('minival', bs=950,
+                get_data_tuple('minival', args.subset, bs=950,
                                shuffle=False, drop_last=False),
                 dump=os.path.join(args.output, 'minival_predict.json')
             )
