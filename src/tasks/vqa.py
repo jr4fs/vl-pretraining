@@ -91,6 +91,11 @@ class VQA:
             correct_preds = [] # If the model got the prediction correct (i.e. max probability matched ground truth value)
             ques_ids = []
             img_ids = []
+
+            questions_sent = []
+            ground_truth_answers = []
+            predicted_answers = []
+
             for i, (ques_id, feats, boxes, sent, target, img_id) in iter_wrapper(enumerate(loader)):
 
                 self.model.train()
@@ -118,13 +123,27 @@ class VQA:
 
                 score, label = logit.max(1)
                 correct_preds_bool = label==label_gt
-                correct_preds.extend(correct_preds_bool.cpu().detach().numpy()) 
+                correct_preds.extend(correct_preds_bool.cpu().detach().numpy()) Riley30!
+                
 
                 for qid, l in zip(ques_id, label.cpu().numpy()):
                     ans = dset.label2ans[l]
                     quesid2ans[qid.item()] = ans
                 ques_ids.extend(ques_id)
                 img_ids.extend(img_id)
+
+
+                for idx, question in enumerate(sent):
+                    preds = dset.label2ans[label.cpu().numpy()[idx]]
+                    predicted_answers.extend(preds+'\n')
+                    if epoch ==0:
+                        ans_gt = dset.label2ans[label_gt.cpu().numpy()[idx]]
+                        questions_sent.extend(question+'\n')
+                        ground_truth_answers.extend(ans_gt+'\n')
+                    
+
+
+
 
                 if i%1000 ==0:
                     for idx, question in enumerate(sent):
@@ -175,6 +194,18 @@ class VQA:
                 m.write('\n')
                 np.savetxt(m, correct_preds, newline = ", ")
                 m.flush()
+ 
+
+            with open(self.output+"/questions_sent.txt", 'a') as questions_sent_f:
+                questions_sent_f.writelines(questions_sent)
+                questions_sent_f.close()
+            with open(self.output+"/ground_truth_answers.txt", 'a') as ground_truth_answers_f:
+                ground_truth_answers_f.writelines(ground_truth_answers)
+                ground_truth_answers_f.close()
+            with open(self.output+"/predicted_answers.txt", 'a') as predicted_answers_f:
+                predicted_answers_f.writelines(predicted_answers)
+                predicted_answers_f.close()
+
         print("LOSS: ", all_loss)
         print("VALID_SCORES: ", valid_scores)
         print("TRAIN_SCORES: ", train_scores)
