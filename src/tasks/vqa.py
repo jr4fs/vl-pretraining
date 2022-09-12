@@ -14,18 +14,25 @@ from pretrain.qa_answer_table import load_lxmert_qa
 from tasks.vqa_model import VQAModel
 from tasks.vqa_data import VQADataset, VQATorchDataset, VQAEvaluator
 DataTuple = collections.namedtuple("DataTuple", 'dataset loader evaluator')
-
+import json 
 
 def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=False) -> DataTuple:
     dset = VQADataset(splits, subset)
+    if splits != 'minival':
+        index_dset = len(dset.data) % bs
+        if index_dset != 0:
+            dset.data = dset.data[:-index_dset] 
     tset = VQATorchDataset(dset)
+    if splits != 'minival':
+        index_tset = len(tset.data) % bs
+        if index_tset != 0:
+            tset.data = tset.data[:-index_tset]
     evaluator = VQAEvaluator(dset)
     data_loader = DataLoader(
         tset, batch_size=bs,
         shuffle=shuffle, num_workers=args.num_workers,
         drop_last=drop_last, pin_memory=True
     )
-
     return DataTuple(dataset=dset, loader=data_loader, evaluator=evaluator)
 
 
@@ -33,8 +40,8 @@ class VQA:
     def __init__(self):
         # Datasets
         self.train_tuple = get_data_tuple(
-            args.train, args.subset, bs=args.batch_size, shuffle=False, drop_last=True
-        ) # changed shuffle from True to False
+            args.train, args.subset, bs=args.batch_size, shuffle=True, drop_last=False
+        )
         if args.valid != "":
             self.valid_tuple = get_data_tuple(
                 args.valid, args.subset, bs=1024,
@@ -59,7 +66,10 @@ class VQA:
             self.model.lxrt_encoder.multi_gpu()
 
         # Loss and Optimizer
-        self.bce_loss = nn.BCEWithLogitsLoss()
+        if args.subset != 'None':
+            self.loss_fxn = nn.CrossEntropyLoss()
+        else:
+            self.loss_fxn = nn.BCEWithLogitsLoss()
         if 'bert' in args.optim:
             batch_per_epoch = len(self.train_tuple.loader)
             t_total = int(batch_per_epoch * args.epochs)
@@ -84,17 +94,9 @@ class VQA:
         all_loss = []
         valid_scores = []
         train_scores = []
+        training_stats = []
         for epoch in range(args.epochs):
             quesid2ans = {}
-            probabilities = [] # probabilities extracted from logits at ground truth value
-            probabilities_sigmoid = []
-            correct_preds = [] # If the model got the prediction correct (i.e. max probability matched ground truth value)
-            ques_ids = []
-            img_ids = []
-
-            questions_sent = []
-            ground_truth_answers = []
-            predicted_answers = []
 
             for i, (ques_id, feats, boxes, sent, target, img_id) in iter_wrapper(enumerate(loader)):
 
@@ -103,16 +105,12 @@ class VQA:
 
                 feats, boxes, target = feats.cuda(), boxes.cuda(), target.cuda()
                 logit = self.model(feats, boxes, sent)
-                sigmoid_probs = torch.sigmoid(logit)
+                softmax = torch.nn.Softmax()
+                logit_softmax = softmax(logit)
+                gt_preds_probability_softmax= torch.squeeze(logit_softmax.gather(1, torch.unsqueeze(target, 1)))
 
-                score_gt, label_gt = target.max(1) # Extract ground truth label, in VQA 2.0, this is the label with highest confidence score
-                gt_preds_probability = torch.squeeze(logit.gather(1, label_gt.unsqueeze(1)))
-                gt_preds_probability_sigmoid = torch.squeeze(sigmoid_probs.gather(1, label_gt.unsqueeze(1)))
-                probabilities.extend(gt_preds_probability.cpu().detach().numpy())
-                probabilities_sigmoid.extend(gt_preds_probability_sigmoid.cpu().detach().numpy())
-
-                assert logit.dim() == target.dim() == 2
-                loss = self.bce_loss(logit, target)
+                #assert logit.dim() == target.dim() == 2
+                loss = self.loss_fxn(logit, target)
                 loss = loss * logit.size(1)
                 all_loss.append(loss.detach().cpu().numpy())
 
@@ -121,33 +119,35 @@ class VQA:
                 nn.utils.clip_grad_norm_(self.model.parameters(), 5.)
                 self.optim.step()
 
-                score, label = logit.max(1)
-                correct_preds_bool = label==label_gt
-                correct_preds.extend(correct_preds_bool.cpu().detach().numpy()) Riley30!
+                if args.subset != None:
+                    score, label = logit_softmax.max(1)
+                else:
+                    score, label = logit.max(1)
                 
 
                 for qid, l in zip(ques_id, label.cpu().numpy()):
                     ans = dset.label2ans[l]
                     quesid2ans[qid.item()] = ans
-                ques_ids.extend(ques_id)
-                img_ids.extend(img_id)
 
 
                 for idx, question in enumerate(sent):
-                    preds = dset.label2ans[label.cpu().numpy()[idx]]
-                    predicted_answers.extend(preds+'\n')
-                    if epoch ==0:
-                        ans_gt = dset.label2ans[label_gt.cpu().numpy()[idx]]
-                        questions_sent.extend(question+'\n')
-                        ground_truth_answers.extend(ans_gt+'\n')
+                    preds = dset.label2ans[np.squeeze(label.cpu().numpy()[idx].astype(int))]
+                    ans_gt = dset.label2ans[np.squeeze(target.cpu().numpy()[idx].astype(int))]
+                    if args.subset != None:
+                        training_stats.append({
+                            "Epoch": int(epoch),
+                            "Question ID": int(ques_id[idx]),
+                            "Image ID": str(img_id[idx]),
+                            "Question": str(question),
+                            "Target": str(ans_gt),
+                            "Prediction": str(preds),
+                            "GT Probability": float(gt_preds_probability_softmax[idx])
+                            }
+                    )
                     
-
-
-
-
                 if i%1000 ==0:
                     for idx, question in enumerate(sent):
-                        ans_gt = dset.label2ans[label_gt.cpu().numpy()[idx]]
+                        ans_gt = dset.label2ans[target.cpu().numpy()[idx]]
                         preds = dset.label2ans[label.cpu().numpy()[idx]]
                         preds_str = "Image ID: " + img_id[idx] + "\n Question: " + question + "\n ans_gt: " + ans_gt + "\n preds: " + preds + "\n"
                         with open(self.output + "/log_preds.log", 'a') as preds_file:
@@ -173,44 +173,11 @@ class VQA:
             with open(self.output + "/log.log", 'a') as f:
                 f.write(log_str)
                 f.flush()
-            with open(self.output+"/log_probabilities.csv", 'a') as j:
-                j.write('\n')
-                np.savetxt(j, probabilities, newline = ", ")
-                j.flush()
-            with open(self.output+"/ques_ids.csv", 'a') as questions:
-                questions.write('\n')
-                np.savetxt(questions, ques_ids, newline = ", ")
-                questions.flush()
-            with open(self.output+"/img_ids.csv", 'a') as images:
-                img_ids_type = [str(i) for i in img_ids]
-                images.write('\n')
-                np.savetxt(images, img_ids_type, newline=", ", fmt='%s')
-                images.flush()
-            with open(self.output+"/log_probabilities_sigmoid.csv", 'a') as k:
-                k.write('\n')
-                np.savetxt(k, probabilities_sigmoid, newline = ", ")
-                k.flush()
-            with open(self.output+"/correct_preds.csv", 'a') as m:
-                m.write('\n')
-                np.savetxt(m, correct_preds, newline = ", ")
-                m.flush()
- 
-
-            with open(self.output+"/questions_sent.txt", 'a') as questions_sent_f:
-                questions_sent_f.writelines(questions_sent)
-                questions_sent_f.close()
-            with open(self.output+"/ground_truth_answers.txt", 'a') as ground_truth_answers_f:
-                ground_truth_answers_f.writelines(ground_truth_answers)
-                ground_truth_answers_f.close()
-            with open(self.output+"/predicted_answers.txt", 'a') as predicted_answers_f:
-                predicted_answers_f.writelines(predicted_answers)
-                predicted_answers_f.close()
-
-        print("LOSS: ", all_loss)
-        print("VALID_SCORES: ", valid_scores)
-        print("TRAIN_SCORES: ", train_scores)
-
-
+            
+        with open(self.output+'/datamaps_stats.json', 'w') as json_file:
+            json.dump(training_stats, json_file, 
+                                indent=4,  
+                                separators=(',',': '))
         self.save("LAST")
 
     def predict(self, eval_tuple: DataTuple, dump=None):
@@ -229,7 +196,11 @@ class VQA:
             with torch.no_grad():
                 feats, boxes = feats.cuda(), boxes.cuda()
                 logit = self.model(feats, boxes, sent)
-                score, label = logit.max(1)
+                if args.subset != None:
+                    softmax = torch.nn.Softmax()
+                    score, label = softmax(logit).max(1)
+                else:
+                    score, label = logit.max(1)
                 for qid, l in zip(ques_id, label.cpu().numpy()):
                     ans = dset.label2ans[l]
                     quesid2ans[qid.item()] = ans
@@ -247,7 +218,10 @@ class VQA:
         dset, loader, evaluator = data_tuple
         quesid2ans = {}
         for i, (ques_id, feats, boxes, sent, target, img_id) in enumerate(loader):
-            _, label = target.max(1)
+            if args.subset != None:
+                label = target
+            else:
+                _, label = target.max(1)
             for qid, l in zip(ques_id, label.cpu().numpy()):
                 ans = dset.label2ans[l]
                 quesid2ans[qid.item()] = ans

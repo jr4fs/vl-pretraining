@@ -71,9 +71,7 @@ class VQADataset:
                 "bowling",
                 "biking",
                 ]
-
-            
-
+                
             # Answers
             # self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
             # self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
@@ -89,15 +87,19 @@ class VQADataset:
             #print("Load %d data from split(s) %s." % (len(self.data), self.name))
             self.data = []
             for datum in loaded_data:
-                sports_ans =False
                 if 'label' in datum:
-                    for target in datum['label']:
-                        if target in self.filtered:
-                            sports_ans = True
-                    if sports_ans == True:
-                        self.data.append(datum)
+                    if len(datum['label']) > 0:
+                        itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                        listOfKeys = list()
+                        for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                            if value == itemMaxValue[1]:
+                                listOfKeys.append(key)
+                        if len(listOfKeys) == 1 and listOfKeys[0] in self.filtered: # ensure there is only one gold label and it is in the desired split
+                            new_label ={listOfKeys[0]: itemMaxValue[1]}
+                            datum['label'] = new_label
+                            self.data.append(datum)
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
-            
+
 
             # Convert list to dict (for evaluation)
             self.id2datum = {
@@ -209,11 +211,15 @@ class VQATorchDataset(Dataset):
         if 'label' in datum:
             label = datum['label']
             target = torch.zeros(self.raw_dataset.num_answers)
-            for ans, score in label.items():
-                if self.raw_dataset.subset != None:
-                    if ans in self.raw_dataset.filtered:
-                        target[self.raw_dataset.ans2label[ans]] = score
-                else:
+            if self.raw_dataset.subset != None:
+                assert len(label) == 1 # ensure there is only one gold label
+                for ans, score in label.items():
+                    if ans in self.raw_dataset.filtered: # double check the if answer is in filtered category
+                        target[self.raw_dataset.ans2label[ans]] = 1.0
+                target = torch.squeeze(target.nonzero())
+                target = target.long()
+            else:
+                for ans, score in label.items():
                     target[self.raw_dataset.ans2label[ans]] = score
             return ques_id, feats, boxes, ques, target, img_id
         else:
