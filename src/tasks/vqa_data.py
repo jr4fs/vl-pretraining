@@ -99,7 +99,45 @@ class VQADataset:
                             datum['label'] = new_label
                             self.data.append(datum)
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
+        
+        elif subset == 'animal':
+            self.filtered = ["sheep",  "peacock", "dog", "cardinal", "butterfly", "seagull", "polar bear", "fox", "turkey", "duck", "stork", "bull", "snake", "turtle", "bat", "penguin", 
+                            "antelope", "woodpecker", "pony", "canopy", "salmon", "lamb", "bunny", "owl", "horse", "pig", "cow", "pelican", "swan", "elephant", "frog", "ostrich", 
+                            "squirrel", "monkey", "bird", "spider", "wildebeest", "crow", "clams", "giraffe", "lizard", "lab", "crane", "alligator", "panda", "kitten", "hawk", 
+                            "parrot", "octopus", "mouse", "goat", "tiger", "puppy", "ladybug", "lobster", "whale", "pigeon", "donkey", "goose", "zebra", "blue jay", "parakeet",
+                            "worms", "shrimp", "camel", "deer", "shark", "bear", "robin", "dinosaur", "flamingo", "ram", "tuna", "lion", "eagle", "finch", "kangaroo", "elm", "buffalo", 
+                            "cat", "pitbull", "leopard", "puma", "rabbit", "chicken", "hummingbird", "dragon", "fish", "cub", "rooster", "orioles"]                
+            # Answers
+            # self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
+            # self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
+            self.ans2label = json.load(open("data/vqa/trainval_animal_ans2label.json"))
+            self.label2ans = json.load(open("data/vqa/trainval_animal_label2ans.json"))
+            assert len(self.ans2label) == len(self.label2ans)
 
+            
+            # Loading datasets
+            loaded_data = []
+            for split in self.splits:
+                loaded_data.extend(json.load(open("../data/vqa/%s.json" % split)))
+            #print("Load %d data from split(s) %s." % (len(self.data), self.name))
+            self.data = []
+            for datum in loaded_data:
+                if 'label' in datum:
+                    if len(datum['label']) > 0:
+                        itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                        listOfKeys = list()
+                        for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                            if value == itemMaxValue[1]:
+                                if key == 'geese':
+                                    key = 'goose'
+                                listOfKeys.append(key)
+                        if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
+                            listOfKeys[0] = listOfKeys[0][:-1]
+                        if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                            new_label ={listOfKeys[0]: itemMaxValue[1]}
+                            datum['label'] = new_label
+                            self.data.append(datum)
+            print("Load %d data from split(s) %s." % (len(self.data), self.name))
 
             # Convert list to dict (for evaluation)
             self.id2datum = {
