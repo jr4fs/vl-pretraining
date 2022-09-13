@@ -118,7 +118,7 @@ class VQADataset:
             # Loading datasets
             loaded_data = []
             for split in self.splits:
-                loaded_data.extend(json.load(open("../data/vqa/%s.json" % split)))
+                loaded_data.extend(json.load(open("data/vqa/%s.json" % split)))
             #print("Load %d data from split(s) %s." % (len(self.data), self.name))
             self.data = []
             for datum in loaded_data:
