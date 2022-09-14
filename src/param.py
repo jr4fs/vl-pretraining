@@ -89,6 +89,13 @@ def parse_args():
     parser.add_argument("--multiGPU", action='store_const', default=False, const=True)
     parser.add_argument("--numWorkers", dest='num_workers', default=0)
 
+    # Datamaps
+    parser.add_argument("--base_path", default='../snap/vqa/vqa_lxr955_sports_multiclass/', type=str, help='Path to trained model')
+    parser.add_argument("--datamap_title", default='VQA-Sports-Finetuned', type=str, help='Title of datamap plot')
+    parser.add_argument('--confidence_threshold', type=float, default=0.5)
+    parser.add_argument('--variability_threshold', type=float, default=0.4)
+    parser.add_argument("--datamap_region", default='easy', type=str, help='easy, hard, ambigious -- region of datamap to extract outliers from')
+
     # Parse the arguments.
     args = parser.parse_args()
 

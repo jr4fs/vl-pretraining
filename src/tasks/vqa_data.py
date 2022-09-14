@@ -139,6 +139,11 @@ class VQADataset:
                             self.data.append(datum)
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
 
+            self.id2datum = {
+                datum['question_id']: datum
+                for datum in self.data
+            }
+
             # Convert list to dict (for evaluation)
             self.id2datum = {
                 datum['question_id']: datum
