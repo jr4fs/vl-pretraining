@@ -1,6 +1,6 @@
-# Finetune LXMERT on Sports-VQA
+# Finetune LXMERT on Sports-VQA or Animals-VQA
 
-The logic for generating the sports split on VQA 2.0 was taken from [vqa-outliers](https://github.com/siddk/vqa-outliers/tree/9cb877ec6848301aec68dc31a2ebd121c521b33e). 
+The logic for generating the sports/animals split on VQA 2.0 was taken from [vqa-outliers](https://github.com/siddk/vqa-outliers/tree/9cb877ec6848301aec68dc31a2ebd121c521b33e). 
 
 ## Pre-trained models
 The pre-trained model (870 MB) is available at http://nlp.cs.unc.edu/data/model_LXRT.pth, and can be downloaded with:
@@ -53,6 +53,24 @@ The first argument `0` is GPU id. The second argument `vqa_lxr955_tiny` is the n
     bash run/vqa_finetune.bash 0 vqa_lxr955_sports --subset sports
     ```
 
+    ```bash
+    bash run/vqa_finetune.bash 0 vqa_lxr955_animals --subset animal
+    ```
+#### Train from Scratch on subsets
+1. Assuming the same data setup steps for finetuning (steps 2-3): 
+    ```bash
+    bash run/vqa_from_scratch.bash 0 vqa_lxr955_sports_fromScratch --subset sports
+    ```
+    ```bash
+    bash run/vqa_from_scratch.bash 0 vqa_lxr955_animal_fromScratch --subset animal
+    ```
+
+#### Generate new split of data
+1. Necessary files for a new split of data are ```trainval_ans2label.json``` and ```trainval_label2ans.json```. See data/vqa for examples
+2. In src/tasks/vqa_data.py, add in a new subset in VQADataset class
+
+#### Datamaps
+1. See datamaps/plot_datamaps.ipynb for details
 # LXMERT: Learning Cross-Modality Encoder Representations from Transformers
 
 **Our servers break again :(. I have updated the links so that they should work fine now. Sorry for the inconvenience. Please let me for any further issues. Thanks! --Hao, Dec 03**

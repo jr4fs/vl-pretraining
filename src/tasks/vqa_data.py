@@ -89,9 +89,9 @@ class VQADataset:
             for datum in loaded_data:
                 if 'label' in datum:
                     if len(datum['label']) > 0:
-                        itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                        itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max accuracy in list of labels
                         listOfKeys = list()
-                        for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                        for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max accuracy
                             if value == itemMaxValue[1]:
                                 listOfKeys.append(key)
                         if len(listOfKeys) == 1 and listOfKeys[0] in self.filtered: # ensure there is only one gold label and it is in the desired split
@@ -99,7 +99,10 @@ class VQADataset:
                             datum['label'] = new_label
                             self.data.append(datum)
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
-        
+            self.id2datum = {
+                datum['question_id']: datum
+                for datum in self.data
+            }
         elif subset == 'animal':
             self.filtered = ["sheep",  "peacock", "dog", "cardinal", "butterfly", "seagull", "polar bear", "fox", "turkey", "duck", "stork", "bull", "snake", "turtle", "bat", "penguin", 
                             "antelope", "woodpecker", "pony", "canopy", "salmon", "lamb", "bunny", "owl", "horse", "pig", "cow", "pelican", "swan", "elephant", "frog", "ostrich", 
@@ -138,11 +141,6 @@ class VQADataset:
                             datum['label'] = new_label
                             self.data.append(datum)
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
-
-            self.id2datum = {
-                datum['question_id']: datum
-                for datum in self.data
-            }
 
             # Convert list to dict (for evaluation)
             self.id2datum = {
