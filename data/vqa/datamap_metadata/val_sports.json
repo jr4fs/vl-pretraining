@@ -1,0 +1,2172 @@
+[
+    {
+        "Question ID": 360001,
+        "Image ID": "COCO_val2014_000000000360",
+        "Question": "What is the person doing in the air?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 132024002,
+        "Image ID": "COCO_val2014_000000132024",
+        "Question": "What is the man doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 962001,
+        "Image ID": "COCO_val2014_000000000962",
+        "Question": "What game is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 999002,
+        "Image ID": "COCO_val2014_000000000999",
+        "Question": "What game are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 1270002,
+        "Image ID": "COCO_val2014_000000001270",
+        "Question": "What game are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 427783002,
+        "Image ID": "COCO_val2014_000000427783",
+        "Question": "What kind of sport are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 264382000,
+        "Image ID": "COCO_val2014_000000264382",
+        "Question": "What sport are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 264382005,
+        "Image ID": "COCO_val2014_000000264382",
+        "Question": "What sport is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 265085001,
+        "Image ID": "COCO_val2014_000000265085",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 528091002,
+        "Image ID": "COCO_val2014_000000528091",
+        "Question": "What sport is this man playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 528201001,
+        "Image ID": "COCO_val2014_000000528201",
+        "Question": "What are the people doing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 266847002,
+        "Image ID": "COCO_val2014_000000266847",
+        "Question": "What is he throwing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 153797001,
+        "Image ID": "COCO_val2014_000000153797",
+        "Question": "What sport is he playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 530337007,
+        "Image ID": "COCO_val2014_000000530337",
+        "Question": "What tournament is the player participating in?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 400886003,
+        "Image ID": "COCO_val2014_000000400886",
+        "Question": "What is the person doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 400981000,
+        "Image ID": "COCO_val2014_000000400981",
+        "Question": "What event is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 400981005,
+        "Image ID": "COCO_val2014_000000400981",
+        "Question": "What are they playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 141002002,
+        "Image ID": "COCO_val2014_000000141002",
+        "Question": "What sport are the people participating in?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 141002003,
+        "Image ID": "COCO_val2014_000000141002",
+        "Question": "What is this man playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 141002012,
+        "Image ID": "COCO_val2014_000000141002",
+        "Question": "What is the team?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 141002015,
+        "Image ID": "COCO_val2014_000000141002",
+        "Question": "What sport is being played here?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 141002025,
+        "Image ID": "COCO_val2014_000000141002",
+        "Question": "What sport is this person playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 141002033,
+        "Image ID": "COCO_val2014_000000141002",
+        "Question": "What is the guy playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 141002048,
+        "Image ID": "COCO_val2014_000000141002",
+        "Question": "Is this sport tennis or badminton?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 272357001,
+        "Image ID": "COCO_val2014_000000272357",
+        "Question": "What sport is this person playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 10644007,
+        "Image ID": "COCO_val2014_000000010644",
+        "Question": "Which game is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 142249001,
+        "Image ID": "COCO_val2014_000000142249",
+        "Question": "What sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 142249002,
+        "Image ID": "COCO_val2014_000000142249",
+        "Question": "What kind of game is the crowd watching?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 142249005,
+        "Image ID": "COCO_val2014_000000142249",
+        "Question": "Which game are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 142742000,
+        "Image ID": "COCO_val2014_000000142742",
+        "Question": "Which game is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 404923002,
+        "Image ID": "COCO_val2014_000000404923",
+        "Question": "What is the game?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 404923003,
+        "Image ID": "COCO_val2014_000000404923",
+        "Question": "What sport is the man playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 405223001,
+        "Image ID": "COCO_val2014_000000405223",
+        "Question": "What sport is he playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 12062002,
+        "Image ID": "COCO_val2014_000000012062",
+        "Question": "What kind of ball is present?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 144243002,
+        "Image ID": "COCO_val2014_000000144243",
+        "Question": "What sport are the girls playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 144243005,
+        "Image ID": "COCO_val2014_000000144243",
+        "Question": "What are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 145693000,
+        "Image ID": "COCO_val2014_000000145693",
+        "Question": "What type of field is in this picture?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 14723000,
+        "Image ID": "COCO_val2014_000000014723",
+        "Question": "What activity is this man doing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 539636003,
+        "Image ID": "COCO_val2014_000000539636",
+        "Question": "What is the man on the right doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 539636004,
+        "Image ID": "COCO_val2014_000000539636",
+        "Question": "What sport is this?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 15797001,
+        "Image ID": "COCO_val2014_000000015797",
+        "Question": "What is the man doing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 277945002,
+        "Image ID": "COCO_val2014_000000277945",
+        "Question": "What sport is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 540473001,
+        "Image ID": "COCO_val2014_000000540473",
+        "Question": "Are they playing golf or tennis?",
+        "Target": "golf",
+        "Target idx": 9
+    },
+    {
+        "Question ID": 540681001,
+        "Image ID": "COCO_val2014_000000540681",
+        "Question": "What game is he playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 540807001,
+        "Image ID": "COCO_val2014_000000540807",
+        "Question": "What sport are they participating in?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 541197003,
+        "Image ID": "COCO_val2014_000000541197",
+        "Question": "What game are they playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 68387003,
+        "Image ID": "COCO_val2014_000000068387",
+        "Question": "What kind of game is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 410496000,
+        "Image ID": "COCO_val2014_000000410496",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 410496001,
+        "Image ID": "COCO_val2014_000000410496",
+        "Question": "Which sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 410496007,
+        "Image ID": "COCO_val2014_000000410496",
+        "Question": "What sport are they playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 279549002,
+        "Image ID": "COCO_val2014_000000279549",
+        "Question": "What sport is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 280888000,
+        "Image ID": "COCO_val2014_000000280888",
+        "Question": "What game are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 280888002,
+        "Image ID": "COCO_val2014_000000280888",
+        "Question": "What sport is being played?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 412286000,
+        "Image ID": "COCO_val2014_000000412286",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 281500005,
+        "Image ID": "COCO_val2014_000000281500",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 151051000,
+        "Image ID": "COCO_val2014_000000151051",
+        "Question": "What sport is he doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 151051006,
+        "Image ID": "COCO_val2014_000000151051",
+        "Question": "What sport does this male enjoy?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 151051007,
+        "Image ID": "COCO_val2014_000000151051",
+        "Question": "What is the man doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 151051016,
+        "Image ID": "COCO_val2014_000000151051",
+        "Question": "What is the man doing on the snow?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 414670002,
+        "Image ID": "COCO_val2014_000000414670",
+        "Question": "Is the person snowboarding or skateboarding?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 153130000,
+        "Image ID": "COCO_val2014_000000153130",
+        "Question": "What are the men doing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 153130005,
+        "Image ID": "COCO_val2014_000000153130",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 153130012,
+        "Image ID": "COCO_val2014_000000153130",
+        "Question": "What sport is she playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 154071001,
+        "Image ID": "COCO_val2014_000000154071",
+        "Question": "Which game are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 154087005,
+        "Image ID": "COCO_val2014_000000154087",
+        "Question": "Why are the women in orange jacket wearing skis?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 23584005,
+        "Image ID": "COCO_val2014_000000023584",
+        "Question": "What sport is the girl playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 160864001,
+        "Image ID": "COCO_val2014_000000160864",
+        "Question": "What type of ball is used?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 24601001,
+        "Image ID": "COCO_val2014_000000024601",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 24601005,
+        "Image ID": "COCO_val2014_000000024601",
+        "Question": "What are they playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 419774001,
+        "Image ID": "COCO_val2014_000000419774",
+        "Question": "What are the people playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 572477001,
+        "Image ID": "COCO_val2014_000000572477",
+        "Question": "What sport is the man playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 290618002,
+        "Image ID": "COCO_val2014_000000290618",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 291537002,
+        "Image ID": "COCO_val2014_000000291537",
+        "Question": "What sport is this?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 29934003,
+        "Image ID": "COCO_val2014_000000029934",
+        "Question": "What sport is the girl playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 554255003,
+        "Image ID": "COCO_val2014_000000554255",
+        "Question": "What sport is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 423588002,
+        "Image ID": "COCO_val2014_000000423588",
+        "Question": "What are they doing in the snow?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 507551000,
+        "Image ID": "COCO_val2014_000000507551",
+        "Question": "What sport are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 425906002,
+        "Image ID": "COCO_val2014_000000425906",
+        "Question": "What kind of event is happening?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 33158003,
+        "Image ID": "COCO_val2014_000000033158",
+        "Question": "What sport is he playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 426635002,
+        "Image ID": "COCO_val2014_000000426635",
+        "Question": "What other name than soccer is this?",
+        "Target": "football",
+        "Target idx": 0
+    },
+    {
+        "Question ID": 557732001,
+        "Image ID": "COCO_val2014_000000557732",
+        "Question": "What is the person in the foreground doing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 558114002,
+        "Image ID": "COCO_val2014_000000558114",
+        "Question": "What type of court is this?",
+        "Target": "basketball",
+        "Target idx": 3
+    },
+    {
+        "Question ID": 34015002,
+        "Image ID": "COCO_val2014_000000034015",
+        "Question": "What player is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 296182009,
+        "Image ID": "COCO_val2014_000000296182",
+        "Question": "What is the duck doing?",
+        "Target": "swimming",
+        "Target idx": 14
+    },
+    {
+        "Question ID": 558834007,
+        "Image ID": "COCO_val2014_000000558834",
+        "Question": "What sport uses this ball?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 165638001,
+        "Image ID": "COCO_val2014_000000165638",
+        "Question": "Which game are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 427901001,
+        "Image ID": "COCO_val2014_000000427901",
+        "Question": "Where are the players playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 166696002,
+        "Image ID": "COCO_val2014_000000166696",
+        "Question": "What game are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 560662001,
+        "Image ID": "COCO_val2014_000000560662",
+        "Question": "What sport is this?",
+        "Target": "basketball",
+        "Target idx": 3
+    },
+    {
+        "Question ID": 36487002,
+        "Image ID": "COCO_val2014_000000036487",
+        "Question": "What sport is depicted?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 560902002,
+        "Image ID": "COCO_val2014_000000560902",
+        "Question": "What sport is the man playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 167725006,
+        "Image ID": "COCO_val2014_000000167725",
+        "Question": "What game are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 167725009,
+        "Image ID": "COCO_val2014_000000167725",
+        "Question": "What sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 167725017,
+        "Image ID": "COCO_val2014_000000167725",
+        "Question": "What activity are the people engaged in?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 178317000,
+        "Image ID": "COCO_val2014_000000178317",
+        "Question": "What are the men doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 37671003,
+        "Image ID": "COCO_val2014_000000037671",
+        "Question": "Which sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 224757001,
+        "Image ID": "COCO_val2014_000000224757",
+        "Question": "What type of sport ball is shown?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 562241002,
+        "Image ID": "COCO_val2014_000000562241",
+        "Question": "What sport is this child participating in?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 169143003,
+        "Image ID": "COCO_val2014_000000169143",
+        "Question": "Which game is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 38118000,
+        "Image ID": "COCO_val2014_000000038118",
+        "Question": "What is the man doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 431545000,
+        "Image ID": "COCO_val2014_000000431545",
+        "Question": "What sport are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 301317001,
+        "Image ID": "COCO_val2014_000000301317",
+        "Question": "What sport is he playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 39357000,
+        "Image ID": "COCO_val2014_000000039357",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 39405000,
+        "Image ID": "COCO_val2014_000000039405",
+        "Question": "What sport is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 39405001,
+        "Image ID": "COCO_val2014_000000039405",
+        "Question": "What kind of sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 39405002,
+        "Image ID": "COCO_val2014_000000039405",
+        "Question": "What event is being done here?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 39405004,
+        "Image ID": "COCO_val2014_000000039405",
+        "Question": "What game is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 39405006,
+        "Image ID": "COCO_val2014_000000039405",
+        "Question": "What event is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 171850000,
+        "Image ID": "COCO_val2014_000000171850",
+        "Question": "What court is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 172088000,
+        "Image ID": "COCO_val2014_000000172088",
+        "Question": "What game are they playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 172088002,
+        "Image ID": "COCO_val2014_000000172088",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 172088007,
+        "Image ID": "COCO_val2014_000000172088",
+        "Question": "What game is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 565570003,
+        "Image ID": "COCO_val2014_000000565570",
+        "Question": "What is this person holding in his hands?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 303971000,
+        "Image ID": "COCO_val2014_000000303971",
+        "Question": "What sport is on the TV?",
+        "Target": "bowling",
+        "Target idx": 18
+    },
+    {
+        "Question ID": 173514000,
+        "Image ID": "COCO_val2014_000000173514",
+        "Question": "What are the people doing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 173514001,
+        "Image ID": "COCO_val2014_000000173514",
+        "Question": "Is the individual skiing or snowboarding?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 173514003,
+        "Image ID": "COCO_val2014_000000173514",
+        "Question": "What is this person doing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 567276002,
+        "Image ID": "COCO_val2014_000000567276",
+        "Question": "What sport is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 175356005,
+        "Image ID": "COCO_val2014_000000175356",
+        "Question": "What is being thrown?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 175356007,
+        "Image ID": "COCO_val2014_000000175356",
+        "Question": "Where are the people playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 306667002,
+        "Image ID": "COCO_val2014_000000306667",
+        "Question": "What type of ball is on the field?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 569274002,
+        "Image ID": "COCO_val2014_000000569274",
+        "Question": "What sport do they play?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 307342001,
+        "Image ID": "COCO_val2014_000000307342",
+        "Question": "Why are the people on a lift?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 45433002,
+        "Image ID": "COCO_val2014_000000045433",
+        "Question": "What is the person doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 307786001,
+        "Image ID": "COCO_val2014_000000307786",
+        "Question": "What is the person doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 307786005,
+        "Image ID": "COCO_val2014_000000307786",
+        "Question": "What has happened?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 307794002,
+        "Image ID": "COCO_val2014_000000307794",
+        "Question": "What sport are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 176794002,
+        "Image ID": "COCO_val2014_000000176794",
+        "Question": "What sport is the man playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 439007004,
+        "Image ID": "COCO_val2014_000000439007",
+        "Question": "What is the bear doing?",
+        "Target": "swimming",
+        "Target idx": 14
+    },
+    {
+        "Question ID": 439092000,
+        "Image ID": "COCO_val2014_000000439092",
+        "Question": "What are these two people doing in the scene?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 177990003,
+        "Image ID": "COCO_val2014_000000177990",
+        "Question": "What event is happening?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 553985003,
+        "Image ID": "COCO_val2014_000000553985",
+        "Question": "What sport is this guy playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 310538000,
+        "Image ID": "COCO_val2014_000000310538",
+        "Question": "What is the guy playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 441861001,
+        "Image ID": "COCO_val2014_000000441861",
+        "Question": "What sport are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 441861002,
+        "Image ID": "COCO_val2014_000000441861",
+        "Question": "What game is being played?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 50746008,
+        "Image ID": "COCO_val2014_000000050746",
+        "Question": "What two sports is the boy a fan of?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 313145001,
+        "Image ID": "COCO_val2014_000000313145",
+        "Question": "What activity caused him to fall?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 444263002,
+        "Image ID": "COCO_val2014_000000444263",
+        "Question": "What is the man doing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 444502001,
+        "Image ID": "COCO_val2014_000000444502",
+        "Question": "What sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 182523001,
+        "Image ID": "COCO_val2014_000000182523",
+        "Question": "What sport is it?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 51712003,
+        "Image ID": "COCO_val2014_000000051712",
+        "Question": "What activity is this man doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 445135001,
+        "Image ID": "COCO_val2014_000000445135",
+        "Question": "What sport is the person playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 52166009,
+        "Image ID": "COCO_val2014_000000052166",
+        "Question": "What are they watching?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 576875006,
+        "Image ID": "COCO_val2014_000000576875",
+        "Question": "What game are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 314876002,
+        "Image ID": "COCO_val2014_000000314876",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 71602001,
+        "Image ID": "COCO_val2014_000000071602",
+        "Question": "Are they skiing or snowboarding?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 71602004,
+        "Image ID": "COCO_val2014_000000071602",
+        "Question": "What sport are these people participating in?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 184266004,
+        "Image ID": "COCO_val2014_000000184266",
+        "Question": "What sport is the man playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 577870001,
+        "Image ID": "COCO_val2014_000000577870",
+        "Question": "What sport are they playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 315810000,
+        "Image ID": "COCO_val2014_000000315810",
+        "Question": "What game is he playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 53949002,
+        "Image ID": "COCO_val2014_000000053949",
+        "Question": "What game are they playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 53949003,
+        "Image ID": "COCO_val2014_000000053949",
+        "Question": "What kind of rackets are they?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 316708005,
+        "Image ID": "COCO_val2014_000000316708",
+        "Question": "What game is on the largest screen?",
+        "Target": "boxing",
+        "Target idx": 12
+    },
+    {
+        "Question ID": 448359003,
+        "Image ID": "COCO_val2014_000000448359",
+        "Question": "What sport are these women playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 318284000,
+        "Image ID": "COCO_val2014_000000318284",
+        "Question": "What sport is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 318284012,
+        "Image ID": "COCO_val2014_000000318284",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 56187000,
+        "Image ID": "COCO_val2014_000000056187",
+        "Question": "What type of sport is the man engaging in?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 56187002,
+        "Image ID": "COCO_val2014_000000056187",
+        "Question": "What are these people doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 187352005,
+        "Image ID": "COCO_val2014_000000187352",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 318570002,
+        "Image ID": "COCO_val2014_000000318570",
+        "Question": "What activity is this?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 57172002,
+        "Image ID": "COCO_val2014_000000057172",
+        "Question": "What sport is the person participating in?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 581827002,
+        "Image ID": "COCO_val2014_000000581827",
+        "Question": "What sport is this person practicing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 319726002,
+        "Image ID": "COCO_val2014_000000319726",
+        "Question": "What is this sport?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 451473007,
+        "Image ID": "COCO_val2014_000000451473",
+        "Question": "What sport are they playing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 53420004,
+        "Image ID": "COCO_val2014_000000053420",
+        "Question": "What game is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 190014004,
+        "Image ID": "COCO_val2014_000000190014",
+        "Question": "What sport is this?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 452759000,
+        "Image ID": "COCO_val2014_000000452759",
+        "Question": "What is the man hitting?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 452759001,
+        "Image ID": "COCO_val2014_000000452759",
+        "Question": "What game is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 190689006,
+        "Image ID": "COCO_val2014_000000190689",
+        "Question": "Which sport are they doing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 321804006,
+        "Image ID": "COCO_val2014_000000321804",
+        "Question": "Which game is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 321804007,
+        "Image ID": "COCO_val2014_000000321804",
+        "Question": "What sport is the child playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 60125001,
+        "Image ID": "COCO_val2014_000000060125",
+        "Question": "What sport is happening in this photo?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 192181001,
+        "Image ID": "COCO_val2014_000000192181",
+        "Question": "What sport is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 192200000,
+        "Image ID": "COCO_val2014_000000192200",
+        "Question": "What team is this?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 192200002,
+        "Image ID": "COCO_val2014_000000192200",
+        "Question": "What game is being played?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 15148000,
+        "Image ID": "COCO_val2014_000000015148",
+        "Question": "What are they taking a break from?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 325277002,
+        "Image ID": "COCO_val2014_000000325277",
+        "Question": "What game is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 325459002,
+        "Image ID": "COCO_val2014_000000325459",
+        "Question": "What sport is the video game based on?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 458045000,
+        "Image ID": "COCO_val2014_000000458045",
+        "Question": "Which game is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 196378001,
+        "Image ID": "COCO_val2014_000000196378",
+        "Question": "What console are these people using?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 196378005,
+        "Image ID": "COCO_val2014_000000196378",
+        "Question": "What game is the woman playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 327532002,
+        "Image ID": "COCO_val2014_000000327532",
+        "Question": "What kind of match is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 327701003,
+        "Image ID": "COCO_val2014_000000327701",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 196660001,
+        "Image ID": "COCO_val2014_000000196660",
+        "Question": "What is not allowed?",
+        "Target": "swimming",
+        "Target idx": 14
+    },
+    {
+        "Question ID": 328306000,
+        "Image ID": "COCO_val2014_000000328306",
+        "Question": "What kind of court is this kid on?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 328306002,
+        "Image ID": "COCO_val2014_000000328306",
+        "Question": "What sport is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 197658002,
+        "Image ID": "COCO_val2014_000000197658",
+        "Question": "What ball is on the billboard?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 54796002,
+        "Image ID": "COCO_val2014_000000054796",
+        "Question": "What kind of ball is she holding?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 475301000,
+        "Image ID": "COCO_val2014_000000475301",
+        "Question": "What kind of event is taking place?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 330055000,
+        "Image ID": "COCO_val2014_000000330055",
+        "Question": "What sport are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 331196002,
+        "Image ID": "COCO_val2014_000000331196",
+        "Question": "What is she playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 463174002,
+        "Image ID": "COCO_val2014_000000463174",
+        "Question": "What sport it this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 443169001,
+        "Image ID": "COCO_val2014_000000443169",
+        "Question": "What logo is painted on the field?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 443169002,
+        "Image ID": "COCO_val2014_000000443169",
+        "Question": "What kind of field is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 333014002,
+        "Image ID": "COCO_val2014_000000333014",
+        "Question": "What game are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 71301002,
+        "Image ID": "COCO_val2014_000000071301",
+        "Question": "What are these people doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 202981001,
+        "Image ID": "COCO_val2014_000000202981",
+        "Question": "What are the people doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 334075001,
+        "Image ID": "COCO_val2014_000000334075",
+        "Question": "What game is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 465422000,
+        "Image ID": "COCO_val2014_000000465422",
+        "Question": "What is the man doing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 73093002,
+        "Image ID": "COCO_val2014_000000073093",
+        "Question": "What sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 466561003,
+        "Image ID": "COCO_val2014_000000466561",
+        "Question": "What sport is the man playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 466602001,
+        "Image ID": "COCO_val2014_000000466602",
+        "Question": "What is the person doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 336044003,
+        "Image ID": "COCO_val2014_000000336044",
+        "Question": "What is the game?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 74092000,
+        "Image ID": "COCO_val2014_000000074092",
+        "Question": "What sport is the athlete playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 205247002,
+        "Image ID": "COCO_val2014_000000205247",
+        "Question": "What does the banner advertise?",
+        "Target": "basketball",
+        "Target idx": 3
+    },
+    {
+        "Question ID": 133418001,
+        "Image ID": "COCO_val2014_000000133418",
+        "Question": "What sport is it?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 336961002,
+        "Image ID": "COCO_val2014_000000336961",
+        "Question": "What sport is the man playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 206512003,
+        "Image ID": "COCO_val2014_000000206512",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 207366001,
+        "Image ID": "COCO_val2014_000000207366",
+        "Question": "What is this sport?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 338552001,
+        "Image ID": "COCO_val2014_000000338552",
+        "Question": "What sport is being shown here?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 339336003,
+        "Image ID": "COCO_val2014_000000339336",
+        "Question": "What is the man doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 209930004,
+        "Image ID": "COCO_val2014_000000209930",
+        "Question": "Which sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 79969001,
+        "Image ID": "COCO_val2014_000000079969",
+        "Question": "What game is shown?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 474028001,
+        "Image ID": "COCO_val2014_000000474028",
+        "Question": "What sport are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 474028004,
+        "Image ID": "COCO_val2014_000000474028",
+        "Question": "What are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 474028006,
+        "Image ID": "COCO_val2014_000000474028",
+        "Question": "What sport is this?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 474028009,
+        "Image ID": "COCO_val2014_000000474028",
+        "Question": "What sort of event is this?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 474028010,
+        "Image ID": "COCO_val2014_000000474028",
+        "Question": "What game are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 343038000,
+        "Image ID": "COCO_val2014_000000343038",
+        "Question": "What sport is being presented?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 213403000,
+        "Image ID": "COCO_val2014_000000213403",
+        "Question": "What game is the man playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 213403001,
+        "Image ID": "COCO_val2014_000000213403",
+        "Question": "What sport is this lady playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 213403006,
+        "Image ID": "COCO_val2014_000000213403",
+        "Question": "What sport is the boy partaking in?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 82518003,
+        "Image ID": "COCO_val2014_000000082518",
+        "Question": "What sport is the athlete playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 476412002,
+        "Image ID": "COCO_val2014_000000476412",
+        "Question": "What game are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 345376005,
+        "Image ID": "COCO_val2014_000000345376",
+        "Question": "What sport is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 476770001,
+        "Image ID": "COCO_val2014_000000476770",
+        "Question": "What sport is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 478567006,
+        "Image ID": "COCO_val2014_000000478567",
+        "Question": "What sport is he playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 478567011,
+        "Image ID": "COCO_val2014_000000478567",
+        "Question": "What the name of the field?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 347688000,
+        "Image ID": "COCO_val2014_000000347688",
+        "Question": "What game is being played here?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 232769002,
+        "Image ID": "COCO_val2014_000000232769",
+        "Question": "What sport are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 217593004,
+        "Image ID": "COCO_val2014_000000217593",
+        "Question": "What sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 87889000,
+        "Image ID": "COCO_val2014_000000087889",
+        "Question": "Where are the skiers going?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 219201002,
+        "Image ID": "COCO_val2014_000000219201",
+        "Question": "What are they playing in the street?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 89285001,
+        "Image ID": "COCO_val2014_000000089285",
+        "Question": "What is she playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 351793000,
+        "Image ID": "COCO_val2014_000000351793",
+        "Question": "Is the person snowboarding or wakeboarding?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 352496001,
+        "Image ID": "COCO_val2014_000000352496",
+        "Question": "What sport is this?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 91052002,
+        "Image ID": "COCO_val2014_000000091052",
+        "Question": "What sport are the boys playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 91643001,
+        "Image ID": "COCO_val2014_000000091643",
+        "Question": "What sport is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 485155000,
+        "Image ID": "COCO_val2014_000000485155",
+        "Question": "Is the skiing or snowboarding?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 223959002,
+        "Image ID": "COCO_val2014_000000223959",
+        "Question": "What game is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 386879004,
+        "Image ID": "COCO_val2014_000000386879",
+        "Question": "Which sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 486491000,
+        "Image ID": "COCO_val2014_000000486491",
+        "Question": "What sport is this person playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 93806001,
+        "Image ID": "COCO_val2014_000000093806",
+        "Question": "What are they doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 95155001,
+        "Image ID": "COCO_val2014_000000095155",
+        "Question": "What sport is this?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 409117001,
+        "Image ID": "COCO_val2014_000000409117",
+        "Question": "What sport is this?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 226967000,
+        "Image ID": "COCO_val2014_000000226967",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 358572004,
+        "Image ID": "COCO_val2014_000000358572",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 358903000,
+        "Image ID": "COCO_val2014_000000358903",
+        "Question": "What are the people doing?",
+        "Target": "water skiing",
+        "Target idx": 17
+    },
+    {
+        "Question ID": 228166003,
+        "Image ID": "COCO_val2014_000000228166",
+        "Question": "What is the man on the right doing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 228166007,
+        "Image ID": "COCO_val2014_000000228166",
+        "Question": "What is the person doing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 228166008,
+        "Image ID": "COCO_val2014_000000228166",
+        "Question": "Is this person snowboarding or skiing?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 228344002,
+        "Image ID": "COCO_val2014_000000228344",
+        "Question": "What tournament is the player participating in?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 97661003,
+        "Image ID": "COCO_val2014_000000097661",
+        "Question": "What game is this?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 231281003,
+        "Image ID": "COCO_val2014_000000231281",
+        "Question": "What are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 363831000,
+        "Image ID": "COCO_val2014_000000363831",
+        "Question": "What game is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 363831005,
+        "Image ID": "COCO_val2014_000000363831",
+        "Question": "What sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 495160000,
+        "Image ID": "COCO_val2014_000000495160",
+        "Question": "What sport are the men playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 364884002,
+        "Image ID": "COCO_val2014_000000364884",
+        "Question": "What is this sport called?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 365724002,
+        "Image ID": "COCO_val2014_000000365724",
+        "Question": "What game are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 365724003,
+        "Image ID": "COCO_val2014_000000365724",
+        "Question": "What sport is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 104685000,
+        "Image ID": "COCO_val2014_000000104685",
+        "Question": "What sport is this?",
+        "Target": "horse racing",
+        "Target idx": 13
+    },
+    {
+        "Question ID": 498541002,
+        "Image ID": "COCO_val2014_000000498541",
+        "Question": "What kind of sport it is?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 238228000,
+        "Image ID": "COCO_val2014_000000238228",
+        "Question": "What sport is he playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 107389002,
+        "Image ID": "COCO_val2014_000000107389",
+        "Question": "What sport is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 501281000,
+        "Image ID": "COCO_val2014_000000501281",
+        "Question": "What are the players playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 501281001,
+        "Image ID": "COCO_val2014_000000501281",
+        "Question": "What are the people doing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 239235007,
+        "Image ID": "COCO_val2014_000000239235",
+        "Question": "What are these people doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 239773001,
+        "Image ID": "COCO_val2014_000000239773",
+        "Question": "What game is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 345838000,
+        "Image ID": "COCO_val2014_000000345838",
+        "Question": "What is the game?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 371135001,
+        "Image ID": "COCO_val2014_000000371135",
+        "Question": "What sport is the person in the picture playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 371135004,
+        "Image ID": "COCO_val2014_000000371135",
+        "Question": "What game is she playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 240379021,
+        "Image ID": "COCO_val2014_000000240379",
+        "Question": "What festival is taking place?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 240379024,
+        "Image ID": "COCO_val2014_000000240379",
+        "Question": "Where are these men going?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 240379027,
+        "Image ID": "COCO_val2014_000000240379",
+        "Question": "Where is the child going?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 240481001,
+        "Image ID": "COCO_val2014_000000240481",
+        "Question": "What type of uniform does the woman wear?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 503202000,
+        "Image ID": "COCO_val2014_000000503202",
+        "Question": "What are the men watching on TV?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 111062002,
+        "Image ID": "COCO_val2014_000000111062",
+        "Question": "What is playing on the TV?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 242452002,
+        "Image ID": "COCO_val2014_000000242452",
+        "Question": "What kind of sport are they playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 243148000,
+        "Image ID": "COCO_val2014_000000243148",
+        "Question": "What sport are the people participating in?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 182681002,
+        "Image ID": "COCO_val2014_000000182681",
+        "Question": "What sport is the lady playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 193480002,
+        "Image ID": "COCO_val2014_000000193480",
+        "Question": "What game is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 505739002,
+        "Image ID": "COCO_val2014_000000505739",
+        "Question": "What is this horse doing?",
+        "Target": "racing",
+        "Target idx": 10
+    },
+    {
+        "Question ID": 506569003,
+        "Image ID": "COCO_val2014_000000506569",
+        "Question": "What is this person doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 143440002,
+        "Image ID": "COCO_val2014_000000143440",
+        "Question": "What sport is this?",
+        "Target": "snowboarding",
+        "Target idx": 16
+    },
+    {
+        "Question ID": 492605000,
+        "Image ID": "COCO_val2014_000000492605",
+        "Question": "What is this sport?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 506717002,
+        "Image ID": "COCO_val2014_000000506717",
+        "Question": "What sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 507223000,
+        "Image ID": "COCO_val2014_000000507223",
+        "Question": "What players are shown in this photo?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 507633000,
+        "Image ID": "COCO_val2014_000000507633",
+        "Question": "What is the man doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 507633001,
+        "Image ID": "COCO_val2014_000000507633",
+        "Question": "What are they doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 246231000,
+        "Image ID": "COCO_val2014_000000246231",
+        "Question": "Where are the players playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 246231001,
+        "Image ID": "COCO_val2014_000000246231",
+        "Question": "What sport is he playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 434583004,
+        "Image ID": "COCO_val2014_000000434583",
+        "Question": "What kind of sport are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 434583009,
+        "Image ID": "COCO_val2014_000000434583",
+        "Question": "What is the sport the woman is playing called?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 248242000,
+        "Image ID": "COCO_val2014_000000248242",
+        "Question": "What is the kid doing?",
+        "Target": "skiing",
+        "Target idx": 15
+    },
+    {
+        "Question ID": 250309002,
+        "Image ID": "COCO_val2014_000000250309",
+        "Question": "What sport is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 382770002,
+        "Image ID": "COCO_val2014_000000382770",
+        "Question": "What type of sport is the man engaging in?",
+        "Target": "water skiing",
+        "Target idx": 17
+    },
+    {
+        "Question ID": 384531001,
+        "Image ID": "COCO_val2014_000000384531",
+        "Question": "What is in mid air?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 384531002,
+        "Image ID": "COCO_val2014_000000384531",
+        "Question": "What sport is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 566543002,
+        "Image ID": "COCO_val2014_000000566543",
+        "Question": "What sport are they playing?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 566543004,
+        "Image ID": "COCO_val2014_000000566543",
+        "Question": "What game is being played here?",
+        "Target": "soccer",
+        "Target idx": 1
+    },
+    {
+        "Question ID": 124327006,
+        "Image ID": "COCO_val2014_000000124327",
+        "Question": "What sport is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 124327009,
+        "Image ID": "COCO_val2014_000000124327",
+        "Question": "What sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 256221001,
+        "Image ID": "COCO_val2014_000000256221",
+        "Question": "What game is he playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 457817004,
+        "Image ID": "COCO_val2014_000000457817",
+        "Question": "What sport is this?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 256547000,
+        "Image ID": "COCO_val2014_000000256547",
+        "Question": "What are the men playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 520478000,
+        "Image ID": "COCO_val2014_000000520478",
+        "Question": "What game is the man playing?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 127987006,
+        "Image ID": "COCO_val2014_000000127987",
+        "Question": "What video game is playing?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 390401000,
+        "Image ID": "COCO_val2014_000000390401",
+        "Question": "What sport is this?",
+        "Target": "baseball",
+        "Target idx": 6
+    },
+    {
+        "Question ID": 390475000,
+        "Image ID": "COCO_val2014_000000390475",
+        "Question": "What sport is being played?",
+        "Target": "tennis",
+        "Target idx": 4
+    },
+    {
+        "Question ID": 129945009,
+        "Image ID": "COCO_val2014_000000129945",
+        "Question": "What game is being played?",
+        "Target": "baseball",
+        "Target idx": 6
+    }
+]
