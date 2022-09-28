@@ -109,7 +109,10 @@ class VQADataset:
                             "squirrel", "monkey", "bird", "spider", "wildebeest", "crow", "clams", "giraffe", "lizard", "lab", "crane", "alligator", "panda", "kitten", "hawk", 
                             "parrot", "octopus", "mouse", "goat", "tiger", "puppy", "ladybug", "lobster", "whale", "pigeon", "donkey", "goose", "zebra", "blue jay", "parakeet",
                             "worms", "shrimp", "camel", "deer", "shark", "bear", "robin", "dinosaur", "flamingo", "ram", "tuna", "lion", "eagle", "finch", "kangaroo", "elm", "buffalo", 
-                            "cat", "pitbull", "leopard", "puma", "rabbit", "chicken", "hummingbird", "dragon", "fish", "cub", "rooster", "orioles"]                
+                            "cat", "pitbull", "leopard", "puma", "rabbit", "chicken", "hummingbird", "dragon", "fish", "cub", "rooster", "orioles", "labrador", "grizzly", "polar", 
+                            "clydesdale", "dalmatian", "german shepherd", "shepherd", "golden retriever", "poodle", "dachshund", "schnauzer", "pomeranian", "bulldog", "corgi", "tabby", 
+                            "chihuahua", "husky", "beagle", "sheepdog", "pug", "collie", "mutt", "calico", "shih tzu", "siamese", "terrier", "rottweiler", "greyhound", "boxer", 
+                            "cocker spaniel", "sparrow", "savannah"]                
             # Answers
             # self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
             # self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
