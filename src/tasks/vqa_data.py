@@ -112,7 +112,11 @@ class VQADataset:
                             "cat", "pitbull", "leopard", "puma", "rabbit", "chicken", "hummingbird", "dragon", "fish", "cub", "rooster", "orioles", "labrador", "grizzly", "polar", 
                             "clydesdale", "dalmatian", "german shepherd", "shepherd", "golden retriever", "poodle", "dachshund", "schnauzer", "pomeranian", "bulldog", "corgi", "tabby", 
                             "chihuahua", "husky", "beagle", "sheepdog", "pug", "collie", "mutt", "calico", "shih tzu", "siamese", "terrier", "rottweiler", "greyhound", "boxer", 
-                            "cocker spaniel", "sparrow", "savannah"]                
+                            "cocker spaniel", "sparrow", "savannah"] 
+            if args.sampling_ids != None:
+                with open(args.sampling_ids, 'rb') as f:
+                    self.sampled_ids = pickle.load(f)
+            print("ids length: ", len(self.sampled_ids))               
             # Answers
             # self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
             # self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
@@ -130,19 +134,35 @@ class VQADataset:
             for datum in loaded_data:
                 if 'label' in datum:
                     if len(datum['label']) > 0:
-                        itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
-                        listOfKeys = list()
-                        for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
-                            if value == itemMaxValue[1]:
-                                if key == 'geese':
-                                    key = 'goose'
-                                listOfKeys.append(key)
-                        if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
-                            listOfKeys[0] = listOfKeys[0][:-1]
-                        if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                            new_label ={listOfKeys[0]: itemMaxValue[1]}
-                            datum['label'] = new_label
-                            self.data.append(datum)
+                        if 'minival' in self.splits:
+                            itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                            listOfKeys = list()
+                            for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                                if value == itemMaxValue[1]:
+                                    if key == 'geese':
+                                        key = 'goose'
+                                    listOfKeys.append(key)
+                            if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
+                                listOfKeys[0] = listOfKeys[0][:-1]
+                            if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                                new_label ={listOfKeys[0]: itemMaxValue[1]}
+                                datum['label'] = new_label
+                                self.data.append(datum)
+                        else:
+                            if datum['question_id'] in self.sampled_ids:
+                                itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                listOfKeys = list()
+                                for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                                    if value == itemMaxValue[1]:
+                                        if key == 'geese':
+                                            key = 'goose'
+                                        listOfKeys.append(key)
+                                if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
+                                    listOfKeys[0] = listOfKeys[0][:-1]
+                                if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                                    new_label ={listOfKeys[0]: itemMaxValue[1]}
+                                    datum['label'] = new_label
+                                    self.data.append(datum)
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
 
             # Convert list to dict (for evaluation)
@@ -186,7 +206,6 @@ class VQATorchDataset(Dataset):
     def __init__(self, dataset: VQADataset):
         super().__init__()
         self.raw_dataset = dataset
-
         if args.tiny:
             topk = TINY_IMG_NUM
         elif args.fast:
@@ -222,6 +241,10 @@ class VQATorchDataset(Dataset):
 
     def __getitem__(self, item: int):
         datum = self.data[item]
+
+        # while datum['question_id'] in self.exclude_ids:
+        #     datum = self.data[item+1]
+
 
         img_id = datum['img_id']
         ques_id = datum['question_id']
