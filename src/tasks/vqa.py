@@ -105,6 +105,7 @@ class VQA:
 
                 feats, boxes, target = feats.cuda(), boxes.cuda(), target.cuda()
                 logit = self.model(feats, boxes, sent)
+                print("logit shape: ", logit.shape)
                 softmax = torch.nn.Softmax(dim=1)
                 logit_softmax = softmax(logit)
                 gt_preds_probability_softmax= torch.squeeze(logit_softmax.gather(1, torch.unsqueeze(target, 1)))
