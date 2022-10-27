@@ -4,3 +4,6 @@
 *.pyc
 datamaps/coco
 *.pkl
+jupyterhub.sqlite
+jupyterhub_cookie_secret
+datamaps/.ipynb_checkpoints/
