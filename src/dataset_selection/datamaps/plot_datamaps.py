@@ -27,6 +27,7 @@ import operator
 import plotly.figure_factory as ff
 import scipy
 import pickle 
+from param import args
 
 
 def scatter_it(dataframe, hue_metric ='correct.', title='', model='LXMERT', show_hist=False):
@@ -121,7 +122,8 @@ def scatter_it(dataframe, hue_metric ='correct.', title='', model='LXMERT', show
         plot2[0].set_ylabel('')
 
     fig.tight_layout()
-
+    fig_save = fig.get_figure()
+    fig_save.savefig(args.base_path+'datamap.pdf') 
 
 def generate_class_variability_distributions(base_path, df, dataset='animals'):
     # if region == 'hard':
@@ -151,3 +153,39 @@ def generate_class_variability_distributions(base_path, df, dataset='animals'):
     fig.update_layout(height=2000)
     fig.show()
     fig.write_image(file=base_path+dataset+'_target_variability_distribution.pdf', format='pdf')
+
+def plot_trainval_acc(base_path):
+    '''
+    Plots train/val accuracy scores 
+
+            Parameters:
+                    base_path (str): Path to model metadata
+
+    '''
+    with open(args.base_path + 'log.log') as fp:
+        acc = fp.readlines()
+    train_scores = []
+    valid_scores = []
+    for i in acc:
+        if 'Train' in i:
+            train_scores.append(float(i[-7:].strip()))
+        elif 'Valid' in i:
+            valid_scores.append(float(i[-7:].strip()))
+
+    xs_valid = [i for i in range(len(valid_scores))]
+    xs_train = [i for i in range(len(train_scores))]
+    plt.plot(xs_valid, valid_scores, label="Validation")
+    #plt.title("Validation")
+    #plt.savefig(base_path+'/training.png')
+
+    plt.plot(xs_train, train_scores, label="Training")
+    #plt.title("Training")
+    plt.savefig(args.base_path+'/train_val.png')
+    plt.legend()
+    plt.xlabel("Epochs")
+    plt.ylabel("Correct Preds")
+
+if __name__ == "__main__":
+    df = pd.read_pickle(args.base_path+"datamap_metrics.pkl")
+    plot_trainval_acc(args.base_path)
+    scatter_it(df, title=args.datamap_title, show_hist=True)

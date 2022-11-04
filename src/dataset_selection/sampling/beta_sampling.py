@@ -28,7 +28,7 @@ import pickle
 from sklearn.neighbors import KernelDensity
 
 
-def beta_sampling(base_path, df, alpha, beta, model, training_budget, norm='pVals', bandwidth= 0.01, dataset='animals'):
+def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwidth= 0.01, dataset='animals'):
     # kernel = {'gaussian', 'tophat', epanechnikov’, ‘exponential’, ‘linear’, ‘cosine’} 
     targets = df['Target'].tolist()
     targets = [i[0] for i in targets]
@@ -44,9 +44,10 @@ def beta_sampling(base_path, df, alpha, beta, model, training_budget, norm='pVal
     beta_distribution = scipy.stats.beta(alpha, beta)
     p_vals = beta_distribution.pdf(variabilities)
     #plt.plot(variabilities, p_vals, label='pdf')
-    if norm == 'pVals':
+    if norm == 'pvals':
         p_vals /= p_vals.sum()
         plt.plot(variabilities, p_vals, label='pdf')
+        save_path = 'src/dataset_selection/sampling/samples/beta/beta_pvals/'+model+'_'+ dataset+'_alpha_'+str(alpha) + '_beta_'+str(beta) +'_' + str(training_budget)+'.pkl'
     elif norm == 'var_counts':
         # normalize by counts in variability histogram
         test = px.histogram(df, x='variability')
@@ -66,7 +67,7 @@ def beta_sampling(base_path, df, alpha, beta, model, training_budget, norm='pVal
         var_counts /= sum(var_counts)
         p_vals /= var_counts
         p_vals /= p_vals.sum()
-        save_path = '../data/vqa/samples/'+model+'_'+ dataset+'_alpha_'+str(alpha) + '_beta_'+str(beta) + '_beta_sampling_var_counts_' + str(training_budget)+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/beta/beta_var_counts/'+model+'_'+ dataset+'_alpha_'+str(alpha) + '_beta_'+str(beta) +'_' + str(training_budget)+'.pkl'
     elif norm == 'gaussian_kde':
         kernel = scipy.stats.gaussian_kde(variabilities)
         print("bandwidth: ", kernel.factor)
@@ -74,7 +75,7 @@ def beta_sampling(base_path, df, alpha, beta, model, training_budget, norm='pVal
         fig1, ax1 = plt.subplots()
         p_vals /= gaussian_eval
         p_vals /= p_vals.sum()
-        save_path = '../data/vqa/samples/'+model+'_'+ dataset+'_alpha_'+str(alpha) + '_beta_'+str(beta) + '_beta_sampling_gaussian_kde_' + str(training_budget)+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/beta/beta_kernel/'+model+'_'+ dataset+'_alpha_'+str(alpha) + '_beta_'+str(beta) +'_'+norm+'_' + str(training_budget)+'.pkl'
     elif norm in ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']:
         vars_kde =np.array(variabilities).reshape(-1, 1)
         kde = KernelDensity(bandwidth=bandwidth, kernel=kernel)
@@ -83,7 +84,7 @@ def beta_sampling(base_path, df, alpha, beta, model, training_budget, norm='pVal
         logprob = kde.score_samples(vars_kde)
         p_vals /= np.exp(logprob)
         p_vals /= p_vals.sum()
-        save_path = '../data/vqa/samples/'+model+'_'+ dataset+'_alpha_'+str(alpha) + '_beta_'+str(beta) + '_beta_sampling_'+kernel+'_' + str(training_budget)+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/beta/beta_kernel/'+model+'_'+ dataset+'_alpha_'+str(alpha) + '_beta_'+str(beta) +'_'+norm+'_' + str(training_budget)+'.pkl'
     else:
         print('Norm not implemented')
 
@@ -122,4 +123,4 @@ def beta_sampling(base_path, df, alpha, beta, model, training_budget, norm='pVal
     with open(save_path, 'wb') as f:
         pickle.dump(list(set(sampled_question_ids)), f)
 
-    return sampled_question_ids
+    #return sampled_question_ids

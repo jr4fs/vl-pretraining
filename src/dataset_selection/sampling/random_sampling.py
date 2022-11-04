@@ -28,7 +28,7 @@ import pickle
 from sklearn.neighbors import KernelDensity
 
 
-def random_sampling(base_path, df, model, training_budget, dataset='animals'):
+def random_sampling(df, model, training_budget, dataset='animals'):
     targets = df['Target'].tolist()
     targets = [i[0] for i in targets]
     df['Target'] = targets
@@ -84,11 +84,11 @@ def random_sampling(base_path, df, model, training_budget, dataset='animals'):
 
     unique_targets_sample = orig_df[orig_df['question_id'].isin(sampled_question_ids)]
     unique_targets = set(unique_targets_sample['Target'].unique())
-
-    with open('../data/vqa/samples/'+model+'_'+ dataset+'_random_sampling_' + str(training_budget)+'.pkl', 'wb') as f:
+    save_path = 'src/dataset_selection/sampling/samples/random/'+model+'_' + dataset+ '_'+ str(training_budget)+'.pkl'
+    with open(save_path, 'wb') as f:
         pickle.dump(list(set(sampled_question_ids)), f)
 
     print("unique targets random: ", len(set(unique_targets)))
     print('samples - random: ', len(set(sampled_question_ids)))
     print('all_samples - random: ', len(all_ids))
-    return sampled_question_ids
+    #return sampled_question_ids

@@ -91,11 +91,22 @@ def parse_args():
     parser.add_argument("--numWorkers", dest='num_workers', default=0)
 
     # Datamaps
-    parser.add_argument("--base_path", default='../snap/vqa/vqa_lxr955_sports_multiclass/', type=str, help='Path to trained model')
-    parser.add_argument("--datamap_title", default='VQA-Sports-Finetuned', type=str, help='Title of datamap plot')
-    parser.add_argument('--confidence_threshold', type=float, default=0.5)
-    parser.add_argument('--variability_threshold', type=float, default=0.4)
-    parser.add_argument("--datamap_region", default='easy', type=str, help='easy, hard, ambigious -- region of datamap to extract outliers from')
+    parser.add_argument("--base_path", default='snap/vqa/vqa_lxr111_animals_fromScratch_20epochs_breeds/', type=str, help='Path to trained model')
+    parser.add_argument("--datamap_title", default='Trained on VQA-Animals Trained from Scratch for 20 epochs', type=str, help='Title of datamap plot')
+
+    # Sampling
+    parser.add_argument("--sampling_method", default='beta', type=str, help='Sampling algorithm - beta, random')
+    parser.add_argument("--sampling_model", default='LXR111', type=str, help='Name of model you are sampling variability values from')
+    parser.add_argument("--training_budget", default=30, type=int, help='Percentage of data sampled')
+    parser.add_argument("--dataset", default='animals', type=str, help='animals or sports')
+    
+    # Beta sampling
+    parser.add_argument("--alpha", default=1, type=int, help='alpha parameter for beta distribution')
+    parser.add_argument("--beta", default=1, type=int, help='beta parameter for beta distribution')
+    parser.add_argument("--norm", default='pvals', type=str, help='pvals, gaussian_kde, gaussian, tophat, epanechnikov, exponential, linear, cosine')
+    parser.add_argument("--bandwidth", default=0.01, type=float, help='bandwidth for beta kernels')
+
+
 
     # Parse the arguments.
     args = parser.parse_args()

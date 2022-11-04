@@ -7,3 +7,4 @@ datamaps/coco
 jupyterhub.sqlite
 jupyterhub_cookie_secret
 datamaps/.ipynb_checkpoints/
+src/dataset_selection/datamaps/coco/

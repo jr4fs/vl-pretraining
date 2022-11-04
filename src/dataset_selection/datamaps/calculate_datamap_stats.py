@@ -27,6 +27,7 @@ import operator
 import plotly.figure_factory as ff
 import scipy
 import pickle 
+from param import args
 
 def load_datamap_stats(base_path):
     '''
@@ -98,8 +99,8 @@ def datamap_metrics(datamap_stats, correctness_check=False):
             Returns:
                     df (DataFrame): Pandas dataframe with datamap metrics and question ids
     '''
-    coco_train = COCO('coco/annotations/instances_train2014.json')
-    coco_val = COCO('coco/annotations/instances_val2014.json')
+    coco_train = COCO('src/dataset_selection/datamaps/coco/annotations/instances_train2014.json')
+    coco_val = COCO('src/dataset_selection/datamaps/coco/annotations/instances_val2014.json')
     ids_probs = {}
     for example in datamap_stats[0]:
         ids_probs[example['Question ID']]=([],[],[],[],[],[]) # probabilities, corrects, question, target, prediction, image_id
@@ -169,7 +170,10 @@ def datamap_metrics(datamap_stats, correctness_check=False):
     return df
 
 
-def calc_datamap_metrics(base_path):
+def calculate_datamap_metrics(base_path):
     datamap_stats = load_datamap_stats(base_path)
     df = datamap_metrics(datamap_stats)
     df.to_pickle(base_path+'datamap_metrics.pkl')
+
+if __name__ == "__main__":
+    calculate_datamap_metrics(args.base_path)
