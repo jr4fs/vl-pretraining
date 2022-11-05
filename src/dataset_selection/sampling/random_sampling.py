@@ -84,7 +84,7 @@ def random_sampling(df, model, training_budget, dataset='animals'):
 
     unique_targets_sample = orig_df[orig_df['question_id'].isin(sampled_question_ids)]
     unique_targets = set(unique_targets_sample['Target'].unique())
-    save_path = 'src/dataset_selection/sampling/samples/random/'+model+'_' + dataset+ '_'+ str(training_budget)+'.pkl'
+    save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/random/'+'train_budget_'+str(training_budget)+'.pkl'
     with open(save_path, 'wb') as f:
         pickle.dump(list(set(sampled_question_ids)), f)
 

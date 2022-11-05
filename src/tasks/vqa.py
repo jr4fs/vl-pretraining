@@ -49,6 +49,7 @@ class VQA:
         self.train_tuple = get_data_tuple(
             args.train, args.subset, bs=args.batch_size, shuffle=True, drop_last=False
         )
+
         if args.valid != "":
             self.valid_tuple = get_data_tuple(
                 args.valid, args.subset, bs=1024,
@@ -96,6 +97,7 @@ class VQA:
     def train(self, train_tuple, eval_tuple):
 
         dset, loader, evaluator = train_tuple
+        run["# Examples"] = len(loader.dataset)
         iter_wrapper = (lambda x: tqdm(x, total=len(loader))) if args.tqdm else (lambda x: x)
 
         best_valid = 0.
@@ -247,6 +249,7 @@ class VQA:
         self.model.load_state_dict(state_dict)
 
 if __name__ == "__main__":
+    # Neptune logging
     if args.sampling_ids != None:
         run["sampling_ids"] = os.path.basename(args.sampling_ids)
         run["sampling_method"] = args.sampling_method
@@ -256,8 +259,14 @@ if __name__ == "__main__":
             run["alpha"] = args.alpha
             run["beta"] = args.beta
             run["norm"] = args.norm
+        else:
+            run["alpha"] = '-'
+            run["beta"] = '-'
+            run["norm"] = '-'
     if args.subset!= None:
         run["subset"] = args.subset
+    else:
+        run["subset"] = '-'
     run["training_run"] = os.path.basename(args.output)
     run["learning_rate"] = args.lr
     run["optimizer"] = args.optim

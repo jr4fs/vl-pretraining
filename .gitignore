@@ -8,3 +8,6 @@ jupyterhub.sqlite
 jupyterhub_cookie_secret
 datamaps/.ipynb_checkpoints/
 src/dataset_selection/datamaps/coco/
+src/__pycache__/
+src/tasks/__pycache__/
+.neptune/async/

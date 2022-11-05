@@ -98,7 +98,7 @@ def parse_args():
     parser.add_argument("--sampling_method", default='beta', type=str, help='Sampling algorithm - beta, random')
     parser.add_argument("--sampling_model", default='LXR111', type=str, help='Name of model you are sampling variability values from')
     parser.add_argument("--training_budget", default=30, type=int, help='Percentage of data sampled')
-    parser.add_argument("--dataset", default='animals', type=str, help='animals or sports')
+    parser.add_argument("--sampling_dataset", default='animals', type=str, help='animals or sports')
     
     # Beta sampling
     parser.add_argument("--alpha", default=1, type=int, help='alpha parameter for beta distribution')

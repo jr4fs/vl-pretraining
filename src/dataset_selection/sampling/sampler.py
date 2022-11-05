@@ -40,7 +40,7 @@ if __name__ == "__main__":
         alpha = args.alpha
         beta = args.beta
         training_budget = args.training_budget
-        beta_sampling(df, alpha, beta, args.sampling_model, training_budget, norm=args.norm, bandwidth=args.bandwidth, dataset=args.dataset)
+        beta_sampling(df, alpha, beta, args.sampling_model, training_budget, norm=args.norm, bandwidth=args.bandwidth, dataset=args.sampling_dataset)
     elif sampling_method == 'random':
         random_sampling(df, args.sampling_model, args.training_budget)
     else:
