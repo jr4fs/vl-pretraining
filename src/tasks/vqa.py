@@ -18,11 +18,6 @@ DataTuple = collections.namedtuple("DataTuple", 'dataset loader evaluator')
 import json 
 import os
 
-run = neptune.init(
-    project="jranjit/vqa-training-data-selection",
-    api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
-)  # your credentials
-
 def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=False, sampling_ids=None) -> DataTuple:
     dset = VQADataset(splits, subset, sampling_ids)
     if splits != 'minival':
@@ -42,22 +37,23 @@ def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=Fa
     )
     return DataTuple(dataset=dset, loader=data_loader, evaluator=evaluator)
 
-def parse_sampling_ids(params):
+def params_to_sampling_ids(params):
     # return path to sampling ids 
-    # if type(sampling_ids) == str:
-        # return sampling_ids 
+    if type(params) == str:
+        return params
+    else:
+        print('implement parsing') 
     # else -- parse from params
     # params = {'sampling_method': trial.suggest_loguniform('learning_rate', 0.01, 0.5),
     #         'budget': trial.suggest_int('max_depth', 1, 30),
     #         'alpha': trial.suggest_int('num_leaves', 2, 100),
     #         'beta': trial.suggest_int('min_data_in_leaf', 10, 1000),
     #         'norm': trial.suggest_uniform('feature_fraction', 0.1, 1.0)}
-    return
 
 class VQA:
     def __init__(self, sampling_ids=None):
         if sampling_ids != None:
-            sampling_ids_path = parse_sampling_ids(sampling_ids)
+            sampling_ids_path = params_to_sampling_ids(sampling_ids)
         else:
             sampling_ids_path = None
         # Datasets
@@ -109,7 +105,7 @@ class VQA:
         self.output = args.output
         os.makedirs(self.output, exist_ok=True)
 
-    def train(self, train_tuple, eval_tuple):
+    def train(self, train_tuple, eval_tuple, run=None):
 
         dset, loader, evaluator = train_tuple
         run["# Examples"] = len(loader.dataset)
@@ -181,7 +177,8 @@ class VQA:
 
             log_str = "\nEpoch %d: Train %0.2f\n" % (epoch, evaluator.evaluate(quesid2ans) * 100.)
             train_scores.append(evaluator.evaluate(quesid2ans) * 100.)
-            run["train acc"].log(evaluator.evaluate(quesid2ans) * 100.)
+            if run != None:
+                run["train acc"].log(evaluator.evaluate(quesid2ans) * 100.)
 
             if self.valid_tuple is not None:  # Do Validation
                 valid_score = self.evaluate(eval_tuple)
@@ -192,8 +189,9 @@ class VQA:
 
                 log_str += "Epoch %d: Valid %0.2f\n" % (epoch, valid_score * 100.) + \
                            "Epoch %d: Best %0.2f\n" % (epoch, best_valid * 100.)
-                run["val acc"].log(valid_score * 100.)
-                run["best acc"].log(best_valid * 100.)
+                if run != None:
+                    run["val acc"].log(valid_score * 100.)
+                    run["best acc"].log(best_valid * 100.)
 
             print(log_str, end='')
 
@@ -264,7 +262,7 @@ class VQA:
         state_dict = torch.load("%s.pth" % path)
         self.model.load_state_dict(state_dict)
 
-def run_training():
+def run_training(run):
     # Neptune logging
     if args.sampling_ids != None:
         run["sampling_ids"] = os.path.basename(args.sampling_ids)
@@ -331,17 +329,18 @@ def run_training():
             print("Valid Oracle: %0.2f" % (vqa.oracle_score(vqa.valid_tuple) * 100))
         else:
             print("DO NOT USE VALIDATION")
-        vqa.train(vqa.train_tuple, vqa.valid_tuple)
+        vqa.train(vqa.train_tuple, vqa.valid_tuple,run)
+
+def neptune_monitor(study, trial):
+    # log hyperparameters for neptune
+    return 
 
 def objective(trial):
-    params = {'sampling_method': trial.suggest_loguniform('learning_rate', 0.01, 0.5),
-              'budget': trial.suggest_int('max_depth', 1, 30),
-              'alpha': trial.suggest_int('num_leaves', 2, 100),
-              'beta': trial.suggest_int('min_data_in_leaf', 10, 1000),
-              'norm': trial.suggest_uniform('feature_fraction', 0.1, 1.0)}
-    # given a dictionary of params, parse the path to the sampling ids 
-
-
+    params = {'sampling_method': trial.suggest_categorical("sampling_method", ["beta", "random"]),
+              'budget': trial.suggest_categorical("training_budget", [10, 20, 30]),
+              'alpha': trial.suggest_categorical("alpha", [1, 2]),
+              'beta': trial.suggest_categorical("beta", [1, 2]),
+              'norm': trial.suggest_categorical("norm", ['pvals', 'var_counts', 'gaussian_kde', 'cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat'])}
 
     # Neptune logging
     # run["sampling_ids"] = os.path.basename(args.sampling_ids)
@@ -373,11 +372,17 @@ def objective(trial):
         print("Valid Oracle: %0.2f" % (vqa.oracle_score(vqa.valid_tuple) * 100))
     else:
         print("DO NOT USE VALIDATION")
-    vqa.train(vqa.train_tuple, vqa.valid_tuple)
+    valid_score = vqa.train(vqa.train_tuple, vqa.valid_tuple)
+    return valid_score
+
 
 if __name__ == "__main__":
     if args.optuna == False:
-        run_training()
+        run = neptune.init(
+            project="jranjit/vqa-training-data-selection",
+            api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
+        )  # your credentials
+        run_training(run)
         run.stop()
     else:
         print("here")
