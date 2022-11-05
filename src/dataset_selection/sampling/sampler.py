@@ -35,15 +35,11 @@ if __name__ == "__main__":
     base_path = args.base_path
     sampling_method = args.sampling_method
     df = pd.read_pickle(base_path+"datamap_metrics.pkl")
-
     if sampling_method == 'beta':
-        alpha = args.alpha
-        beta = args.beta
-        training_budget = args.training_budget
-        beta_sampling(df, alpha, beta, args.sampling_model, training_budget, norm=args.norm, bandwidth=args.bandwidth, dataset=args.sampling_dataset)
+        beta_sampling(df, args.alpha, args.beta, args.sampling_model, args.training_budget, norm=args.norm, bandwidth=args.bandwidth, dataset=args.sampling_dataset)
         # budgets = [10, 20, 30]
         # params = [(1, 1), (2, 2), (1, 2), (2, 1)]
-        # norms = ['cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat']
+        # norms = ['pvals', 'var_counts', 'gaussian_kde', 'cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat']
         # for norm in norms:
         #     print("Norm: ", norm)
         #     for budget in budgets:
@@ -51,6 +47,6 @@ if __name__ == "__main__":
         #             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
         #             beta_sampling(df, param[0], param[1], args.sampling_model, budget, norm=norm, bandwidth=args.bandwidth, dataset=args.sampling_dataset)
     elif sampling_method == 'random':
-        random_sampling(df, args.sampling_model, args.training_budget)
+        random_sampling(df, args.sampling_model, args.training_budget, dataset=args.sampling_dataset)
     else:
         print("Sampling method not implemented")

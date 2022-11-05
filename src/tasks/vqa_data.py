@@ -44,10 +44,11 @@ class VQADataset:
             "sent": "What is this photo taken looking through?"
         }
     """
-    def __init__(self, splits: str, subset: str):
+    def __init__(self, splits: str, subset: str, sampling_ids: str):
         self.name = splits
         self.splits = splits.split(',')
         self.subset = subset
+        self.sampling_ids = sampling_ids
         if subset == 'sports':
             self.filtered = [
                 "football",
@@ -103,7 +104,7 @@ class VQADataset:
                 datum['question_id']: datum
                 for datum in self.data
             }
-        elif subset == 'animal':
+        elif subset == 'animals':
             print("Training on subset: "+ subset)
             self.filtered = ["sheep",  "peacock", "dog", "cardinal", "butterfly", "seagull", "polar bear", "fox", "turkey", "duck", "stork", "bull", "snake", "turtle", "bat", "penguin", 
                             "antelope", "woodpecker", "pony", "canopy", "salmon", "lamb", "bunny", "owl", "horse", "pig", "cow", "pelican", "swan", "elephant", "frog", "ostrich", 
@@ -114,8 +115,8 @@ class VQADataset:
                             "clydesdale", "dalmatian", "german shepherd", "shepherd", "golden retriever", "poodle", "dachshund", "schnauzer", "pomeranian", "bulldog", "corgi", "tabby", 
                             "chihuahua", "husky", "beagle", "sheepdog", "pug", "collie", "mutt", "calico", "shih tzu", "siamese", "terrier", "rottweiler", "greyhound", "boxer", 
                             "cocker spaniel", "sparrow", "savannah"] 
-            if args.sampling_ids != None:
-                with open(args.sampling_ids, 'rb') as f:
+            if self.sampling_ids != None:
+                with open(self.sampling_ids, 'rb') as f:
                     self.sampled_ids = pickle.load(f)
                 print("ids length: ", len(self.sampled_ids))               
             # Answers
@@ -150,7 +151,7 @@ class VQADataset:
                                 datum['label'] = new_label
                                 self.data.append(datum)
                         else:
-                            if args.sampling_ids != None:
+                            if self.sampling_ids != None:
                                 if datum['question_id'] in self.sampled_ids:
                                     itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
                                     listOfKeys = list()

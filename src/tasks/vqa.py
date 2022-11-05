@@ -23,8 +23,8 @@ run = neptune.init(
     api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
 )  # your credentials
 
-def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=False) -> DataTuple:
-    dset = VQADataset(splits, subset)
+def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=False, sampling_ids=None) -> DataTuple:
+    dset = VQADataset(splits, subset, sampling_ids)
     if splits != 'minival':
         index_dset = len(dset.data) % bs
         if index_dset != 0:
@@ -42,12 +42,27 @@ def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=Fa
     )
     return DataTuple(dataset=dset, loader=data_loader, evaluator=evaluator)
 
+def parse_sampling_ids(params):
+    # return path to sampling ids 
+    # if type(sampling_ids) == str:
+        # return sampling_ids 
+    # else -- parse from params
+    # params = {'sampling_method': trial.suggest_loguniform('learning_rate', 0.01, 0.5),
+    #         'budget': trial.suggest_int('max_depth', 1, 30),
+    #         'alpha': trial.suggest_int('num_leaves', 2, 100),
+    #         'beta': trial.suggest_int('min_data_in_leaf', 10, 1000),
+    #         'norm': trial.suggest_uniform('feature_fraction', 0.1, 1.0)}
+    return
 
 class VQA:
-    def __init__(self):
+    def __init__(self, sampling_ids=None):
+        if sampling_ids != None:
+            sampling_ids_path = parse_sampling_ids(sampling_ids)
+        else:
+            sampling_ids_path = None
         # Datasets
         self.train_tuple = get_data_tuple(
-            args.train, args.subset, bs=args.batch_size, shuffle=True, drop_last=False
+            args.train, args.subset, bs=args.batch_size, shuffle=True, drop_last=False, sampling_ids=sampling_ids_path
         )
 
         if args.valid != "":
@@ -191,6 +206,7 @@ class VQA:
                                 indent=4,  
                                 separators=(',',': '))
         self.save("LAST")
+        return best_valid
 
     def predict(self, eval_tuple: DataTuple, dump=None):
         """
@@ -248,7 +264,7 @@ class VQA:
         state_dict = torch.load("%s.pth" % path)
         self.model.load_state_dict(state_dict)
 
-if __name__ == "__main__":
+def run_training():
     # Neptune logging
     if args.sampling_ids != None:
         run["sampling_ids"] = os.path.basename(args.sampling_ids)
@@ -268,16 +284,20 @@ if __name__ == "__main__":
         run["sampling_method"] = '-'
         run["sampling_model"] = '-'
         run["training_budget"] = 100
+        run["alpha"] = '-'
+        run["beta"] = '-'
+        run["norm"] = '-'
     if args.subset!= None:
         run["subset"] = args.subset
     else:
         run["subset"] = '-'
+        run["training_budget"] = 'all vqa'
     run["training_run"] = args.output
     run["learning_rate"] = args.lr
     run["optimizer"] = args.optim
 
     # Build Class
-    vqa = VQA()
+    vqa = VQA(args.sampling_ids)
 
     # Load VQA model weights
     # Note: It is different from loading LXMERT pre-trained weights.
@@ -313,5 +333,53 @@ if __name__ == "__main__":
             print("DO NOT USE VALIDATION")
         vqa.train(vqa.train_tuple, vqa.valid_tuple)
 
+def objective(trial):
+    params = {'sampling_method': trial.suggest_loguniform('learning_rate', 0.01, 0.5),
+              'budget': trial.suggest_int('max_depth', 1, 30),
+              'alpha': trial.suggest_int('num_leaves', 2, 100),
+              'beta': trial.suggest_int('min_data_in_leaf', 10, 1000),
+              'norm': trial.suggest_uniform('feature_fraction', 0.1, 1.0)}
+    # given a dictionary of params, parse the path to the sampling ids 
 
-run.stop()
+
+
+    # Neptune logging
+    # run["sampling_ids"] = os.path.basename(args.sampling_ids)
+    # run["sampling_method"] = args.sampling_method
+    # run["sampling_model"] = args.sampling_model
+    # run["training_budget"] = args.training_budget
+    # if args.sampling_method == 'beta':
+    #     run["alpha"] = args.alpha
+    #     run["beta"] = args.beta
+    #     run["norm"] = args.norm
+    # else:
+    #     run["alpha"] = '-'
+    #     run["beta"] = '-'
+    #     run["norm"] = '-'
+    #     run["subset"] = args.subset
+    # run["training_run"] = args.output
+    # run["learning_rate"] = args.lr
+    # run["optimizer"] = args.optim
+
+    # Build Class
+    vqa = VQA(params)
+    # Load VQA model weights
+    # Note: It is different from loading LXMERT pre-trained weights.
+    if args.load is not None:
+        vqa.load(args.load)
+    print('Splits in Train data:', vqa.train_tuple.dataset.splits)
+    if vqa.valid_tuple is not None:
+        print('Splits in Valid data:', vqa.valid_tuple.dataset.splits)
+        print("Valid Oracle: %0.2f" % (vqa.oracle_score(vqa.valid_tuple) * 100))
+    else:
+        print("DO NOT USE VALIDATION")
+    vqa.train(vqa.train_tuple, vqa.valid_tuple)
+
+if __name__ == "__main__":
+    if args.optuna == False:
+        run_training()
+        run.stop()
+    else:
+        print("here")
+
+
