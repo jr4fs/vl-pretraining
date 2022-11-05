@@ -263,11 +263,16 @@ if __name__ == "__main__":
             run["alpha"] = '-'
             run["beta"] = '-'
             run["norm"] = '-'
+    else:
+        run["sampling_ids"] = '-'
+        run["sampling_method"] = '-'
+        run["sampling_model"] = '-'
+        run["training_budget"] = 100
     if args.subset!= None:
         run["subset"] = args.subset
     else:
         run["subset"] = '-'
-    run["training_run"] = os.path.basename(args.output)
+    run["training_run"] = args.output
     run["learning_rate"] = args.lr
     run["optimizer"] = args.optim
 

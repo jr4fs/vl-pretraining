@@ -41,6 +41,15 @@ if __name__ == "__main__":
         beta = args.beta
         training_budget = args.training_budget
         beta_sampling(df, alpha, beta, args.sampling_model, training_budget, norm=args.norm, bandwidth=args.bandwidth, dataset=args.sampling_dataset)
+        # budgets = [10, 20, 30]
+        # params = [(1, 1), (2, 2), (1, 2), (2, 1)]
+        # norms = ['cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat']
+        # for norm in norms:
+        #     print("Norm: ", norm)
+        #     for budget in budgets:
+        #         for param in params:
+        #             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+        #             beta_sampling(df, param[0], param[1], args.sampling_model, budget, norm=norm, bandwidth=args.bandwidth, dataset=args.sampling_dataset)
     elif sampling_method == 'random':
         random_sampling(df, args.sampling_model, args.training_budget)
     else:

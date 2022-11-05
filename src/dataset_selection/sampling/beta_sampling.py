@@ -47,7 +47,7 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
     if norm == 'pvals':
         p_vals /= p_vals.sum()
         plt.plot(variabilities, p_vals, label='pdf')
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_pvals/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_train_budget_'+str(training_budget)+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_pvals/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
     elif norm == 'var_counts':
         # normalize by counts in variability histogram
         test = px.histogram(df, x='variability')
@@ -67,7 +67,7 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
         var_counts /= sum(var_counts)
         p_vals /= var_counts
         p_vals /= p_vals.sum()
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_var_counts/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_train_budget_'+str(training_budget)+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_var_counts/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
     elif norm == 'gaussian_kde':
         kernel = scipy.stats.gaussian_kde(variabilities)
         print("bandwidth: ", kernel.factor)
@@ -75,16 +75,16 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
         fig1, ax1 = plt.subplots()
         p_vals /= gaussian_eval
         p_vals /= p_vals.sum()
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_train_budget_'+str(training_budget)+'_'+norm+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
     elif norm in ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']:
         vars_kde =np.array(variabilities).reshape(-1, 1)
-        kde = KernelDensity(bandwidth=bandwidth, kernel=kernel)
+        kde = KernelDensity(bandwidth=bandwidth, kernel=norm)
         kde.fit(vars_kde)
         # score_samples returns the log of the probability density
         logprob = kde.score_samples(vars_kde)
         p_vals /= np.exp(logprob)
         p_vals /= p_vals.sum()
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_train_budget_'+str(training_budget)+'_'+norm+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
     else:
         print('Norm not implemented')
 
