@@ -1,5 +1,6 @@
 # coding=utf-8
 # Copyleft 2019 project LXRT.
+import neptune.new as neptune
 
 import os
 import collections
@@ -15,6 +16,12 @@ from tasks.vqa_model import VQAModel
 from tasks.vqa_data import VQADataset, VQATorchDataset, VQAEvaluator
 DataTuple = collections.namedtuple("DataTuple", 'dataset loader evaluator')
 import json 
+import os
+
+run = neptune.init(
+    project="jranjit/vqa-training-data-selection",
+    api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
+)  # your credentials
 
 def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=False) -> DataTuple:
     dset = VQADataset(splits, subset)
@@ -87,6 +94,7 @@ class VQA:
         os.makedirs(self.output, exist_ok=True)
 
     def train(self, train_tuple, eval_tuple):
+
         dset, loader, evaluator = train_tuple
         iter_wrapper = (lambda x: tqdm(x, total=len(loader))) if args.tqdm else (lambda x: x)
 
@@ -155,8 +163,8 @@ class VQA:
                             preds_file.flush()  
 
             log_str = "\nEpoch %d: Train %0.2f\n" % (epoch, evaluator.evaluate(quesid2ans) * 100.)
-            train_scores.append((evaluator.evaluate(quesid2ans) * 100.))
-
+            train_scores.append(evaluator.evaluate(quesid2ans) * 100.)
+            run["train acc"].log(evaluator.evaluate(quesid2ans) * 100.)
 
             if self.valid_tuple is not None:  # Do Validation
                 valid_score = self.evaluate(eval_tuple)
@@ -167,13 +175,15 @@ class VQA:
 
                 log_str += "Epoch %d: Valid %0.2f\n" % (epoch, valid_score * 100.) + \
                            "Epoch %d: Best %0.2f\n" % (epoch, best_valid * 100.)
+                run["val acc"].log(valid_score * 100.)
+                run["best acc"].log(best_valid * 100.)
 
             print(log_str, end='')
 
             with open(self.output + "/log.log", 'a') as f:
                 f.write(log_str)
                 f.flush()
-            
+
         with open(self.output+'/datamaps_stats.json', 'w') as json_file:
             json.dump(training_stats, json_file, 
                                 indent=4,  
@@ -236,8 +246,22 @@ class VQA:
         state_dict = torch.load("%s.pth" % path)
         self.model.load_state_dict(state_dict)
 
-
 if __name__ == "__main__":
+    if args.sampling_ids != None:
+        run["sampling_ids"] = os.path.basename(args.sampling_ids)
+        run["sampling_method"] = args.sampling_method
+        run["sampling_model"] = args.sampling_model
+        run["training_budget"] = args.training_budget
+        if args.sampling_method == 'beta':
+            run["alpha"] = args.alpha
+            run["beta"] = args.beta
+            run["norm"] = args.norm
+    if args.subset!= None:
+        run["subset"] = args.subset
+    run["training_run"] = os.path.basename(args.output)
+    run["learning_rate"] = args.lr
+    run["optimizer"] = args.optim
+
     # Build Class
     vqa = VQA()
 
@@ -276,3 +300,4 @@ if __name__ == "__main__":
         vqa.train(vqa.train_tuple, vqa.valid_tuple)
 
 
+run.stop()
