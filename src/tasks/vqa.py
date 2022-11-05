@@ -341,7 +341,8 @@ def objective(trial):
               'alpha': trial.suggest_categorical("alpha", [1, 2]),
               'beta': trial.suggest_categorical("beta", [1, 2]),
               'norm': trial.suggest_categorical("norm", ['pvals', 'var_counts', 'gaussian_kde', 'cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat'])}
-
+    # define using only sampling method, and budget for random sampling and the rest for beta sampling 
+    
     # Neptune logging
     # run["sampling_ids"] = os.path.basename(args.sampling_ids)
     # run["sampling_method"] = args.sampling_method
