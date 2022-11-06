@@ -40,6 +40,17 @@ def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=Fa
     )
     return DataTuple(dataset=dset, loader=data_loader, evaluator=evaluator)
 
+def generate_output_dir(params):
+    if params['sampling_method'] == 'random':
+        output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/budget_'+params['budget']
+    else:
+        if params['norm'] == 'pvals':
+            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta_pvals/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['budget']
+        elif params['norm'] == 'var_counts':
+            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta_var_counts/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['budget']
+        else:
+            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['budget']+'.pkl'
+    return output
 def params_to_sampling_ids(params):
     # return path to sampling ids 
     if params['sampling_method'] == 'random':
@@ -103,15 +114,7 @@ class VQA:
             self.optim = args.optimizer(self.model.parameters(), args.lr)
         
         # Output Directory
-        if sampling_ids['sampling_method'] == 'random':
-            self.output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + sampling_ids['sampling_method']+'/budget_'+sampling_ids['budget']
-        else:
-            if sampling_ids['norm'] == 'pvals':
-                self.output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + sampling_ids['sampling_method']+'/beta_pvals/alpha_'+sampling_ids['alpha'] + '_beta_'+sampling_ids['beta']+'_budget_'+sampling_ids['budget']
-            elif sampling_ids['norm'] == 'var_counts':
-                self.output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + sampling_ids['sampling_method']+'/beta_var_counts/alpha_'+sampling_ids['alpha'] + '_beta_'+sampling_ids['beta']+'_budget_'+sampling_ids['budget']
-            else:
-                self.output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + sampling_ids['sampling_method']+'/beta/beta_kernel/'+sampling_ids['norm']+'/alpha_'+sampling_ids['alpha'] + '_beta_'+sampling_ids['beta']+'_budget_'+sampling_ids['budget']+'.pkl'
+        self.output = generate_output_dir(sampling_ids)
         os.makedirs(self.output, exist_ok=True)
 
     def train(self, train_tuple, eval_tuple):
@@ -309,6 +312,10 @@ def objective_with_logging(trial):
     # run["training_run"] = args.output
     run_trial_level["learning_rate"] = args.lr
     run_trial_level["optimizer"] = args.optim
+    run_trial_level["epochs"] = args.epochs
+
+    run_trial_level["output_dir"] = generate_output_dir(params)
+
 
     # Build Class
     vqa = VQA(params)

@@ -277,7 +277,8 @@ if __name__ == "__main__":
     else:
         run["subset"] = '-'
         run["training_budget"] = 'all vqa'
-    run["training_run"] = args.output
+    run["output_dir"] = args.output
+    run["epochs"] = args.epochs
     run["learning_rate"] = args.lr
     run["optimizer"] = args.optim
 
