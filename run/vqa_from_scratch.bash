@@ -17,7 +17,7 @@ CUDA_VISIBLE_DEVICES=$1 PYTHONPATH=$PYTHONPATH:./src \
     --train train,nominival --valid minival  \
     --llayers 1 --xlayers 1 --rlayers 1 \
     --fromScratch \
-    --batchSize 32 --optim bert --lr 5e-5 --epochs 22 \
+    --batchSize 32 --optim bert --lr 5e-5 --epochs 1 \
     --tqdm --output $output ${@:3}
 
 while [ "$1" != "" ]; do
