@@ -42,26 +42,26 @@ def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=Fa
 
 def generate_output_dir(params):
     if params['sampling_method'] == 'random':
-        output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/budget_'+params['budget']
+        output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/budget_'+params['training_budget']
     else:
         if params['norm'] == 'pvals':
-            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta_pvals/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['budget']
+            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta_pvals/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
         elif params['norm'] == 'var_counts':
-            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta_var_counts/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['budget']
+            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta_var_counts/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
         else:
-            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['budget']+'.pkl'
+            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
     return output
 def params_to_sampling_ids(params):
     # return path to sampling ids 
     if params['sampling_method'] == 'random':
-        return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/random/budget_'+params['budget']+'.pkl'
+        return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/random/budget_'+params['training_budget']+'.pkl'
     else:
         if params['norm'] == 'pvals':
-            return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_pvals/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['budget']+'.pkl'
+            return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_pvals/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
         elif params['norm'] == 'var_counts':
-            return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_var_counts/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['budget']+'.pkl'
+            return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_var_counts/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
         else:
-            return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['budget']+'.pkl'
+            return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
 
 
 
@@ -295,7 +295,7 @@ def objective_with_logging(trial):
 
     # Log parameters of a trial-level run
     run_trial_level["sampling_method"] = params['sampling_method']
-    run_trial_level["training_budget"] = params['budget']
+    run_trial_level["training_budget"] = params['training_budget']
 
     if params['sampling_method'] == "beta":
         run_trial_level["alpha"] = params['alpha']

@@ -38,9 +38,7 @@ def parse_args():
     parser.add_argument("--valid", default='valid')
     parser.add_argument("--test", default=None)
     parser.add_argument("--subset", type=str, default=None)
-    parser.add_argument("--sampling_ids", type=str, default=None) # when using sampling ids, change sampling args for appropriate neptune logging
-    parser.add_argument("--optuna", action='store_const', default=False, const=True)
-
+    parser.add_argument("--sampling_ids", type=str, default=None) # TODO when using sampling ids with vqa_from_scratch.bash, change sampling args for appropriate neptune logging
 
     # Training Hyper-parameters
     parser.add_argument('--batchSize', dest='batch_size', type=int, default=256)
