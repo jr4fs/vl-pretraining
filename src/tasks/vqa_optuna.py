@@ -50,7 +50,7 @@ def generate_output_dir(params):
         elif params['norm'] == 'var_counts':
             output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta_var_counts/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
         else:
-            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
+            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
     return output
 def params_to_sampling_ids(params):
     # return path to sampling ids 
@@ -355,7 +355,7 @@ if __name__ == "__main__":
     study = optuna.create_study(direction="maximize")
     study.optimize(
         objective_with_logging,
-        n_trials=20,
+        n_trials=50,
         callbacks=[neptune_callback]
     )
 
