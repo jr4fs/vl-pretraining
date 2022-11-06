@@ -302,9 +302,9 @@ def objective_with_logging(trial):
         run_trial_level["beta"] = params['beta']
         run_trial_level["norm"] = params['norm']
     else:
-        run_trial_level["alpha"] = params['-']
-        run_trial_level["beta"] = params['-']
-        run_trial_level["norm"] = params['-']    
+        run_trial_level["alpha"] = '-'
+        run_trial_level["beta"] = '-'
+        run_trial_level["norm"] = '-' 
     
     # Neptune logging
     run_trial_level["sampling_model"] = args.sampling_model
