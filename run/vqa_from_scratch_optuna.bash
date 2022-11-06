@@ -18,7 +18,7 @@ CUDA_VISIBLE_DEVICES=$1 PYTHONPATH=$PYTHONPATH:./src \
     --llayers 1 --xlayers 1 --rlayers 1 \
     --fromScratch \
     --batchSize 32 --optim bert --lr 5e-5 --epochs 20 \
-    --tqdm #--output $output ${@:3}
+    --tqdm --subset animals #--output $output ${@:3}
 
 # while [ "$1" != "" ]; do
 #     case $1 in

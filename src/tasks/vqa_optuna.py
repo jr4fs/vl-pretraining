@@ -22,6 +22,7 @@ import uuid
 import optuna 
 
 def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=False, sampling_ids=None) -> DataTuple:
+    print("in data tuple: ", sampling_ids)
     dset = VQADataset(splits, subset, sampling_ids)
     if splits != 'minival':
         index_dset = len(dset.data) % bs
@@ -68,6 +69,7 @@ def params_to_sampling_ids(params):
 class VQA:
     def __init__(self, sampling_ids=None):
         sampling_ids_path = params_to_sampling_ids(sampling_ids)
+        print("Sampling Ids: ", sampling_ids_path)
         # Datasets
         self.train_tuple = get_data_tuple(
             args.train, args.subset, bs=args.batch_size, shuffle=True, drop_last=False, sampling_ids=sampling_ids_path
@@ -284,10 +286,10 @@ def objective_with_logging(trial):
               'norm': trial.suggest_categorical("norm", ['pvals', 'var_counts', 'gaussian_kde', 'cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat'])}
 
     # Create a trial-level run
-    run_trial_level = neptune.init_run(
-        project="jranjit/vqa-training-dataset-selection-optuna",
-        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
-    ) 
+    run_trial_level = neptune.init(
+    project="vqa-training/vqa-training-optuna",
+    api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
+)  # your credentials
 
     # Log sweep ID to trial-level run
     run_trial_level["sys/tags"].add("trial-level")
@@ -342,10 +344,10 @@ def objective_with_logging(trial):
     return valid_score
 
 if __name__ == "__main__":
-    run_study_level = neptune.init_run(
-        project="jranjit/vqa-training-dataset-selection-optuna",
-        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
-    )
+    run_study_level = neptune.init(
+    project="vqa-training/vqa-training-optuna",
+    api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
+)  # your credentials
     run_study_level["sweep-id"] = sweep_id
     run_study_level["sys/tags"].add("study-level")
     neptune_callback = optuna_utils.NeptuneCallback(run_study_level)
