@@ -47,6 +47,9 @@ if __name__ == "__main__":
         #             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
         #             beta_sampling(df, param[0], param[1], args.sampling_model, budget, norm=norm, bandwidth=args.bandwidth, dataset=args.sampling_dataset)
     elif sampling_method == 'random':
-        random_sampling(df, args.sampling_model, args.training_budget, dataset=args.sampling_dataset)
+        budgets = [10, 20, 30]
+        for budget in budgets:
+            df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+            random_sampling(df, args.sampling_model, budget, dataset=args.sampling_dataset)
     else:
         print("Sampling method not implemented")

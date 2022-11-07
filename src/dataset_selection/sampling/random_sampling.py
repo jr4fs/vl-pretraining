@@ -43,27 +43,27 @@ def random_sampling(df, model, training_budget, dataset='animals'):
     sampled_targets = []
 
     unique_targets = df['Target'].unique()
-    while len(sampled_question_ids) <= num_total_samples:
-        for label in unique_targets:
-            if len(sampled_question_ids) <= num_total_samples:
-                # For each unique class, generate a variability distribution
-                df_filtered = df[df['Target'] == label]
-                question_ids = np.array(df_filtered['question_id'].to_list())
-                variabilities = np.array(df_filtered['variability'].tolist())
-                confidence = np.array(df_filtered['confidence'].tolist())
-                correctness = np.array(df_filtered['correctness'].tolist())
-                targets_sample = np.array(df_filtered['Target'].tolist())
-                num_samples = round(len(question_ids) * (training_budget*0.01))
+    #while len(sampled_question_ids) <= num_total_samples:
+    for label in unique_targets:
+        #if len(sampled_question_ids) <= num_total_samples:
+        # For each unique class, generate a variability distribution
+        df_filtered = df[df['Target'] == label]
+        question_ids = np.array(df_filtered['question_id'].to_list())
+        variabilities = np.array(df_filtered['variability'].tolist())
+        confidence = np.array(df_filtered['confidence'].tolist())
+        correctness = np.array(df_filtered['correctness'].tolist())
+        targets_sample = np.array(df_filtered['Target'].tolist())
+        num_samples = round(len(question_ids) * (training_budget*0.01))
 
-                if len(question_ids) !=0:
-                    # for each bucket, sample the minimum number of examples from that bucket and append to overall sample
-                    idx = np.random.choice(np.arange(len(question_ids)), num_samples, replace=False)
-                    df = df.drop(df[df.question_id.isin(question_ids[idx])].index)
-                    sampled_question_ids.extend(question_ids[idx])
-                    sampled_variabilities.extend(variabilities[idx])
-                    sampled_confidence.extend(confidence[idx])
-                    sampled_correctness.extend(correctness[idx])
-                    sampled_targets.extend(targets_sample[idx])
+        if len(question_ids) !=0:
+            # for each bucket, sample the minimum number of examples from that bucket and append to overall sample
+            idx = np.random.choice(np.arange(len(question_ids)), num_samples, replace=False)
+            #df = df.drop(df[df.question_id.isin(question_ids[idx])].index)
+            sampled_question_ids.extend(question_ids[idx])
+            sampled_variabilities.extend(variabilities[idx])
+            sampled_confidence.extend(confidence[idx])
+            sampled_correctness.extend(correctness[idx])
+            sampled_targets.extend(targets_sample[idx])
 
     ax = sns.displot(data=df, x='variability', kde=True).set(title=model+': Variability Distribution')
     ax2 = sns.displot(sampled_variabilities, kde=True).set(title=model+': Variability Distribution: \n Random Sampling, p='+str(training_budget))
