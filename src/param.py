@@ -106,6 +106,10 @@ def parse_args():
     parser.add_argument("--norm", default='pvals', type=str, help='pvals, gaussian_kde, gaussian, tophat, epanechnikov, exponential, linear, cosine')
     parser.add_argument("--bandwidth", default=0.01, type=float, help='bandwidth for beta kernels')
 
+    # Optuna
+    parser.add_argument("--optuna_sweep", default='beta', type=str, help='beta, other')
+
+
 
 
     # Parse the arguments.

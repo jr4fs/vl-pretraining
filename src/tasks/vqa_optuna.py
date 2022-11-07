@@ -279,12 +279,15 @@ print("sweep-id: ", sweep_id)
 
 def objective_with_logging(trial):
 
-    params = {'sampling_method': trial.suggest_categorical("sampling_method", ["beta"]),
-              'training_budget': trial.suggest_categorical("training_budget", ['10', '20', '30']),
-              'alpha': trial.suggest_categorical("alpha", ['1', '2']),
-              'beta': trial.suggest_categorical("beta", ['1', '2']),
-              'norm': trial.suggest_categorical("norm", ['pvals', 'var_counts', 'gaussian_kde', 'cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat'])}
-
+    if args.optuna_sweep == 'beta':
+        params = {'sampling_method': trial.suggest_categorical("sampling_method", ["beta"]),
+                'training_budget': trial.suggest_categorical("training_budget", ['10', '20', '30']),
+                'alpha': trial.suggest_categorical("alpha", ['1', '2']),
+                'beta': trial.suggest_categorical("beta", ['1', '2']),
+                'norm': trial.suggest_categorical("norm", ['pvals', 'var_counts', 'gaussian_kde', 'cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat'])}
+    else:
+        params = {'sampling_method': trial.suggest_categorical("sampling_method", ["random", "max_variability"]),
+                  'training_budget': trial.suggest_categorical("training_budget", ['10', '20', '30'])}
     # Create a trial-level run
     run_trial_level = neptune.init(
     project="vqa-training/vqa-training-optuna",
