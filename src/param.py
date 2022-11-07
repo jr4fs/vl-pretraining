@@ -95,7 +95,7 @@ def parse_args():
     parser.add_argument("--datamap_title", default='Trained on VQA-Animals Trained from Scratch for 20 epochs', type=str, help='Title of datamap plot')
 
     # Sampling
-    parser.add_argument("--sampling_method", default='random', type=str, help='Sampling algorithm - beta, random')
+    parser.add_argument("--sampling_method", default='max_variability', type=str, help='Sampling algorithm - beta, random, max_variability')
     parser.add_argument("--sampling_model", default='LXR111', type=str, help='Name of model you are sampling variability values from')
     parser.add_argument("--training_budget", default=10, type=int, help='Percentage of data sampled')
     parser.add_argument("--sampling_dataset", default='animals', type=str, help='animals or sports')

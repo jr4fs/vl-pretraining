@@ -30,7 +30,7 @@ from sklearn.neighbors import KernelDensity
 from param import args
 from beta_sampling import *
 from random_sampling import *
-
+from max_variability_sampling import * 
 if __name__ == "__main__":
     base_path = args.base_path
     sampling_method = args.sampling_method
@@ -51,5 +51,10 @@ if __name__ == "__main__":
         for budget in budgets:
             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
             random_sampling(df, args.sampling_model, budget, dataset=args.sampling_dataset)
+    elif sampling_method == 'max_variability':
+        budgets = [10, 20, 30]
+        for budget in budgets:
+            df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+            max_variability(df, args.sampling_model, budget, dataset=args.sampling_dataset)
     else:
         print("Sampling method not implemented")

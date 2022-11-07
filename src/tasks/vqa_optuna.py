@@ -42,7 +42,7 @@ def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=Fa
     return DataTuple(dataset=dset, loader=data_loader, evaluator=evaluator)
 
 def generate_output_dir(params):
-    if params['sampling_method'] == 'random':
+    if params['sampling_method'] == 'random' or params['sampling_method'] == 'max_variability':
         output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/budget_'+params['training_budget']
     else:
         if params['norm'] == 'pvals':
@@ -54,8 +54,8 @@ def generate_output_dir(params):
     return output
 def params_to_sampling_ids(params):
     # return path to sampling ids 
-    if params['sampling_method'] == 'random':
-        return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/random/budget_'+params['training_budget']+'.pkl'
+    if params['sampling_method'] == 'random' or params['sampling_method'] == 'max_variability':
+        return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/' + params['sampling_method'] +'/budget_'+params['training_budget']+'.pkl'
     else:
         if params['norm'] == 'pvals':
             return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_pvals/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
