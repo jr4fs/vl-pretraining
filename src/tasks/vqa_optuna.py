@@ -279,7 +279,7 @@ print("sweep-id: ", sweep_id)
 
 def objective_with_logging(trial):
 
-    params = {'sampling_method': trial.suggest_categorical("sampling_method", ["beta", "random"]),
+    params = {'sampling_method': trial.suggest_categorical("sampling_method", ["beta"]),
               'training_budget': trial.suggest_categorical("training_budget", ['10', '20', '30']),
               'alpha': trial.suggest_categorical("alpha", ['1', '2']),
               'beta': trial.suggest_categorical("beta", ['1', '2']),
@@ -355,7 +355,7 @@ if __name__ == "__main__":
     study = optuna.create_study(direction="maximize")
     study.optimize(
         objective_with_logging,
-        n_trials=50,
+        n_trials=500,
         callbacks=[neptune_callback]
     )
 
