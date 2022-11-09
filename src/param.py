@@ -107,7 +107,8 @@ def parse_args():
     parser.add_argument("--bandwidth", default=0.01, type=float, help='bandwidth for beta kernels')
 
     # Optuna
-    parser.add_argument("--optuna_sweep", default='beta', type=str, help='beta, other')
+    parser.add_argument("--optuna_sweep", default='other', type=str, help='beta, other')
+    parser.add_argument("--optuna_study_name", default='random_max_variability', type=str, help='name of optuna study')
 
 
 

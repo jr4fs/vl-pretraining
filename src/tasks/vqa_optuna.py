@@ -352,6 +352,7 @@ if __name__ == "__main__":
     api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
 )  # your credentials
     run_study_level["sweep-id"] = sweep_id
+    run_study_level['study_description'] = args.optuna_study_name
     run_study_level["sys/tags"].add("study-level")
     neptune_callback = optuna_utils.NeptuneCallback(run_study_level)
 
