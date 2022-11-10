@@ -42,7 +42,7 @@ def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=Fa
     return DataTuple(dataset=dset, loader=data_loader, evaluator=evaluator)
 
 def generate_output_dir(params):
-    if params['sampling_method'] in ['random', 'max_variability', 'min_variability']:
+    if params['sampling_method'] in ['random', 'max_variability', 'min_variability', 'max_confidence', 'min_confidence']:
         if args.include_all_classes == True:
             output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/include_all_classes/budget_'+params['training_budget']
         else:
@@ -63,7 +63,7 @@ def generate_output_dir(params):
 
 def params_to_sampling_ids(params):
     # return path to sampling ids 
-    if params['sampling_method'] in ['random', 'max_variability', 'min_variability']:
+    if params['sampling_method'] in ['random', 'max_variability', 'min_variability', 'max_confidence', 'min_confidence']:
         return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/' + params['sampling_method'] +'/budget_'+params['training_budget']+'.pkl'
     else:
         if params['norm'] == 'pvals' or params['norm'] == 'var_counts':
