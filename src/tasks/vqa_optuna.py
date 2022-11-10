@@ -301,7 +301,7 @@ def objective_with_logging(trial):
                 'beta': trial.suggest_categorical("beta", ['1', '2']),
                 'norm': trial.suggest_categorical("norm", ['pvals', 'var_counts', 'gaussian_kde', 'cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat'])}
     else:
-        params = {'sampling_method': trial.suggest_categorical("sampling_method", ["random", "max_variability", "min_variability"]),
+        params = {'sampling_method': trial.suggest_categorical("sampling_method", ["random", "max_variability", "min_variability", "max_confidence", "min_confidence"]),
                   'training_budget': trial.suggest_categorical("training_budget", ['10', '20', '30'])}
     # Create a trial-level run
     run_trial_level = neptune.init(
