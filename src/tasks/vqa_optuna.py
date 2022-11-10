@@ -43,26 +43,41 @@ def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=Fa
 
 def generate_output_dir(params):
     if params['sampling_method'] == 'random' or params['sampling_method'] == 'max_variability':
-        output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/budget_'+params['training_budget']
-    else:
-        if params['norm'] == 'pvals':
-            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta_pvals/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
-        elif params['norm'] == 'var_counts':
-            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta_var_counts/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
+        if args.include_all_classes == True:
+            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/include_all_classes/budget_'+params['training_budget']
         else:
-            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
+            output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/budget_'+params['training_budget']
+    else:
+        if params['norm'] == 'pvals' or params['norm'] == 'var_counts':
+            if args.include_all_classes == True:
+                output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/include_all_classes/beta_'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
+            else:
+                output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta_'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
+        else:
+            if args.include_all_classes == True:
+                output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'include_all_classes/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
+            else:
+                output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']
+
     return output
+
 def params_to_sampling_ids(params):
     # return path to sampling ids 
     if params['sampling_method'] == 'random' or params['sampling_method'] == 'max_variability':
         return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/' + params['sampling_method'] +'/budget_'+params['training_budget']+'.pkl'
     else:
-        if params['norm'] == 'pvals':
-            return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_pvals/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
-        elif params['norm'] == 'var_counts':
-            return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_var_counts/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
+        if params['norm'] == 'pvals' or params['norm'] == 'var_counts':
+            if args.include_all_classes == True:
+                return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/include_all_classes/beta/beta_'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
+            else:
+                return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_pvals/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
+        # elif params['norm'] == 'var_counts':
+        #     return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_var_counts/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
         else:
-            return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
+            if args.include_all_classes == True:
+                return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_kernel/'+params['norm']+'/include_all_classes/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
+            else:
+                return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/beta/beta_kernel/'+params['norm']+'/alpha_'+params['alpha'] + '_beta_'+params['beta']+'_budget_'+params['training_budget']+'.pkl'
 
 
 
@@ -352,7 +367,7 @@ if __name__ == "__main__":
     api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
 )  # your credentials
     run_study_level["sweep-id"] = sweep_id
-    run_study_level['study_description'] = args.optuna_study_name
+    run_study_level['study_description'] = args.neptune_study_name
     run_study_level["sys/tags"].add("study-level")
     neptune_callback = optuna_utils.NeptuneCallback(run_study_level)
 

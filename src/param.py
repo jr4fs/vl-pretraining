@@ -97,8 +97,9 @@ def parse_args():
     # Sampling
     parser.add_argument("--sampling_method", default='max_variability', type=str, help='Sampling algorithm - beta, random, max_variability')
     parser.add_argument("--sampling_model", default='LXR111', type=str, help='Name of model you are sampling variability values from')
-    parser.add_argument("--training_budget", default=10, type=int, help='Percentage of data sampled')
+    parser.add_argument("--training_budget", default=30, type=int, help='Percentage of data sampled')
     parser.add_argument("--sampling_dataset", default='animals', type=str, help='animals or sports')
+    parser.add_argument("--include_all_classes", action='store_const', default=False, const=True)
     
     # Beta sampling
     parser.add_argument("--alpha", default=1, type=int, help='alpha parameter for beta distribution')
@@ -108,7 +109,7 @@ def parse_args():
 
     # Optuna
     parser.add_argument("--optuna_sweep", default='other', type=str, help='beta, other')
-    parser.add_argument("--optuna_study_name", default='random_max_variability', type=str, help='name of optuna study')
+    parser.add_argument("--neptune_study_name", default='random_max_variability', type=str, help='name of optuna study')
 
 
 

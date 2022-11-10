@@ -280,6 +280,7 @@ if __name__ == "__main__":
     run["epochs"] = args.epochs
     run["learning_rate"] = args.lr
     run["optimizer"] = args.optim
+    run["study_description"] = args.neptune_study_name
 
     # Build Class
     vqa = VQA(args.sampling_ids)

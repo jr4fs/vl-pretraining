@@ -28,7 +28,7 @@ import pickle
 from sklearn.neighbors import KernelDensity
 
 
-def random_sampling(df, model, training_budget, dataset='animals'):
+def random_sampling(df, model, training_budget, include_all_classes=False, dataset='animals'):
     targets = df['Target'].tolist()
     targets = [i[0] for i in targets]
     df['Target'] = targets
@@ -74,17 +74,21 @@ def random_sampling(df, model, training_budget, dataset='animals'):
     #sns.move_legend(ax3, "upper left", bbox_to_anchor=(1, 1))
     plt.show()
 
-    unique_targets_random = set(sampled_targets)
+    if include_all_classes == True:
+        unique_targets_random = set(sampled_targets)
 
-    intersect = set(unique_targets) - unique_targets_random
-    if len(intersect) != 0:
-        for target_excluded in intersect:
-            df_filtered = orig_df[orig_df['Target'] == target_excluded]
-            sampled_question_ids.extend(df_filtered['question_id'].to_list())
+        intersect = set(unique_targets) - unique_targets_random
+        if len(intersect) != 0:
+            for target_excluded in intersect:
+                df_filtered = orig_df[orig_df['Target'] == target_excluded]
+                sampled_question_ids.extend(df_filtered['question_id'].to_list())
+        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/random/include_all_classes/'+'budget_'+str(training_budget)+'.pkl'
+    else:
+        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/random/'+'budget_'+str(training_budget)+'.pkl'
+
 
     unique_targets_sample = orig_df[orig_df['question_id'].isin(sampled_question_ids)]
     unique_targets = set(unique_targets_sample['Target'].unique())
-    save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/random/'+'budget_'+str(training_budget)+'.pkl'
     with open(save_path, 'wb') as f:
         pickle.dump(list(set(sampled_question_ids)), f)
 

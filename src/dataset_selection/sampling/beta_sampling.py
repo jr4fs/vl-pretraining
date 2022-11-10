@@ -28,7 +28,7 @@ import pickle
 from sklearn.neighbors import KernelDensity
 
 
-def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwidth= 0.01, dataset='animals'):
+def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwidth= 0.01, include_all_classes=False, dataset='animals'):
     # kernel = {'gaussian', 'tophat', epanechnikov’, ‘exponential’, ‘linear’, ‘cosine’} 
     targets = df['Target'].tolist()
     targets = [i[0] for i in targets]
@@ -47,7 +47,10 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
     if norm == 'pvals':
         p_vals /= p_vals.sum()
         plt.plot(variabilities, p_vals, label='pdf')
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_pvals/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+        if include_all_classes==True:
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_pvals/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+        else:
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_pvals/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
     elif norm == 'var_counts':
         # normalize by counts in variability histogram
         test = px.histogram(df, x='variability')
@@ -67,7 +70,10 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
         var_counts /= sum(var_counts)
         p_vals /= var_counts
         p_vals /= p_vals.sum()
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_var_counts/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+        if include_all_classes == True:
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_var_counts/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+        else:
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_var_counts/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
     elif norm == 'gaussian_kde':
         kernel = scipy.stats.gaussian_kde(variabilities)
         print("bandwidth: ", kernel.factor)
@@ -75,7 +81,10 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
         fig1, ax1 = plt.subplots()
         p_vals /= gaussian_eval
         p_vals /= p_vals.sum()
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+        if include_all_classes == True:
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+        else:
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
     elif norm in ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']:
         vars_kde =np.array(variabilities).reshape(-1, 1)
         kde = KernelDensity(bandwidth=bandwidth, kernel=norm)
@@ -84,7 +93,11 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
         logprob = kde.score_samples(vars_kde)
         p_vals /= np.exp(logprob)
         p_vals /= p_vals.sum()
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+        if include_all_classes == True:
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+        else:
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+
     else:
         print('Norm not implemented')
 
@@ -106,12 +119,13 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
     unique_targets_beta = set(targets[idx])
     unique_targets = set(df['Target'].unique())
 
-    intersect = unique_targets - unique_targets_beta
-    sampled_question_ids = list(question_ids[idx])
-    if len(intersect) != 0:
-        for target_excluded in intersect:
-            df_filtered = df[df['Target'] == target_excluded]
-            sampled_question_ids.extend(df_filtered['question_id'].to_list())
+    if include_all_classes == False:
+        intersect = unique_targets - unique_targets_beta
+        sampled_question_ids = list(question_ids[idx])
+        if len(intersect) != 0:
+            for target_excluded in intersect:
+                df_filtered = df[df['Target'] == target_excluded]
+                sampled_question_ids.extend(df_filtered['question_id'].to_list())
 
     unique_targets_sample = df[df['question_id'].isin(sampled_question_ids)]
     unique_targets = set(unique_targets_sample['Target'].unique())

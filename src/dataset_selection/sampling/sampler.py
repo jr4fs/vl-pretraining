@@ -35,8 +35,9 @@ if __name__ == "__main__":
     base_path = args.base_path
     sampling_method = args.sampling_method
     df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+    budgets = [10, 20, 30]
     if sampling_method == 'beta':
-        beta_sampling(df, args.alpha, args.beta, args.sampling_model, args.training_budget, norm=args.norm, bandwidth=args.bandwidth, dataset=args.sampling_dataset)
+        beta_sampling(df, args.alpha, args.beta, args.sampling_model, args.training_budget, norm=args.norm, bandwidth=args.bandwidth, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
         # budgets = [10, 20, 30]
         # params = [(1, 1), (2, 2), (1, 2), (2, 1)]
         # norms = ['pvals', 'var_counts', 'gaussian_kde', 'cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat']
@@ -47,14 +48,12 @@ if __name__ == "__main__":
         #             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
         #             beta_sampling(df, param[0], param[1], args.sampling_model, budget, norm=norm, bandwidth=args.bandwidth, dataset=args.sampling_dataset)
     elif sampling_method == 'random':
-        budgets = [10, 20, 30]
         for budget in budgets:
             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
-            random_sampling(df, args.sampling_model, budget, dataset=args.sampling_dataset)
+            random_sampling(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
     elif sampling_method == 'max_variability':
-        budgets = [10, 20, 30]
         for budget in budgets:
             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
-            max_variability(df, args.sampling_model, budget, dataset=args.sampling_dataset)
+            max_variability(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
     else:
         print("Sampling method not implemented")
