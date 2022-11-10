@@ -118,10 +118,9 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
 
     unique_targets_beta = set(targets[idx])
     unique_targets = set(df['Target'].unique())
-
-    if include_all_classes == False:
+    sampled_question_ids = list(question_ids[idx])
+    if include_all_classes == True:
         intersect = unique_targets - unique_targets_beta
-        sampled_question_ids = list(question_ids[idx])
         if len(intersect) != 0:
             for target_excluded in intersect:
                 df_filtered = df[df['Target'] == target_excluded]

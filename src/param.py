@@ -46,7 +46,7 @@ def parse_args():
     parser.add_argument('--lr', type=float, default=1e-4)
     parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--dropout', type=float, default=0.1)
-    parser.add_argument('--seed', type=int, default=9595, help='random seed')
+    parser.add_argument('--seed', type=int, default=965, help='random seed')
 
     # Debugging
     parser.add_argument('--output', type=str, default='snap/test')
@@ -95,7 +95,7 @@ def parse_args():
     parser.add_argument("--datamap_title", default='Trained on VQA-Animals Trained from Scratch for 20 epochs', type=str, help='Title of datamap plot')
 
     # Sampling
-    parser.add_argument("--sampling_method", default='max_variability', type=str, help='Sampling algorithm - beta, random, max_variability')
+    parser.add_argument("--sampling_method", default='beta', type=str, help='Sampling algorithm - beta, random, max_variability')
     parser.add_argument("--sampling_model", default='LXR111', type=str, help='Name of model you are sampling variability values from')
     parser.add_argument("--training_budget", default=30, type=int, help='Percentage of data sampled')
     parser.add_argument("--sampling_dataset", default='animals', type=str, help='animals or sports')
@@ -124,6 +124,7 @@ def parse_args():
     torch.manual_seed(args.seed)
     random.seed(args.seed)
     np.random.seed(args.seed)
+    print(args.seed)
 
     return args
 

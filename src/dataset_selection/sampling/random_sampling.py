@@ -94,5 +94,5 @@ def random_sampling(df, model, training_budget, include_all_classes=False, datas
 
     print("unique targets random: ", len(set(unique_targets)))
     print('samples - random: ', len(set(sampled_question_ids)))
-    print('all_samples - random: ', len(all_ids))
+    print('full train set: ', len(all_ids))
     #return sampled_question_ids
