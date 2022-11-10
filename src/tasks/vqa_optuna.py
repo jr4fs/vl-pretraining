@@ -42,7 +42,7 @@ def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=Fa
     return DataTuple(dataset=dset, loader=data_loader, evaluator=evaluator)
 
 def generate_output_dir(params):
-    if params['sampling_method'] == 'random' or params['sampling_method'] == 'max_variability':
+    if params['sampling_method'] in ['random', 'max_variability', 'min_variability']:
         if args.include_all_classes == True:
             output = 'snap/vqa/' + args.sampling_model + '/' + args.sampling_dataset + '/' + params['sampling_method']+'/include_all_classes/budget_'+params['training_budget']
         else:
@@ -63,7 +63,7 @@ def generate_output_dir(params):
 
 def params_to_sampling_ids(params):
     # return path to sampling ids 
-    if params['sampling_method'] == 'random' or params['sampling_method'] == 'max_variability':
+    if params['sampling_method'] in ['random', 'max_variability', 'min_variability']:
         return 'src/dataset_selection/sampling/samples/'+args.sampling_model+'/'+args.sampling_dataset+'/' + params['sampling_method'] +'/budget_'+params['training_budget']+'.pkl'
     else:
         if params['norm'] == 'pvals' or params['norm'] == 'var_counts':
@@ -301,7 +301,7 @@ def objective_with_logging(trial):
                 'beta': trial.suggest_categorical("beta", ['1', '2']),
                 'norm': trial.suggest_categorical("norm", ['pvals', 'var_counts', 'gaussian_kde', 'cosine', 'epanechnikov', 'exponential', 'gaussian', 'linear', 'tophat'])}
     else:
-        params = {'sampling_method': trial.suggest_categorical("sampling_method", ["random", "max_variability"]),
+        params = {'sampling_method': trial.suggest_categorical("sampling_method", ["random", "max_variability", "min_variability"]),
                   'training_budget': trial.suggest_categorical("training_budget", ['10', '20', '30'])}
     # Create a trial-level run
     run_trial_level = neptune.init(

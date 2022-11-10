@@ -31,6 +31,10 @@ from param import args
 from beta_sampling import *
 from random_sampling import *
 from max_variability_sampling import * 
+from min_variability_sampling import *
+from max_confidence_sampling import * 
+from min_confidence_sampling import * 
+
 if __name__ == "__main__":
     base_path = args.base_path
     sampling_method = args.sampling_method
@@ -54,5 +58,17 @@ if __name__ == "__main__":
         for budget in budgets:
             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
             max_variability(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
+    elif sampling_method == 'min_variability':
+        for budget in budgets:
+            df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+            min_variability(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
+    elif sampling_method == 'max_confidence':
+        for budget in budgets:
+            df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+            max_confidence(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
+    elif sampling_method == 'min_confidence':
+        for budget in budgets:
+            df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+            min_confidence(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
     else:
         print("Sampling method not implemented")
