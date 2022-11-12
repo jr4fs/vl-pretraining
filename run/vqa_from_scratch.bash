@@ -4,7 +4,8 @@ conda activate lxmert
 name=$2
 IDS=
 
-
+# bash run/vqa_from_scratch.bash <GPU_ID> <name of folder to save run> --subset <animals, sports> --sampling_ids <src/dataset_selection/sampling/samples> 
+# bash run/vqa_from_scratch.bash 0 LXR111/animals/random/test/ --subset animals --sampling_ids src/dataset_selection/sampling/samples/LXR111/animals/random/budget_10.pkl 
 # Save logs and models under snap/vqa; make backup.
 output=snap/vqa/$name
 mkdir -p $output/src

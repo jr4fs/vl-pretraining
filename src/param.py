@@ -95,11 +95,11 @@ def parse_args():
     parser.add_argument("--datamap_title", default='Trained on VQA-Animals Trained from Scratch for 20 epochs', type=str, help='Title of datamap plot')
 
     # Sampling
-    parser.add_argument("--sampling_method", default='beta', type=str, help='Sampling algorithm - beta, random, max_variability, min_variability')
+    parser.add_argument("--sampling_method", default='random', type=str, help='Sampling algorithm - beta, random, max_variability, min_variability')
     parser.add_argument("--sampling_model", default='LXR111', type=str, help='Name of model you are sampling variability values from')
     parser.add_argument("--training_budget", default=30, type=int, help='Percentage of data sampled')
     parser.add_argument("--sampling_dataset", default='animals', type=str, help='animals or sports')
-    parser.add_argument("--include_all_classes", action='store_const', default=False, const=True)
+    parser.add_argument("--include_all_classes", action='store_const', default=False, const=True )
     
     # Beta sampling
     parser.add_argument("--alpha", default=1, type=int, help='alpha parameter for beta distribution')
@@ -109,7 +109,7 @@ def parse_args():
 
     # Optuna
     parser.add_argument("--optuna_sweep", default='other', type=str, help='beta, other')
-    parser.add_argument("--neptune_study_name", default='random_max_variability', type=str, help='name of optuna study')
+    parser.add_argument("--neptune_study_name", default='random_sampling_seed965', type=str, help='name of optuna study')
 
 
 
