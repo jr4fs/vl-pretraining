@@ -109,7 +109,7 @@ def parse_args():
 
     # Optuna
     parser.add_argument("--optuna_sweep", default='other', type=str, help='beta, other')
-    parser.add_argument("--neptune_study_name", default='random_sampling_seed565', type=str, help='name of optuna study')
+    parser.add_argument("--neptune_study_name", default='random_sampling_seed388', type=str, help='name of optuna study')
 
 
 
