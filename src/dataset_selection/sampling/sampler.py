@@ -39,7 +39,7 @@ if __name__ == "__main__":
     base_path = args.base_path
     sampling_method = args.sampling_method
     df = pd.read_pickle(base_path+"datamap_metrics.pkl")
-    budgets = [10, 20, 30]
+    budgets = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     if sampling_method == 'beta':
         #beta_sampling(df, args.alpha, args.beta, args.sampling_model, args.training_budget, norm=args.norm, bandwidth=args.bandwidth, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
         params = [(1, 1), (2, 2), (1, 2), (2, 1)]
