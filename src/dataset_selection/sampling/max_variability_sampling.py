@@ -52,7 +52,8 @@ def max_variability(df, model, training_budget, include_all_classes=False, datas
         correctness = np.array(df_filtered['correctness'].tolist())
         targets_sample = np.array(df_filtered['Target'].tolist())
         num_samples = round(len(question_ids) * (training_budget*0.01))
-
+        if num_samples == 0:
+            num_samples = 1
         # # computing strt, and end index 
         # strt_idx = (len(question_ids) // 2) - (num_samples // 2)
         # end_idx = (len(question_ids) // 2) + (num_samples // 2)

@@ -34,7 +34,7 @@ from max_variability_sampling import *
 from min_variability_sampling import *
 from max_confidence_sampling import * 
 from min_confidence_sampling import * 
-
+from global_random_sampling import *
 if __name__ == "__main__":
     base_path = args.base_path
     sampling_method = args.sampling_method
@@ -70,5 +70,9 @@ if __name__ == "__main__":
         for budget in budgets:
             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
             min_confidence(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
+    elif sampling_method == 'global_random':
+        for budget in budgets:
+            df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+            global_random_sampling(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
     else:
         print("Sampling method not implemented")

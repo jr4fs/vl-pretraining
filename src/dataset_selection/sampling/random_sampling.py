@@ -54,6 +54,8 @@ def random_sampling(df, model, training_budget, include_all_classes=False, datas
         correctness = np.array(df_filtered['correctness'].tolist())
         targets_sample = np.array(df_filtered['Target'].tolist())
         num_samples = round(len(question_ids) * (training_budget*0.01))
+        if num_samples == 0:
+            num_samples = 1
 
         if len(question_ids) !=0:
             # for each bucket, sample the minimum number of examples from that bucket and append to overall sample
