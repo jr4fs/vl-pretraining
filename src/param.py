@@ -95,15 +95,15 @@ def parse_args():
     parser.add_argument("--datamap_title", default='Trained on VQA-Animals Trained from Scratch for 20 epochs', type=str, help='Title of datamap plot')
 
     # Sampling
-    parser.add_argument("--sampling_method", default='testing', type=str, help='Sampling algorithm - beta, random, max_variability, min_variability')
+    parser.add_argument("--sampling_method", default='beta', type=str, help='Sampling algorithm - beta, random, max_variability, min_variability')
     parser.add_argument("--sampling_model", default='LXR111', type=str, help='Name of model you are sampling variability values from')
     parser.add_argument("--training_budget", default=30, type=int, help='Percentage of data sampled')
     parser.add_argument("--sampling_dataset", default='animals', type=str, help='animals or sports')
     parser.add_argument("--include_all_classes", action='store_const', default=False, const=True )
     
     # Beta sampling
-    parser.add_argument("--alpha", default=1, type=int, help='alpha parameter for beta distribution')
-    parser.add_argument("--beta", default=1, type=int, help='beta parameter for beta distribution')
+    parser.add_argument("--alpha", default=2, type=int, help='alpha parameter for beta distribution')
+    parser.add_argument("--beta", default=2, type=int, help='beta parameter for beta distribution')
     parser.add_argument("--norm", default='pvals', type=str, help='pvals, gaussian_kde, gaussian, tophat, epanechnikov, exponential, linear, cosine')
     parser.add_argument("--bandwidth", default=0.01, type=float, help='bandwidth for beta kernels')
 

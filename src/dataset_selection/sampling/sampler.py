@@ -47,7 +47,7 @@ if __name__ == "__main__":
     budgets = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     if sampling_method == 'beta':
         #beta_sampling(df, args.alpha, args.beta, args.sampling_model, args.training_budget, norm=args.norm, bandwidth=args.bandwidth, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
-        params = [(1, 1), (2, 2), (1, 2), (2, 1)]
+        params = [(2, 2)]
         norms = ['pvals']
         for norm in norms:
             print("Norm: ", norm)
