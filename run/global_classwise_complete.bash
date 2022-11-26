@@ -1,0 +1,14 @@
+modelseed=$1
+gpu=$2
+
+
+bash run/vqa_from_scratch.bash $gpu LXR111/animals/min_variability/budget_30_modelseed$modelseed/ --subset animals --sampling_ids src/dataset_selection/sampling/samples/LXR111/animals/min_variability/seed_388/budget_30.pkl --sampling_method min_variability --neptune_study_name classwise_min_variability_modelseed$modelseed --training_budget 30
+bash run/vqa_from_scratch.bash $gpu LXR111/animals/max_variability/budget_30_modelseed$modelseed/ --subset animals --sampling_ids src/dataset_selection/sampling/samples/LXR111/animals/max_variability/seed_388/budget_30.pkl --sampling_method max_variability --neptune_study_name classwise_max_variability_modelseed$modelseed --training_budget 30
+bash run/vqa_from_scratch.bash $gpu LXR111/animals/min_confidence/budget_30_modelseed$modelseed/ --subset animals --sampling_ids src/dataset_selection/sampling/samples/LXR111/animals/min_confidence/seed_388/budget_30.pkl --sampling_method min_confidence --neptune_study_name classwise_min_confidence_modelseed$modelseed --training_budget 30
+bash run/vqa_from_scratch.bash $gpu LXR111/animals/max_confidence/budget_30_modelseed$modelseed/ --subset animals --sampling_ids src/dataset_selection/sampling/samples/LXR111/animals/max_confidence/seed_388/budget_30.pkl --sampling_method max_confidence --neptune_study_name classwise_max_confidence_modelseed$modelseed --training_budget 30
+
+bash run/vqa_from_scratch.bash $gpu LXR111/animals/global_min_variability/budget_30_modeelseed$modelseed/ --subset animals --sampling_ids src/dataset_selection/sampling/samples/LXR111/animals/global_min_variability/seed_388/budget_30.pkl --sampling_method global_min_variability --neptune_study_name global_min_variability_modelseed$modelseed --training_budget 30
+bash run/vqa_from_scratch.bash $gpu LXR111/animals/global_max_variability/budget_30_modeelseed$modelseed/ --subset animals --sampling_ids src/dataset_selection/sampling/samples/LXR111/animals/global_max_variability/seed_388/budget_30.pkl --sampling_method global_max_variability --neptune_study_name global_max_variability_modelseed$modelseed --training_budget 30
+bash run/vqa_from_scratch.bash $gpu LXR111/animals/global_min_confidence/budget_30_modeelseed$modelseed/ --subset animals --sampling_ids src/dataset_selection/sampling/samples/LXR111/animals/global_min_confidence/seed_388/budget_30.pkl --sampling_method global_min_confidence --neptune_study_name global_min_confidence_modelseed$modelseed --training_budget 30
+bash run/vqa_from_scratch.bash $gpu LXR111/animals/global_max_confidence/budget_30_modeelseed$modelseed/ --subset animals --sampling_ids src/dataset_selection/sampling/samples/LXR111/animals/global_max_confidence/seed_388/budget_30.pkl --sampling_method global_max_confidence --neptune_study_name global_max_confidence_modelseed$modelseed --training_budget 30
+

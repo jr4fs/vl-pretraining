@@ -1,3 +1,5 @@
+source /opt/anaconda3/etc/profile.d/conda.sh
+conda activate lxmert
 # The name of this experiment.
 name=$2
 
@@ -13,5 +15,5 @@ CUDA_VISIBLE_DEVICES=$1 PYTHONPATH=$PYTHONPATH:./src \
     --train train,valid --valid testdev \
     --llayers 9 --xlayers 5 --rlayers 5 \
     --loadLXMERTQA snap/pretrained/model \
-    --batchSize 32 --optim bert --lr 1e-5 --epochs 4 \
+    --batchSize 32 --optim bert --lr 1e-5 --epochs 1 \
     --tqdm --output $output ${@:3}
