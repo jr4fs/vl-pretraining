@@ -29,28 +29,130 @@ class GQADataset:
         "sent": "What is on the white wall?"
     }
     """
-    def __init__(self, splits: str):
+    def __init__(self, splits: str, subset: str):
         self.name = splits
         self.splits = splits.split(',')
+        self.subset = subset
+        if subset == 'animals':
+            print("Loading animals split for GQA")
+            self.filtered = [
+                            "kitten", 
+                            "owl", 
+                            "salmon", 
+                            "lion", 
+                            "bird", 
+                            "bat", 
+                            "crane", 
+                            "shrimp", 
+                            "bear", 
+                            "tuna",
+                            "elephant", 
+                            "spider", 
+                            "camel", 
+                            "dragon", 
+                            "tiger", 
+                            "duck", 
+                            "turtle", 
+                            "butterfly",
+                            "zebra", 
+                            "polar bear", 
+                            "dinosaur", 
+                            "turkey", 
+                            "lamb", 
+                            "bull", 
+                            "shark", 
+                            "alligator", 
+                            "antelope", 
+                            "monkey", 
+                            "canopy", 
+                            "octopus", 
+                            "seagull", 
+                            "lobster", 
+                            "pig", 
+                            "donkey", 
+                            "cow", 
+                            "giraffe", 
+                            "dog", 
+                            "whale", 
+                            "panda", 
+                            "peacock", 
+                            "lizard", 
+                            "parrot", 
+                            "ostrich", 
+                            "horse", 
+                            "penguin", 
+                            "sheep", 
+                            "pigeon", 
+                            "kangaroo", 
+                            "flamingo", 
+                            "swan", 
+                            "poodle", 
+                            "chicken", 
+                            "deer", 
+                            "bunny", 
+                            "frog", 
+                            "rabbit", 
+                            "cat", 
+                            "leopard", 
+                            "eagle", 
+                            "goose", 
+                            "goat", 
+                            "fish", 
+                            "squirrel", 
+                            "puppy", 
+                            "snake"
+                            ]
+            self.ans2label = json.load(open("data/gqa/trainval_animal_ans2label.json"))
+            self.label2ans = json.load(open("data/gqa/trainval_animal_label2ans.json"))
+            assert len(self.ans2label) == len(self.label2ans)
+            for ans, label in self.ans2label.items():
+                assert self.label2ans[label] == ans
 
-        # Loading datasets to data
-        self.data = []
-        for split in self.splits:
-            self.data.extend(json.load(open("data/gqa/%s.json" % split)))
-        print("Load %d data from split(s) %s." % (len(self.data), self.name))
+            loaded_data = []
+            for split in self.splits:
+                loaded_data.extend(json.load(open("data/gqa/%s.json" % split)))
+            self.data = []
+            for datum in loaded_data:
+                if 'label' in datum:
+                    if len(datum['label']) > 0:
+                        itemMaxValue = max(datum['label'].items(), key=lambda x: x[1])
+                        listOfKeys = list()
+                        for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                            if value == itemMaxValue[1]:
+                                if key == 'geese':
+                                    key = 'goose'
+                                listOfKeys.append(key)
+                        if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
+                            listOfKeys[0] = listOfKeys[0][:-1]
+                        if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                            new_label ={listOfKeys[0]: itemMaxValue[1]}
+                            datum['label'] = new_label
+                            self.data.append(datum)
+            print("Load %d data from animal split(s) %s." % (len(self.data), self.name))
+            # List to dict (for evaluation and others)
+            self.id2datum = {
+                datum['question_id']: datum
+                for datum in self.data
+            }
+        else:
+            # Loading datasets to data
+            self.data = []
+            for split in self.splits:
+                self.data.extend(json.load(open("data/gqa/%s.json" % split)))
+            print("Load %d data from split(s) %s." % (len(self.data), self.name))
 
-        # List to dict (for evaluation and others)
-        self.id2datum = {
-            datum['question_id']: datum
-            for datum in self.data
-        }
+            # List to dict (for evaluation and others)
+            self.id2datum = {
+                datum['question_id']: datum
+                for datum in self.data
+            }
 
-        # Answers
-        self.ans2label = json.load(open("data/gqa/trainval_ans2label.json"))
-        self.label2ans = json.load(open("data/gqa/trainval_label2ans.json"))
-        assert len(self.ans2label) == len(self.label2ans)
-        for ans, label in self.ans2label.items():
-            assert self.label2ans[label] == ans
+            # Answers
+            self.ans2label = json.load(open("data/gqa/trainval_ans2label.json"))
+            self.label2ans = json.load(open("data/gqa/trainval_label2ans.json"))
+            assert len(self.ans2label) == len(self.label2ans)
+            for ans, label in self.ans2label.items():
+                assert self.label2ans[label] == ans
 
     @property
     def num_answers(self):
@@ -147,9 +249,17 @@ class GQATorchDataset(Dataset):
         if 'label' in datum:
             label = datum['label']
             target = torch.zeros(self.raw_dataset.num_answers)
-            for ans, score in label.items():
-                if ans in self.raw_dataset.ans2label:
-                    target[self.raw_dataset.ans2label[ans]] = score
+            if self.raw_dataset.subset != None:
+                assert len(label) == 1
+                for ans, score in label.items():
+                    if ans in self.raw_dataset.filtered:
+                        target[self.raw_dataset.ans2label[ans]] = 1.0
+                target = torch.squeeze(target.nonzero())
+                target = target.long()
+            else:
+                for ans, score in label.items():
+                    if ans in self.raw_dataset.ans2label:
+                        target[self.raw_dataset.ans2label[ans]] = score
             return ques_id, feats, boxes, ques, target
         else:
             return ques_id, feats, boxes, ques
