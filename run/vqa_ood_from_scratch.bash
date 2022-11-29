@@ -15,10 +15,10 @@ cp $0 $output/run.bash
 # See Readme.md for option details.
 CUDA_VISIBLE_DEVICES=$1 PYTHONPATH=$PYTHONPATH:./src \
     python src/tasks/vqa_ood.py \
-    --train train,nominival --valid valid,testdev  \
+    --train train,nominival --valid testdev  \
     --llayers 1 --xlayers 1 --rlayers 1 \
     --fromScratch \
-    --batchSize 32 --optim bert --lr 5e-5 --epochs 1 \
+    --batchSize 32 --optim bert --lr 5e-5 --epochs 22 \
     --tqdm --output $output ${@:3}
 
 while [ "$1" != "" ]; do

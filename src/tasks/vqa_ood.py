@@ -219,6 +219,7 @@ class VQA:
         self.model.eval()
         dset, loader, evaluator = eval_tuple
         quesid2ans = {}
+        target_freq = {}
         for i, datum_tuple in enumerate(loader):
             ques_id, feats, boxes, sent = datum_tuple[:4]   # Avoid seeing ground truth
             with torch.no_grad():
@@ -233,8 +234,25 @@ class VQA:
                     #ans = dset.label2ans[l]
                     ans = train_label2ans[l] # use the label2ans for the train dataset because label space for OOD dataset and train dataset are different
                     quesid2ans[qid] = ans
-        if dump is not None:
-            evaluator.dump_result(quesid2ans, dump)
+                for gt in datum_tuple[-1]:
+                    gt_ans = dset.label2ans[gt]
+                    if gt_ans not in target_freq:
+                        target_freq[gt_ans] = 1
+                    else:
+                        target_freq[gt_ans] +=1
+        #if dump is not None:
+        
+        # save = os.path.join(args.output, 'target_freq.json')
+        # with open(save, 'w') as f:
+        #     result = []
+        #     for target, freq in target_freq.items():
+        #         result.append({
+        #             'target': target,
+        #             'freq': freq
+        #         })
+        #     #print(result)
+        #     json.dump(result, f, indent=4, sort_keys=True)
+        # evaluator.dump_result(quesid2ans, os.path.join(args.output, 'val_predict.json'))
         return quesid2ans
 
     def evaluate(self, eval_tuple: DataTuple, train_label2ans, dump=None):
