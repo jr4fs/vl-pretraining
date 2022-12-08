@@ -133,6 +133,8 @@ class VQADataset:
                 loaded_data.extend(json.load(open("data/vqa/%s.json" % split)))
             #print("Load %d data from split(s) %s." % (len(self.data), self.name))
             self.data = []
+            annotator_accuracies = []
+            
             for datum in loaded_data:
                 if 'label' in datum:
                     if len(datum['label']) > 0:
@@ -152,11 +154,14 @@ class VQADataset:
                                 self.data.append(datum)
                         else:
                             if self.sampling_ids != None:
+                                #print("USING SAMPLING IDS: ", self.sampling_ids)
+                                
                                 if datum['question_id'] in self.sampled_ids:
                                     itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
                                     listOfKeys = list()
                                     for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
-                                        if value == itemMaxValue[1]:
+                                        if value == itemMaxValue[1] and value > 0.9:
+                                            annotator_accuracies.append(value)
                                             if key == 'geese':
                                                 key = 'goose'
                                             listOfKeys.append(key)
@@ -166,6 +171,7 @@ class VQADataset:
                                         new_label ={listOfKeys[0]: itemMaxValue[1]}
                                         datum['label'] = new_label
                                         self.data.append(datum)
+                                
                             else:
                                 itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
                                 listOfKeys = list()
@@ -181,6 +187,8 @@ class VQADataset:
                                     datum['label'] = new_label
                                     self.data.append(datum)   
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
+            if len(annotator_accuracies) != 0:
+                np.save(args.output+ "/annotator_accuracies", np.array(annotator_accuracies))
 
             # Convert list to dict (for evaluation)
             self.id2datum = {

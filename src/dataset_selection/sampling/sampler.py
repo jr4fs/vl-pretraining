@@ -48,10 +48,10 @@ if __name__ == "__main__":
     budgets = [30]
     if sampling_method == 'beta':
         #beta_sampling(df, args.alpha, args.beta, args.sampling_model, args.training_budget, norm=args.norm, bandwidth=args.bandwidth, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
-        #params = [(1, 2), (2, 1), (1, 1),(2, 2)]
-        params = [(2, 1)]
-        #norms = ['pvals', 'var_counts', 'gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
-        norms = ['tophat']
+        params = [(1, 2), (2, 1), (1, 1),(2, 2)]
+        #params = [(1, 1)]
+        norms = ['pvals', 'var_counts', 'gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
+        #norms = ['exponential', 'gaussian', 'var_counts']
         for norm in norms:
             print("Norm: ", norm)
             for budget in budgets:
