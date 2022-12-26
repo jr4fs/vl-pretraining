@@ -112,6 +112,7 @@ class GQADataset:
             for split in self.splits:
                 loaded_data.extend(json.load(open("data/gqa/%s.json" % split)))
             self.data = []
+            unique_labels = {}
             for datum in loaded_data:
                 if 'label' in datum:
                     if len(datum['label']) > 0:
@@ -128,7 +129,12 @@ class GQADataset:
                             new_label ={listOfKeys[0]: itemMaxValue[1]}
                             datum['label'] = new_label
                             self.data.append(datum)
+                            if listOfKeys[0] not in unique_labels:
+                                unique_labels[listOfKeys[0]] = 0
+                            else:
+                                unique_labels[listOfKeys[0]]+=1
             print("Load %d data from animal split(s) %s." % (len(self.data), self.name))
+            print(unique_labels)
             # List to dict (for evaluation and others)
             self.id2datum = {
                 datum['question_id']: datum
