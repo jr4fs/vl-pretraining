@@ -194,10 +194,10 @@ class VQADataset:
         elif subset == 'myo-food':
             print("Training on subset: "+ subset)
             with open('data/vqa-outliers/myo-food-train.pkl', 'rb') as f:
-                self.train_sampled_ids = pickle.load(f)
+                self.train_ids = pickle.load(f)
             with open('data/vqa-outliers/myo-food-val.pkl', 'rb') as f:
-                self.val_sampled_ids = pickle.load(f)
-            print("ids length: ", len(self.train_sampled_ids)) 
+                self.val_ids = pickle.load(f)
+            print("MYO-FOOD SPLIT 4082: ", len(self.train_ids)) 
 
             # Answers
             self.ans2label = json.load(open("data/vqa-outliers/myo-food-ans2label.json"))
@@ -210,43 +210,149 @@ class VQADataset:
                 loaded_data.extend(json.load(open("data/vqa/%s.json" % split)))
             #print("Load %d data from split(s) %s." % (len(self.data), self.name))
             self.data = []
-            
             for datum in loaded_data:
                 if 'label' in datum:
                     if len(datum['label']) > 0:
                         if 'minival' in self.splits:
-                            if datum['question_id'] in self.val_sampled_ids:
+                            if datum['question_id'] in self.val_ids:
                                 itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
                                 listOfKeys = list()
                                 for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
                                     if value == itemMaxValue[1]:
                                         listOfKeys.append(key)
-                                if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                    new_label ={listOfKeys[0]: itemMaxValue[1]}
-                                    datum['label'] = new_label
-                                    self.data.append(datum)
+                                # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
+                                #     listOfKeys[0] = listOfKeys[0][:-1]
+                                #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                                #if len(listOfKeys) == 1:
+                                new_label ={listOfKeys[0]: itemMaxValue[1]}
+                                datum['label'] = new_label
+                                self.data.append(datum)
                         else:
-                            if datum['question_id'] in self.train_sampled_ids:
-                                itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
-                                listOfKeys = list()
-                                for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
-                                    if value == itemMaxValue[1]:
-                                        listOfKeys.append(key)
-                                if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                    new_label ={listOfKeys[0]: itemMaxValue[1]}
-                                    datum['label'] = new_label
-                                    self.data.append(datum)
+                            if self.sampling_ids != None:
+                                #print("USING SAMPLING IDS: ", self.sampling_ids)
+                                if datum['question_id'] in self.train_ids:
+                                    if datum['question_id'] in self.sampled_ids:
+                                        itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                        listOfKeys = list()
+                                        for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                                            if value == itemMaxValue[1]:
+                                                # if key == 'geese':
+                                                #     key = 'goose'
+                                                listOfKeys.append(key)
+                                        # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
+                                        #     listOfKeys[0] = listOfKeys[0][:-1]
+                                        # if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                                        #if len(listOfKeys) == 1: 
+                                        new_label ={listOfKeys[0]: itemMaxValue[1]}
+                                        datum['label'] = new_label
+                                        self.data.append(datum)
                                 
-
+                            else:
+                                if datum['question_id'] in self.train_ids:
+                                    itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                    listOfKeys = list()
+                                    for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                                        if value == itemMaxValue[1]:
+                                            # if key == 'geese':
+                                            #     key = 'goose'
+                                            listOfKeys.append(key)
+                                    # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
+                                    #     listOfKeys[0] = listOfKeys[0][:-1]
+                                    #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                                    #if len(listOfKeys) == 1:
+                                    new_label ={listOfKeys[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                                    datum['label'] = new_label
+                                    self.data.append(datum)   
+                                    #else:
+                                        #count_none+=1
+                                    
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
-
             # Convert list to dict (for evaluation)
             self.id2datum = {
                 datum['question_id']: datum
                 for datum in self.data
             }
+        elif subset == 'myo-sports':
+            print("Training on subset: "+ subset)
+            with open('data/vqa-outliers/myo-sports-train.pkl', 'rb') as f:
+                self.train_ids = pickle.load(f)
+            with open('data/vqa-outliers/myo-sports-val.pkl', 'rb') as f:
+                self.val_ids = pickle.load(f)
+            print("MYO-SPORTS SPLIT 5411: ", len(self.train_ids)) 
 
-
+            # Answers
+            self.ans2label = json.load(open("data/vqa-outliers/myo-sports-ans2label.json"))
+            self.label2ans = json.load(open("data/vqa-outliers/myo-sports-label2ans.json"))
+            assert len(self.ans2label) == len(self.label2ans)
+            
+            # Loading datasets
+            loaded_data = []
+            for split in self.splits:
+                loaded_data.extend(json.load(open("data/vqa/%s.json" % split)))
+            #print("Load %d data from split(s) %s." % (len(self.data), self.name))
+            self.data = []
+            for datum in loaded_data:
+                if 'label' in datum:
+                    if len(datum['label']) > 0:
+                        if 'minival' in self.splits:
+                            if datum['question_id'] in self.val_ids:
+                                itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                listOfKeys = list()
+                                for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                                    if value == itemMaxValue[1]:
+                                        listOfKeys.append(key)
+                                # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
+                                #     listOfKeys[0] = listOfKeys[0][:-1]
+                                #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                                #if len(listOfKeys) == 1:
+                                new_label ={listOfKeys[0]: itemMaxValue[1]}
+                                datum['label'] = new_label
+                                self.data.append(datum)
+                        else:
+                            if self.sampling_ids != None:
+                                #print("USING SAMPLING IDS: ", self.sampling_ids)
+                                if datum['question_id'] in self.train_ids:
+                                    if datum['question_id'] in self.sampled_ids:
+                                        itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                        listOfKeys = list()
+                                        for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                                            if value == itemMaxValue[1]:
+                                                # if key == 'geese':
+                                                #     key = 'goose'
+                                                listOfKeys.append(key)
+                                        # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
+                                        #     listOfKeys[0] = listOfKeys[0][:-1]
+                                        # if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                                        #if len(listOfKeys) == 1: 
+                                        new_label ={listOfKeys[0]: itemMaxValue[1]}
+                                        datum['label'] = new_label
+                                        self.data.append(datum)
+                                
+                            else:
+                                if datum['question_id'] in self.train_ids:
+                                    itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                    listOfKeys = list()
+                                    for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                                        if value == itemMaxValue[1]:
+                                            # if key == 'geese':
+                                            #     key = 'goose'
+                                            listOfKeys.append(key)
+                                    # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
+                                    #     listOfKeys[0] = listOfKeys[0][:-1]
+                                    #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                                    #if len(listOfKeys) == 1:
+                                    new_label ={listOfKeys[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                                    datum['label'] = new_label
+                                    self.data.append(datum)   
+                                    #else:
+                                        #count_none+=1
+                                    
+            print("Load %d data from split(s) %s." % (len(self.data), self.name))
+            # Convert list to dict (for evaluation)
+            self.id2datum = {
+                datum['question_id']: datum
+                for datum in self.data
+            }
         else:
             # Loading datasets
             self.data = []
