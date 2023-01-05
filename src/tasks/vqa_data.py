@@ -198,6 +198,7 @@ class VQADataset:
             with open('data/vqa-outliers/myo-food-val.pkl', 'rb') as f:
                 self.val_ids = pickle.load(f)
             print("MYO-FOOD SPLIT 4082: ", len(self.train_ids)) 
+            self.filtered = ["pizza", "sandwich", "hot dog", "cheese", "coffee", "fruit", "chicken", "vegetables", "fish", "salad", "bread", "milk", "soup", "beef", "rice", "pasta", "pork", "french fries", "cereal", "bagel"]
 
             # Answers
             self.ans2label = json.load(open("data/vqa-outliers/myo-food-ans2label.json"))
@@ -223,10 +224,10 @@ class VQADataset:
                                 # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                 #     listOfKeys[0] = listOfKeys[0][:-1]
                                 #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                #if len(listOfKeys) == 1:
-                                new_label ={listOfKeys[0]: itemMaxValue[1]}
-                                datum['label'] = new_label
-                                self.data.append(datum)
+                                if listOfKeys[0] in self.filtered:
+                                    new_label ={listOfKeys[0]: itemMaxValue[1]}
+                                    datum['label'] = new_label
+                                    self.data.append(datum)
                         else:
                             if self.sampling_ids != None:
                                 #print("USING SAMPLING IDS: ", self.sampling_ids)
@@ -242,10 +243,10 @@ class VQADataset:
                                         # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                         #     listOfKeys[0] = listOfKeys[0][:-1]
                                         # if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                        #if len(listOfKeys) == 1: 
-                                        new_label ={listOfKeys[0]: itemMaxValue[1]}
-                                        datum['label'] = new_label
-                                        self.data.append(datum)
+                                        if listOfKeys[0] in self.filtered: 
+                                            new_label ={listOfKeys[0]: itemMaxValue[1]}
+                                            datum['label'] = new_label
+                                            self.data.append(datum)
                                 
                             else:
                                 if datum['question_id'] in self.train_ids:
@@ -259,12 +260,10 @@ class VQADataset:
                                     # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                     #     listOfKeys[0] = listOfKeys[0][:-1]
                                     #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                    #if len(listOfKeys) == 1:
-                                    new_label ={listOfKeys[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
-                                    datum['label'] = new_label
-                                    self.data.append(datum)   
-                                    #else:
-                                        #count_none+=1
+                                    if listOfKeys[0] in self.filtered:
+                                        new_label ={listOfKeys[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                                        datum['label'] = new_label
+                                        self.data.append(datum)   
                                     
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
             # Convert list to dict (for evaluation)
@@ -273,6 +272,7 @@ class VQADataset:
                 for datum in self.data
             }
         elif subset == 'myo-sports':
+            self.filtered = ["football", "soccer", "volleyball", "basketball", "tennis", "badminton", "baseball", "softball", "hockey", "golf", "racing", "rugby", "boxing", "horse racing", "swimming", "skiing", "snowboarding", "water skiing", "bowling", "biking"]
             print("Training on subset: "+ subset)
             with open('data/vqa-outliers/myo-sports-train.pkl', 'rb') as f:
                 self.train_ids = pickle.load(f)
@@ -304,10 +304,10 @@ class VQADataset:
                                 # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                 #     listOfKeys[0] = listOfKeys[0][:-1]
                                 #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                #if len(listOfKeys) == 1:
-                                new_label ={listOfKeys[0]: itemMaxValue[1]}
-                                datum['label'] = new_label
-                                self.data.append(datum)
+                                if listOfKeys[0] in self.filtered:
+                                    new_label ={listOfKeys[0]: itemMaxValue[1]}
+                                    datum['label'] = new_label
+                                    self.data.append(datum)
                         else:
                             if self.sampling_ids != None:
                                 #print("USING SAMPLING IDS: ", self.sampling_ids)
@@ -323,10 +323,10 @@ class VQADataset:
                                         # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                         #     listOfKeys[0] = listOfKeys[0][:-1]
                                         # if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                        #if len(listOfKeys) == 1: 
-                                        new_label ={listOfKeys[0]: itemMaxValue[1]}
-                                        datum['label'] = new_label
-                                        self.data.append(datum)
+                                        if listOfKeys[0] in self.filtered: 
+                                            new_label ={listOfKeys[0]: itemMaxValue[1]}
+                                            datum['label'] = new_label
+                                            self.data.append(datum)
                                 
                             else:
                                 if datum['question_id'] in self.train_ids:
@@ -340,12 +340,10 @@ class VQADataset:
                                     # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                     #     listOfKeys[0] = listOfKeys[0][:-1]
                                     #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                    #if len(listOfKeys) == 1:
-                                    new_label ={listOfKeys[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
-                                    datum['label'] = new_label
-                                    self.data.append(datum)   
-                                    #else:
-                                        #count_none+=1
+                                    if listOfKeys[0] in self.filtered:
+                                        new_label ={listOfKeys[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                                        datum['label'] = new_label
+                                        self.data.append(datum)   
                                     
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
             # Convert list to dict (for evaluation)

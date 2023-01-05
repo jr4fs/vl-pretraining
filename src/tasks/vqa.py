@@ -18,8 +18,13 @@ DataTuple = collections.namedtuple("DataTuple", 'dataset loader evaluator')
 import json 
 import os
 
+# run = neptune.init(
+#     project="vqa-training/vqa-training",
+#     api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
+# )  # your credentials
+
 run = neptune.init(
-    project="vqa-training/vqa-training",
+    project="vqa-training/vqa-training-myo-sports",
     api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
 )  # your credentials
 
