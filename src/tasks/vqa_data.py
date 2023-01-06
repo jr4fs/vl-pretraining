@@ -216,54 +216,68 @@ class VQADataset:
                     if len(datum['label']) > 0:
                         if 'minival' in self.splits:
                             if datum['question_id'] in self.val_ids:
-                                itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
-                                listOfKeys = list()
+                                #itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                listOfKeys = dict()
                                 for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
-                                    if value == itemMaxValue[1]:
-                                        listOfKeys.append(key)
+                                    # out of all the labels, choose the label with the highest score that is also in self.filtered
+                                    if key in self.filtered: 
+                                        listOfKeys[key] = value
+                                    # if value == itemMaxValue[1]:
+                                    #     # if key == 'geese':
+                                    #     #     key = 'goose'
+                                    #     listOfKeys.append(key)
                                 # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                 #     listOfKeys[0] = listOfKeys[0][:-1]
                                 #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                if listOfKeys[0] in self.filtered:
-                                    new_label ={listOfKeys[0]: itemMaxValue[1]}
-                                    datum['label'] = new_label
-                                    self.data.append(datum)
+                                itemMaxValue = max(listOfKeys.items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                #if listOfKeys[0] in self.filtered:
+                                new_label ={itemMaxValue[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                                datum['label'] = new_label
+                                self.data.append(datum)   
                         else:
                             if self.sampling_ids != None:
                                 #print("USING SAMPLING IDS: ", self.sampling_ids)
                                 if datum['question_id'] in self.train_ids:
                                     if datum['question_id'] in self.sampled_ids:
-                                        itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
-                                        listOfKeys = list()
+                                        #itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                        listOfKeys = dict()
                                         for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
-                                            if value == itemMaxValue[1]:
-                                                # if key == 'geese':
-                                                #     key = 'goose'
-                                                listOfKeys.append(key)
+                                            # out of all the labels, choose the label with the highest score that is also in self.filtered
+                                            if key in self.filtered: 
+                                                listOfKeys[key] = value
+                                            # if value == itemMaxValue[1]:
+                                            #     # if key == 'geese':
+                                            #     #     key = 'goose'
+                                            #     listOfKeys.append(key)
                                         # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                         #     listOfKeys[0] = listOfKeys[0][:-1]
-                                        # if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                        if listOfKeys[0] in self.filtered: 
-                                            new_label ={listOfKeys[0]: itemMaxValue[1]}
-                                            datum['label'] = new_label
-                                            self.data.append(datum)
+                                        #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                                        itemMaxValue = max(listOfKeys.items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                        #if listOfKeys[0] in self.filtered:
+                                        new_label ={itemMaxValue[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                                        datum['label'] = new_label
+                                        self.data.append(datum)   
                                 
                             else:
                                 if datum['question_id'] in self.train_ids:
-                                    itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
-                                    listOfKeys = list()
+                                    #itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                    listOfKeys = dict()
                                     for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
-                                        if value == itemMaxValue[1]:
-                                            # if key == 'geese':
-                                            #     key = 'goose'
-                                            listOfKeys.append(key)
+                                        # out of all the labels, choose the label with the highest score that is also in self.filtered
+                                        if key in self.filtered: 
+                                            listOfKeys[key] = value
+                                        # if value == itemMaxValue[1]:
+                                        #     # if key == 'geese':
+                                        #     #     key = 'goose'
+                                        #     listOfKeys.append(key)
                                     # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                     #     listOfKeys[0] = listOfKeys[0][:-1]
                                     #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                    if listOfKeys[0] in self.filtered:
-                                        new_label ={listOfKeys[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
-                                        datum['label'] = new_label
-                                        self.data.append(datum)   
+                                    itemMaxValue = max(listOfKeys.items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                    #if listOfKeys[0] in self.filtered:
+                                    new_label ={itemMaxValue[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                                    datum['label'] = new_label
+                                    self.data.append(datum)     
                                     
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
             # Convert list to dict (for evaluation)
@@ -296,54 +310,70 @@ class VQADataset:
                     if len(datum['label']) > 0:
                         if 'minival' in self.splits:
                             if datum['question_id'] in self.val_ids:
-                                itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
-                                listOfKeys = list()
+                                #itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                listOfKeys = dict()
                                 for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
-                                    if value == itemMaxValue[1]:
-                                        listOfKeys.append(key)
+                                    # out of all the labels, choose the label with the highest score that is also in self.filtered
+                                    if key in self.filtered: 
+                                        listOfKeys[key] = value
+                                    # if value == itemMaxValue[1]:
+                                    #     # if key == 'geese':
+                                    #     #     key = 'goose'
+                                    #     listOfKeys.append(key)
                                 # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                 #     listOfKeys[0] = listOfKeys[0][:-1]
                                 #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                if listOfKeys[0] in self.filtered:
-                                    new_label ={listOfKeys[0]: itemMaxValue[1]}
-                                    datum['label'] = new_label
-                                    self.data.append(datum)
+                                itemMaxValue = max(listOfKeys.items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                #if listOfKeys[0] in self.filtered:
+                                new_label ={itemMaxValue[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                                datum['label'] = new_label
+                                self.data.append(datum)   
                         else:
                             if self.sampling_ids != None:
                                 #print("USING SAMPLING IDS: ", self.sampling_ids)
                                 if datum['question_id'] in self.train_ids:
                                     if datum['question_id'] in self.sampled_ids:
-                                        itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
-                                        listOfKeys = list()
+                                        #itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                        listOfKeys = dict()
                                         for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
-                                            if value == itemMaxValue[1]:
-                                                # if key == 'geese':
-                                                #     key = 'goose'
-                                                listOfKeys.append(key)
+                                            # out of all the labels, choose the label with the highest score that is also in self.filtered
+                                            if key in self.filtered: 
+                                                listOfKeys[key] = value
+                                            # if value == itemMaxValue[1]:
+                                            #     # if key == 'geese':
+                                            #     #     key = 'goose'
+                                            #     listOfKeys.append(key)
                                         # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                         #     listOfKeys[0] = listOfKeys[0][:-1]
-                                        # if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                        if listOfKeys[0] in self.filtered: 
-                                            new_label ={listOfKeys[0]: itemMaxValue[1]}
-                                            datum['label'] = new_label
-                                            self.data.append(datum)
+                                        #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                                        itemMaxValue = max(listOfKeys.items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                        #if listOfKeys[0] in self.filtered:
+                                        new_label ={itemMaxValue[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                                        datum['label'] = new_label
+                                        self.data.append(datum)   
                                 
                             else:
                                 if datum['question_id'] in self.train_ids:
-                                    itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
-                                    listOfKeys = list()
+                                    #itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                    listOfKeys = dict()
                                     for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
-                                        if value == itemMaxValue[1]:
-                                            # if key == 'geese':
-                                            #     key = 'goose'
-                                            listOfKeys.append(key)
+                                        # out of all the labels, choose the label with the highest score that is also in self.filtered
+                                        if key in self.filtered: 
+                                            listOfKeys[key] = value
+                                        # if value == itemMaxValue[1]:
+                                        #     # if key == 'geese':
+                                        #     #     key = 'goose'
+                                        #     listOfKeys.append(key)
                                     # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
                                     #     listOfKeys[0] = listOfKeys[0][:-1]
                                     #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
-                                    if listOfKeys[0] in self.filtered:
-                                        new_label ={listOfKeys[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
-                                        datum['label'] = new_label
-                                        self.data.append(datum)   
+                                    itemMaxValue = max(listOfKeys.items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                                    #if listOfKeys[0] in self.filtered:
+                                    new_label ={itemMaxValue[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                                    datum['label'] = new_label
+                                    self.data.append(datum)   
+                                    #else:
+                                        #print("Not in filtered: ", listOfKeys[0])
                                     
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
             # Convert list to dict (for evaluation)
