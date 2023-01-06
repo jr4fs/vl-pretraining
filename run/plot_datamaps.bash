@@ -5,4 +5,4 @@ conda activate lxmert
 # See Readme.md for option details.
 PYTHONPATH=$PYTHONPATH:./src \
     python src/dataset_selection/datamaps/plot_datamaps.py \
-    --base_path snap/vqa/vqa_lxr111_animals_fromScratch_20epochs_breeds/
+    --base_path snap/vqa/LXR111/myo-sports/full_run/modelseed_965/
