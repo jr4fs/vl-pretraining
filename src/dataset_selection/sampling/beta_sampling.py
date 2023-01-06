@@ -26,7 +26,7 @@ import plotly.figure_factory as ff
 import scipy
 import pickle 
 from sklearn.neighbors import KernelDensity
-
+from param import args
 
 def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwidth= 0.01, include_all_classes=False, dataset='animals'):
     # kernel = {'gaussian', 'tophat', epanechnikov’, ‘exponential’, ‘linear’, ‘cosine’} 
@@ -48,9 +48,9 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
         p_vals /= p_vals.sum()
         plt.plot(variabilities, p_vals, label='pdf')
         if include_all_classes==True:
-            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_pvals/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_pvals/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
         else:
-            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_pvals/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_pvals/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
     elif norm == 'var_counts':
         # normalize by counts in variability histogram
         test = px.histogram(df, x='variability')
@@ -71,9 +71,9 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
         p_vals /= var_counts
         p_vals /= p_vals.sum()
         if include_all_classes == True:
-            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_var_counts/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_var_counts/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
         else:
-            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_var_counts/'+'alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_var_counts/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
     elif norm == 'gaussian_kde':
         kernel = scipy.stats.gaussian_kde(variabilities)
         print("bandwidth: ", kernel.factor)
@@ -82,9 +82,9 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
         p_vals /= gaussian_eval
         p_vals /= p_vals.sum()
         if include_all_classes == True:
-            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_kernel/'+norm+'/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
         else:
-            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+norm+'/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
     elif norm in ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']:
         vars_kde =np.array(variabilities).reshape(-1, 1)
         kde = KernelDensity(bandwidth=bandwidth, kernel=norm)
@@ -94,9 +94,9 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
         p_vals /= np.exp(logprob)
         p_vals /= p_vals.sum()
         if include_all_classes == True:
-            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_kernel/'+norm+'/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
         else:
-            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+norm+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+            save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_kernel/'+norm+'/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
 
     else:
         print('Norm not implemented')

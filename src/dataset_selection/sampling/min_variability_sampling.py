@@ -26,7 +26,7 @@ import plotly.figure_factory as ff
 import scipy
 import pickle 
 from sklearn.neighbors import KernelDensity
-
+from param import args 
 
 def min_variability(df, model, training_budget, include_all_classes=False, dataset='animals'):
     targets = df['Target'].tolist()
@@ -87,9 +87,9 @@ def min_variability(df, model, training_budget, include_all_classes=False, datas
             for target_excluded in intersect:
                 df_filtered = orig_df[orig_df['Target'] == target_excluded]
                 sampled_question_ids.extend(df_filtered['question_id'].to_list())
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/min_variability/include_all_classes/'+'budget_'+str(training_budget)+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/min_variability/include_all_classes/seed_'+str(args.seed)+'/budget_'+str(training_budget)+'.pkl'
     else:
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/min_variability/'+'budget_'+str(training_budget)+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/min_variability/seed_'+str(args.seed)+'/budget_'+str(training_budget)+'.pkl'
 
 
     unique_targets_sample = orig_df[orig_df['question_id'].isin(sampled_question_ids)]

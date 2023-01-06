@@ -26,6 +26,7 @@ import plotly.figure_factory as ff
 import scipy
 import pickle 
 from sklearn.neighbors import KernelDensity
+from param import args
 
 
 def global_random_sampling(df, model, training_budget, include_all_classes=False, dataset='animals'):
@@ -74,9 +75,9 @@ def global_random_sampling(df, model, training_budget, include_all_classes=False
             for target_excluded in intersect:
                 df_filtered = orig_df[orig_df['Target'] == target_excluded]
                 sampled_question_ids.extend(df_filtered['question_id'].to_list())
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/global_random/include_all_classes/'+'budget_'+str(training_budget)+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/global_random/include_all_classes/seed_'+str(args.seed)+'/budget_'+str(training_budget)+'.pkl'
     else:
-        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/global_random/'+'budget_'+str(training_budget)+'.pkl'
+        save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/global_random/seed_'+str(args.seed)+'/budget_'+str(training_budget)+'.pkl'
 
 
     unique_targets_sample = orig_df[orig_df['question_id'].isin(sampled_question_ids)]
