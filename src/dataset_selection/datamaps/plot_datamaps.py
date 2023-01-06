@@ -187,5 +187,6 @@ def plot_trainval_acc(base_path):
 
 if __name__ == "__main__":
     df = pd.read_pickle(args.base_path+"datamap_metrics.pkl")
+    print(args.base_path)
     plot_trainval_acc(args.base_path)
     scatter_it(df, title=args.datamap_title, show_hist=True)

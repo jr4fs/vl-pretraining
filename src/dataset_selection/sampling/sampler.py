@@ -41,11 +41,14 @@ from global_min_variability_sampling import *
 from global_max_variability_sampling import * 
 
 if __name__ == "__main__":
+    print("SEED sampler.py: ", args.seed)
     base_path = args.base_path
     print("base path: ", base_path)
     sampling_method = args.sampling_method
-    print(sampling_method)
+    print("sampling method: ", sampling_method)
+    print("sampling dataset: ", args.sampling_dataset)
     df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+    #budgets = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     budgets = [10, 20, 30]
     if sampling_method == 'beta':
         #beta_sampling(df, args.alpha, args.beta, args.sampling_model, args.training_budget, norm=args.norm, bandwidth=args.bandwidth, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)

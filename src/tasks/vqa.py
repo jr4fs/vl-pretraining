@@ -255,6 +255,7 @@ class VQA:
 
 if __name__ == "__main__":
     # Neptune logging
+    print("SEED: ", args.seed)
     if args.sampling_ids != None:
         run["sampling_ids"] = os.path.basename(args.sampling_ids)
         run["sampling_method"] = args.sampling_method

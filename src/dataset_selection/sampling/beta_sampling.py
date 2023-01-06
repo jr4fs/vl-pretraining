@@ -30,6 +30,7 @@ from param import args
 
 def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwidth= 0.01, include_all_classes=False, dataset='animals'):
     # kernel = {'gaussian', 'tophat', epanechnikov’, ‘exponential’, ‘linear’, ‘cosine’} 
+    print("SEED beta.py: ", args.seed)
     targets = df['Target'].tolist()
     targets = [i[0] for i in targets]
     df['Target'] = targets

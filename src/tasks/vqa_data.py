@@ -199,7 +199,10 @@ class VQADataset:
                 self.val_ids = pickle.load(f)
             print("MYO-FOOD SPLIT 4082: ", len(self.train_ids)) 
             self.filtered = ["pizza", "sandwich", "hot dog", "cheese", "coffee", "fruit", "chicken", "vegetables", "fish", "salad", "bread", "milk", "soup", "beef", "rice", "pasta", "pork", "french fries", "cereal", "bagel"]
-
+            if self.sampling_ids != None:
+                with open(self.sampling_ids, 'rb') as f:
+                    self.sampled_ids = pickle.load(f)
+                print("ids length: ", len(self.sampled_ids))     
             # Answers
             self.ans2label = json.load(open("data/vqa-outliers/myo-food-ans2label.json"))
             self.label2ans = json.load(open("data/vqa-outliers/myo-food-label2ans.json"))
@@ -293,7 +296,10 @@ class VQADataset:
             with open('data/vqa-outliers/myo-sports-val.pkl', 'rb') as f:
                 self.val_ids = pickle.load(f)
             print("MYO-SPORTS SPLIT 5411: ", len(self.train_ids)) 
-
+            if self.sampling_ids != None:
+                with open(self.sampling_ids, 'rb') as f:
+                    self.sampled_ids = pickle.load(f)
+                print("ids length: ", len(self.sampled_ids))     
             # Answers
             self.ans2label = json.load(open("data/vqa-outliers/myo-sports-ans2label.json"))
             self.label2ans = json.load(open("data/vqa-outliers/myo-sports-label2ans.json"))
