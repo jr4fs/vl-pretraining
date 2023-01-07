@@ -119,9 +119,6 @@ class VQA:
 
                 feats, boxes, target = feats.cuda(), boxes.cuda(), target.cuda()
                 logit = self.model(feats, boxes, sent)
-                softmax = torch.nn.Softmax(dim=1)
-                logit_softmax = softmax(logit)
-                gt_preds_probability_softmax= torch.squeeze(logit_softmax.gather(1, torch.unsqueeze(target, 1)))
 
                 #assert logit.dim() == target.dim() == 2
                 loss = self.loss_fxn(logit, target)
@@ -134,20 +131,33 @@ class VQA:
                 self.optim.step()
 
                 if args.subset != None:
+                    softmax = torch.nn.Softmax(dim=1)
+                    logit_softmax = softmax(logit)
+                    print(logit_softmax.shape)
+                    gt_preds_probability_softmax= torch.squeeze(logit_softmax.gather(1, torch.unsqueeze(target, 1))) # Batchwise
                     score, label = logit_softmax.max(1)
                 else:
-                    score, label = logit.max(1)
-                
+                    sigmoid = torch.nn.Sigmoid()
+                    logit_sigmoid = sigmoid(logit)
+                    score, label = logit.max(1) # gets the max predicted label for each instance 
+                    target_bool = (target>0).long()
+                    gt_preds_probability_sigmoid= torch.squeeze(logit_sigmoid.gather(1, target_bool))
+                    #print("TARGET: ", target.shape)
+                    print(torch.count_nonzero(target_bool[0]))
+                    print(gt_preds_probability_sigmoid[0])
+                    # print("LOGIT: ", logit.shape)
+                    # print("LOGIT SIGMOID: ", logit_sigmoid.shape)
+                    # print("LABEL: ", label.shape)
 
                 for qid, l in zip(ques_id, label.cpu().numpy()):
                     ans = dset.label2ans[l]
                     quesid2ans[qid.item()] = ans
 
-
-                for idx, question in enumerate(sent):
-                    preds = dset.label2ans[np.squeeze(label.cpu().numpy()[idx].astype(int))]
-                    ans_gt = dset.label2ans[np.squeeze(target.cpu().numpy()[idx].astype(int))]
-                    if args.subset != None:
+                if args.subset != None:
+                    for idx, question in enumerate(sent):
+                        preds = dset.label2ans[np.squeeze(label.cpu().numpy()[idx].astype(int))]
+                        ans_gt = dset.label2ans[np.squeeze(target.cpu().numpy()[idx].astype(int))]
+                        
                         training_stats.append({
                             "Epoch": int(epoch),
                             "Question ID": int(ques_id[idx]),
@@ -158,15 +168,15 @@ class VQA:
                             "GT Probability": float(gt_preds_probability_softmax[idx])
                             }
                     )
-                    
-                if i%1000 ==0:
-                    for idx, question in enumerate(sent):
-                        ans_gt = dset.label2ans[target.cpu().numpy()[idx]]
-                        preds = dset.label2ans[label.cpu().numpy()[idx]]
-                        preds_str = "Image ID: " + img_id[idx] + "\n Question: " + question + "\n ans_gt: " + ans_gt + "\n preds: " + preds + "\n"
-                        with open(self.output + "/log_preds.log", 'a') as preds_file:
-                            preds_file.write(preds_str)
-                            preds_file.flush()  
+                        
+                    if i%1000 ==0:
+                        for idx, question in enumerate(sent):
+                            ans_gt = dset.label2ans[target.cpu().numpy()[idx]]
+                            preds = dset.label2ans[label.cpu().numpy()[idx]]
+                            preds_str = "Image ID: " + img_id[idx] + "\n Question: " + question + "\n ans_gt: " + ans_gt + "\n preds: " + preds + "\n"
+                            with open(self.output + "/log_preds.log", 'a') as preds_file:
+                                preds_file.write(preds_str)
+                                preds_file.flush()  
 
             log_str = "\nEpoch %d: Train %0.2f\n" % (epoch, evaluator.evaluate(quesid2ans) * 100.)
             train_scores.append(evaluator.evaluate(quesid2ans) * 100.)
@@ -281,7 +291,7 @@ if __name__ == "__main__":
         run["subset"] = args.subset
     else:
         run["subset"] = '-'
-        run["training_budget"] = 'all vqa'
+        run["training_budget"] = 100
     run["output_dir"] = args.output
     run["epochs"] = args.epochs
     run["learning_rate"] = args.lr
