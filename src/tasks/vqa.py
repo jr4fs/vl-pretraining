@@ -133,21 +133,24 @@ class VQA:
                 if args.subset != None:
                     softmax = torch.nn.Softmax(dim=1)
                     logit_softmax = softmax(logit)
-                    print(logit_softmax.shape)
+                    # print(logit_softmax.shape)
                     gt_preds_probability_softmax= torch.squeeze(logit_softmax.gather(1, torch.unsqueeze(target, 1))) # Batchwise
+                    #print(gt_preds_probability_softmax.shape)
                     score, label = logit_softmax.max(1)
                 else:
                     sigmoid = torch.nn.Sigmoid()
                     logit_sigmoid = sigmoid(logit)
                     score, label = logit.max(1) # gets the max predicted label for each instance 
                     target_bool = (target>0).long()
-                    gt_preds_probability_sigmoid= torch.squeeze(logit_sigmoid.gather(1, target_bool))
+                    gt_preds_probability_sigmoid = logit_sigmoid * target_bool
+                    #print("GT PREDS: ", gt_preds_probability_sigmoid.shape)
+                    #gt_preds_probability_sigmoid= torch.squeeze(logit_sigmoid.gather(1, target_bool))
                     #print("TARGET: ", target.shape)
-                    print(torch.count_nonzero(target_bool[0]))
-                    print(gt_preds_probability_sigmoid[0])
+                    #print(torch.count_nonzero(target_bool[0]))
+                    #print(gt_preds_probability_sigmoid[0])
                     # print("LOGIT: ", logit.shape)
                     # print("LOGIT SIGMOID: ", logit_sigmoid.shape)
-                    # print("LABEL: ", label.shape)
+                    #print("LABEL: ", label.shape)
 
                 for qid, l in zip(ques_id, label.cpu().numpy()):
                     ans = dset.label2ans[l]
@@ -176,7 +179,42 @@ class VQA:
                             preds_str = "Image ID: " + img_id[idx] + "\n Question: " + question + "\n ans_gt: " + ans_gt + "\n preds: " + preds + "\n"
                             with open(self.output + "/log_preds.log", 'a') as preds_file:
                                 preds_file.write(preds_str)
-                                preds_file.flush()  
+                                preds_file.flush()
+                else:
+                    for idx, question in enumerate(sent):
+                        preds = dset.label2ans[np.squeeze(label.cpu().numpy()[idx].astype(int))]
+                        target_numpy = target_bool.cpu().numpy()[idx]
+                        targets_indices = np.nonzero(target_numpy) # get indices of groundtruth 
+                        target_indices_list = []
+                        for i in targets_indices[0]:
+                            target_indices_list.append(i)
+                        #print(target_indices_list)
+
+                        all_ans_gt = []
+                        all_probs = []
+                        for target_idx in target_indices_list:
+                            #print("target idx: ", target_idx)
+                            all_ans_gt.append(dset.label2ans[target_idx])
+                        probs_sigmoid = gt_preds_probability_sigmoid.detach().cpu().numpy()[idx]
+                        
+                        probs = probs_sigmoid[np.nonzero(probs_sigmoid)]
+                        for x in probs:
+                            all_probs.append(str(x))
+
+                        
+
+                        #ans_gt = dset.label2ans[np.squeeze(target.cpu().numpy()[idx].astype(int))]
+                        
+                        training_stats.append({
+                            "Epoch": int(epoch),
+                            "Question ID": int(ques_id[idx]),
+                            "Image ID": str(img_id[idx]),
+                            "Question": str(question),
+                            "Target": ', '.join(all_ans_gt),
+                            "Prediction": str(preds),
+                            "GT Probability": ', '.join(all_probs)
+                            }
+                    )
 
             log_str = "\nEpoch %d: Train %0.2f\n" % (epoch, evaluator.evaluate(quesid2ans) * 100.)
             train_scores.append(evaluator.evaluate(quesid2ans) * 100.)

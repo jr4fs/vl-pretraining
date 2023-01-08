@@ -52,6 +52,28 @@ def load_datamap_stats(base_path):
 
     return datamap_stats
 
+def preprocess_multilabel_datamaps_stats(stats):
+    preprocessed_stats = []
+    for epoch_stats in stats:
+        epoch_stats_preprocessed = []
+        for example in epoch_stats:
+            target_list = example['Target'].split(',')
+            if len(target_list) > 1:
+                probability_list = list(map(float, example['GT Probability'].split(',')))
+                max_prob = max(probability_list)
+                max_prob_idx = probability_list.index(max(probability_list))
+                max_prob_target = target_list[max_prob_idx]
+                example['Target'] = max_prob_target
+                example['GT Probability'] = max_prob
+                epoch_stats_preprocessed.append(example)
+            else:
+                epoch_stats_preprocessed.append(example)
+        preprocessed_stats.append(epoch_stats_preprocessed)
+    return preprocessed_stats
+
+            
+
+
 def calc_confidence(df_probabilities):
     '''Calculates confidence by taking the mean for each instance probability at ground truth over all epochs'''
     x = np.array(df_probabilities['Probabilities'].tolist())
@@ -170,10 +192,19 @@ def datamap_metrics(datamap_stats, correctness_check=False):
     return df
 
 
-def calculate_datamap_metrics(base_path):
-    datamap_stats = load_datamap_stats(base_path)
-    df = datamap_metrics(datamap_stats)
-    df.to_pickle(base_path+'datamap_metrics.pkl')
+def calculate_datamap_metrics(base_path, multilabel):
+    if multilabel == True:
+        print("MULTILABEL")
+        datamap_stats = load_datamap_stats(base_path)
+        preprocessed = preprocess_multilabel_datamaps_stats(datamap_stats)
+        df = datamap_metrics(preprocessed)
+        print(df.head())
+        df.to_pickle(base_path+'datamap_metrics.pkl')
+
+    else:
+        datamap_stats = load_datamap_stats(base_path)
+        df = datamap_metrics(datamap_stats)
+        df.to_pickle(base_path+'datamap_metrics.pkl')
 
 if __name__ == "__main__":
-    calculate_datamap_metrics(args.base_path)
+    calculate_datamap_metrics(args.base_path, args.multilabel)

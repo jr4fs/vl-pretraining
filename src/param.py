@@ -93,6 +93,7 @@ def parse_args():
     # Datamaps
     parser.add_argument("--base_path", default='snap/vqa/LXR111/animals/other/vqa_lxr111_animals_fromScratch_20epochs_breeds/', type=str, help='Path to trained model')
     parser.add_argument("--datamap_title", default='Trained from Scratch on VQA-MYO-Sports', type=str, help='Title of datamap plot')
+    parser.add_argument("--multilabel", action='store_const', default=True, const=False )
 
     # Sampling
     parser.add_argument("--sampling_method", default='min_variability', type=str, help='Sampling algorithm - beta, random, max_variability, min_variability')
