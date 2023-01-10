@@ -393,6 +393,7 @@ class VQADataset:
             for split in self.splits:
                 loaded_data.extend(json.load(open("data/vqa/%s.json" % split)))
 
+            # exclude examples with no labels
             self.data = []
             for datum in loaded_data:
                 if 'label' in datum:

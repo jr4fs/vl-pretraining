@@ -57,13 +57,15 @@ def preprocess_multilabel_datamaps_stats(stats):
     for epoch_stats in stats:
         epoch_stats_preprocessed = []
         for example in epoch_stats:
-            target_list = example['Target'].split(',')
+            target_list = [x.strip() for x in example['Target'].split(',')]
             if len(target_list) > 1:
                 probability_list = list(map(float, example['GT Probability'].split(',')))
                 max_prob = max(probability_list)
                 max_prob_idx = probability_list.index(max(probability_list))
-                max_prob_target = target_list[max_prob_idx]
-                example['Target'] = max_prob_target
+                # max_prob_target = target_list[max_prob_idx]
+                # example['Target'] = max_prob_target.strip()
+                # print(example['Target'])
+                #example['Target'] = target_list
                 example['GT Probability'] = max_prob
                 epoch_stats_preprocessed.append(example)
             else:
@@ -95,8 +97,7 @@ def calc_correctness(df_correct_preds):
     return correctness
 
 def remove_duplicates(id_probs, probs_corrects, col_name):
-    predictions = pd.DataFrame(list(zip(id_probs.keys(), probs_corrects)),
-    columns =['Question ID', col_name])
+    predictions = pd.DataFrame(list(zip(id_probs.keys(), probs_corrects)), columns =['Question ID', col_name])
     predictions_duplicate = predictions[col_name].values
     predictions_remove_duplications = []
     for pred in predictions_duplicate:
@@ -110,7 +111,7 @@ def remove_duplicates(id_probs, probs_corrects, col_name):
     predictions[col_name] = predictions_remove_duplications
     return predictions
 
-def datamap_metrics(datamap_stats, correctness_check=False):
+def datamap_metrics(datamap_stats, correctness_check=False, multilabel=False):
     '''
     Returns dataframe with confidence, correctness and variability for datamap plotting
 
@@ -129,14 +130,20 @@ def datamap_metrics(datamap_stats, correctness_check=False):
 
     for epoch_instances in datamap_stats:
         for example in epoch_instances:
-            if example['Target'] == 'geese' and example['Prediction'] == 'goose': # special case in animal split
-                correct = True
-            elif example['Prediction'][-1] == 's' and example['Prediction'][-1] == example['Target']: # account for plurals in animal split
-                correct = True
-            elif example['Target'] == example['Prediction']:
-                correct = True
+            if multilabel == True:
+                if example['Prediction'] in example['Target']:
+                    correct = True
+                else:
+                    correct = False
             else:
-                correct = False
+                if example['Target'] == 'geese' and example['Prediction'] == 'goose': # special case in animal split
+                    correct = True
+                elif example['Prediction'][-1] == 's' and example['Prediction'][-1] == example['Target']: # account for plurals in animal split
+                    correct = True
+                elif example['Target'] == example['Prediction']:
+                    correct = True
+                else:
+                    correct = False
             ids_probs[example['Question ID']][0].append(example['GT Probability'])
             ids_probs[example['Question ID']][1].append(correct)
             ids_probs[example['Question ID']][2].append(example['Question'])
@@ -197,8 +204,9 @@ def calculate_datamap_metrics(base_path, multilabel):
         print("MULTILABEL")
         datamap_stats = load_datamap_stats(base_path)
         preprocessed = preprocess_multilabel_datamaps_stats(datamap_stats)
-        df = datamap_metrics(preprocessed)
-        print(df.head())
+        #print(preprocessed[0])
+        df = datamap_metrics(preprocessed, multilabel=True)
+        #print(df.head())
         df.to_pickle(base_path+'datamap_metrics.pkl')
 
     else:
