@@ -37,12 +37,14 @@ def parse_args():
     parser.add_argument("--train", default='train')
     parser.add_argument("--valid", default='valid')
     parser.add_argument("--test", default=None)
-    parser.add_argument("--subset", type=str, default=None)
+    parser.add_argument("--subset", type=str, default=None, help='vqa-animals, myo-sports, myo-animals')
+    parser.add_argument("--multiclass", action='store_const', default=True, const=False)
+    parser.add_argument("--multilabel", action='store_const', default=False, const=True)
     parser.add_argument("--sampling_ids", type=str, default=None) # TODO when using sampling ids with vqa_from_scratch.bash, change sampling args for appropriate neptune logging
 
     # Training Hyper-parameters
     parser.add_argument('--batchSize', dest='batch_size', type=int, default=256)
-    parser.add_argument('--optim', default='bert')
+    parser.add_argument('--optim', default='bert') 
     parser.add_argument('--lr', type=float, default=1e-4)
     parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--dropout', type=float, default=0.1)
@@ -93,7 +95,7 @@ def parse_args():
     # Datamaps
     parser.add_argument("--base_path", default='snap/vqa/LXR111/animals/other/vqa_lxr111_animals_fromScratch_20epochs_breeds/', type=str, help='Path to trained model')
     parser.add_argument("--datamap_title", default='Trained from Scratch on VQA-Multilabel', type=str, help='Title of datamap plot')
-    parser.add_argument("--multilabel", action='store_const', default=True, const=False )
+    parser.add_argument("--multilabel_datamaps", action='store_const', default=True, const=False )
 
     # Sampling
     parser.add_argument("--sampling_method", default='min_variability', type=str, help='Sampling algorithm - beta, random, max_variability, min_variability')

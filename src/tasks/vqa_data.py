@@ -47,7 +47,7 @@ class VQADataset:
     def __init__(self, splits: str, subset: str, sampling_ids: str):
         self.name = splits
         self.splits = splits.split(',')
-        self.subset = subset
+        self.subset = subset # training on subsets: multiclass 
         self.sampling_ids = sampling_ids
         if subset == 'sports':
             self.filtered = [
@@ -388,7 +388,7 @@ class VQADataset:
                 for datum in self.data
             }
         else:
-            # Loading datasets
+            # Loading datasets, if no subset is specified, train on full dataset
             loaded_data = []
             for split in self.splits:
                 loaded_data.extend(json.load(open("data/vqa/%s.json" % split)))
@@ -519,7 +519,7 @@ class VQATorchDataset(Dataset):
         if 'label' in datum:
             label = datum['label']
             target = torch.zeros(self.raw_dataset.num_answers)
-            if self.raw_dataset.subset != None:
+            if args.multiclass == True:
                 assert len(label) == 1 # ensure there is only one gold label
                 for ans, score in label.items():
                     if ans in self.raw_dataset.filtered: # double check the if answer is in filtered category

@@ -78,7 +78,7 @@ class VQA:
             self.model.lxrt_encoder.multi_gpu()
 
         # Loss and Optimizer
-        if args.subset != 'None':
+        if args.multiclass == True:
             self.loss_fxn = nn.CrossEntropyLoss()
         else:
             self.loss_fxn = nn.BCEWithLogitsLoss()
@@ -130,12 +130,10 @@ class VQA:
                 nn.utils.clip_grad_norm_(self.model.parameters(), 5.)
                 self.optim.step()
 
-                if args.subset != None:
+                if args.multiclass == True:
                     softmax = torch.nn.Softmax(dim=1)
                     logit_softmax = softmax(logit)
-                    # print(logit_softmax.shape)
-                    gt_preds_probability_softmax= torch.squeeze(logit_softmax.gather(1, torch.unsqueeze(target, 1))) # Batchwise
-                    #print(gt_preds_probability_softmax.shape)
+                    gt_preds_probability_softmax = torch.squeeze(logit_softmax.gather(1, torch.unsqueeze(target, 1))) # Batchwise
                     score, label = logit_softmax.max(1)
                 else:
                     sigmoid = torch.nn.Sigmoid()
@@ -143,14 +141,6 @@ class VQA:
                     score, label = logit.max(1) # gets the max predicted label for each instance 
                     target_bool = (target>0).long()
                     gt_preds_probability_sigmoid = logit_sigmoid * target_bool
-                    #print("GT PREDS: ", gt_preds_probability_sigmoid.shape)
-                    #gt_preds_probability_sigmoid= torch.squeeze(logit_sigmoid.gather(1, target_bool))
-                    #print("TARGET: ", target.shape)
-                    #print(torch.count_nonzero(target_bool[0]))
-                    #print(gt_preds_probability_sigmoid[0])
-                    # print("LOGIT: ", logit.shape)
-                    # print("LOGIT SIGMOID: ", logit_sigmoid.shape)
-                    #print("LABEL: ", label.shape)
 
                 for qid, l in zip(ques_id, label.cpu().numpy()):
                     ans = dset.label2ans[l]

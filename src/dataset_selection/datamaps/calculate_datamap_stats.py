@@ -215,4 +215,4 @@ def calculate_datamap_metrics(base_path, multilabel):
         df.to_pickle(base_path+'datamap_metrics.pkl')
 
 if __name__ == "__main__":
-    calculate_datamap_metrics(args.base_path, args.multilabel)
+    calculate_datamap_metrics(args.base_path, args.multilabel_datamaps)
