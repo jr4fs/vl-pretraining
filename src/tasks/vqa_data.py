@@ -336,7 +336,6 @@ class VQADataset:
                                 self.data.append(datum)   
                         else:
                             if self.sampling_ids != None:
-                                #print("USING SAMPLING IDS: ", self.sampling_ids)
                                 if datum['question_id'] in self.train_ids:
                                     if datum['question_id'] in self.sampled_ids:
                                         #itemMaxValue = max(datum['label'].items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
@@ -345,12 +344,6 @@ class VQADataset:
                                             # out of all the labels, choose the label with the highest score that is also in self.filtered
                                             if key in self.filtered: 
                                                 listOfKeys[key] = value
-                                            # if value == itemMaxValue[1]:
-                                            #     # if key == 'geese':
-                                            #     #     key = 'goose'
-                                            #     listOfKeys.append(key)
-                                        # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
-                                        #     listOfKeys[0] = listOfKeys[0][:-1]
                                         #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
                                         itemMaxValue = max(listOfKeys.items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
                                         #if listOfKeys[0] in self.filtered:
@@ -366,12 +359,6 @@ class VQADataset:
                                         # out of all the labels, choose the label with the highest score that is also in self.filtered
                                         if key in self.filtered: 
                                             listOfKeys[key] = value
-                                        # if value == itemMaxValue[1]:
-                                        #     # if key == 'geese':
-                                        #     #     key = 'goose'
-                                        #     listOfKeys.append(key)
-                                    # if len(listOfKeys) == 1 and (listOfKeys[0][-1] == 's' and listOfKeys[0][:-1] in self.filtered): # account for plurals
-                                    #     listOfKeys[0] = listOfKeys[0][:-1]
                                     #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
                                     itemMaxValue = max(listOfKeys.items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
                                     #if listOfKeys[0] in self.filtered:
@@ -388,17 +375,36 @@ class VQADataset:
                 for datum in self.data
             }
         else:
-            # Loading datasets, if no subset is specified, train on full dataset
             loaded_data = []
             for split in self.splits:
                 loaded_data.extend(json.load(open("data/vqa/%s.json" % split)))
 
             # exclude examples with no labels
             self.data = []
-            for datum in loaded_data:
-                if 'label' in datum:
-                    if len(datum['label']) > 0:
-                        self.data.append(datum)
+            # Loading datasets, if no subset is specified, train on full dataset
+            if args.multiclass == True:
+                print("Loading on full multiclass classification dataset")
+                for datum in loaded_data:
+                    if 'label' in datum:
+                        if len(datum['label']) > 0:
+                            listOfKeys = dict()
+                            for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                                # out of all the labels, choose the label with the highest score that is also in self.filtered
+                                #if key in self.filtered: 
+                                listOfKeys[key] = value
+                            #if len(listOfKeys) == 1 and (listOfKeys[0] in self.filtered): # ensure there is only one gold label and it is in the desired split
+                            itemMaxValue = max(listOfKeys.items(), key=lambda x: x[1]) # Find item with Max Value in list of labels
+                            #if listOfKeys[0] in self.filtered:
+                            new_label ={itemMaxValue[0]: itemMaxValue[1]} # for data with multiple answers with the same score, just choose the first answer
+                            datum['label'] = new_label
+                            self.data.append(datum)   
+
+            else:
+                print("Loading full multilabel classification dataset")
+                for datum in loaded_data:
+                    if 'label' in datum:
+                        if len(datum['label']) > 0:
+                            self.data.append(datum)
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
 
             # Convert list to dict (for evaluation)
@@ -412,22 +418,22 @@ class VQADataset:
             self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
             assert len(self.ans2label) == len(self.label2ans)
 
-            # # Loading datasets
-            # self.data = []
-            # for split in self.splits:
-            #     self.data.extend(json.load(open("data/vqa/%s.json" % split)))
-            # print("Load %d data from split(s) %s." % (len(self.data), self.name))
+                # # Loading datasets
+                # self.data = []
+                # for split in self.splits:
+                #     self.data.extend(json.load(open("data/vqa/%s.json" % split)))
+                # print("Load %d data from split(s) %s." % (len(self.data), self.name))
 
-            # # Convert list to dict (for evaluation)
-            # self.id2datum = {
-            #     datum['question_id']: datum
-            #     for datum in self.data
-            # }
+                # # Convert list to dict (for evaluation)
+                # self.id2datum = {
+                #     datum['question_id']: datum
+                #     for datum in self.data
+                # }
 
-            # # Answers
-            # self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
-            # self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
-            # assert len(self.ans2label) == len(self.label2ans)
+                # # Answers
+                # self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
+                # self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
+                # assert len(self.ans2label) == len(self.label2ans)
 
     @property
     def num_answers(self):
@@ -522,8 +528,8 @@ class VQATorchDataset(Dataset):
             if args.multiclass == True:
                 assert len(label) == 1 # ensure there is only one gold label
                 for ans, score in label.items():
-                    if ans in self.raw_dataset.filtered: # double check the if answer is in filtered category
-                        target[self.raw_dataset.ans2label[ans]] = 1.0
+                    #if ans in self.raw_dataset.filtered: # double check the if answer is in filtered category
+                    target[self.raw_dataset.ans2label[ans]] = 1.0
                 target = torch.squeeze(target.nonzero())
                 target = target.long()
             else:

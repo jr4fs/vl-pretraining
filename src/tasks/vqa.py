@@ -146,7 +146,7 @@ class VQA:
                     ans = dset.label2ans[l]
                     quesid2ans[qid.item()] = ans
 
-                if args.subset != None:
+                if args.multiclass == True:
                     for idx, question in enumerate(sent):
                         preds = dset.label2ans[np.squeeze(label.cpu().numpy()[idx].astype(int))]
                         ans_gt = dset.label2ans[np.squeeze(target.cpu().numpy()[idx].astype(int))]
@@ -251,7 +251,7 @@ class VQA:
             with torch.no_grad():
                 feats, boxes = feats.cuda(), boxes.cuda()
                 logit = self.model(feats, boxes, sent)
-                if args.subset != None:
+                if args.multiclass == True:
                     softmax = torch.nn.Softmax()
                     score, label = softmax(logit).max(1)
                 else:
@@ -273,7 +273,7 @@ class VQA:
         dset, loader, evaluator = data_tuple
         quesid2ans = {}
         for i, (ques_id, feats, boxes, sent, target, img_id) in enumerate(loader):
-            if args.subset != None:
+            if args.multiclass == True:
                 label = target
             else:
                 _, label = target.max(1)
