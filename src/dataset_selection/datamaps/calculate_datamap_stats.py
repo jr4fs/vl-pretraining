@@ -204,9 +204,7 @@ def calculate_datamap_metrics(base_path, multilabel):
         print("MULTILABEL")
         datamap_stats = load_datamap_stats(base_path)
         preprocessed = preprocess_multilabel_datamaps_stats(datamap_stats)
-        #print(preprocessed[0])
         df = datamap_metrics(preprocessed, multilabel=True)
-        #print(df.head())
         df.to_pickle(base_path+'datamap_metrics.pkl')
 
     else:

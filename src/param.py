@@ -38,7 +38,7 @@ def parse_args():
     parser.add_argument("--valid", default='valid')
     parser.add_argument("--test", default=None)
     parser.add_argument("--subset", type=str, default=None, help='vqa-animals, myo-sports, myo-animals')
-    parser.add_argument("--multiclass", action='store_const', default=True, const=False)
+    parser.add_argument("--multiclass", action='store_const', default=False, const=True)
     parser.add_argument("--multilabel", action='store_const', default=False, const=True)
     parser.add_argument("--sampling_ids", type=str, default=None) # TODO when using sampling ids with vqa_from_scratch.bash, change sampling args for appropriate neptune logging
 

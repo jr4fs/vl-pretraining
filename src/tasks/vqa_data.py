@@ -402,9 +402,9 @@ class VQADataset:
             else:
                 print("Loading full multilabel classification dataset")
                 for datum in loaded_data:
-                    if 'label' in datum:
-                        if len(datum['label']) > 0:
-                            self.data.append(datum)
+                    # if 'label' in datum:
+                    #     if len(datum['label']) > 0:
+                    self.data.append(datum)
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
 
             # Convert list to dict (for evaluation)
