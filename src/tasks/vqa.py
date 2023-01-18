@@ -140,7 +140,7 @@ class VQA:
                     logit_sigmoid = sigmoid(logit)
                     score, label = logit.max(1) # gets the max predicted label for each instance 
                     target_bool = (target>0).long()
-                    gt_preds_probability_sigmoid = logit_sigmoid * target_bool
+                    gt_preds_probability_sigmoid = logit_sigmoid * target_bool 
 
                 for qid, l in zip(ques_id, label.cpu().numpy()):
                     ans = dset.label2ans[l]
@@ -174,7 +174,9 @@ class VQA:
                     for idx, question in enumerate(sent):
                         preds = dset.label2ans[np.squeeze(label.cpu().numpy()[idx].astype(int))]
                         target_numpy = target_bool.cpu().numpy()[idx]
+                        #print("target: ", target_numpy.shape)
                         targets_indices = np.nonzero(target_numpy) # get indices of groundtruth 
+                        #print("target indices: ", targets_indices)
                         target_indices_list = []
                         for i in targets_indices[0]:
                             target_indices_list.append(i)
@@ -190,8 +192,6 @@ class VQA:
                         probs = probs_sigmoid[np.nonzero(probs_sigmoid)]
                         for x in probs:
                             all_probs.append(str(x))
-
-                        
 
                         #ans_gt = dset.label2ans[np.squeeze(target.cpu().numpy()[idx].astype(int))]
                         

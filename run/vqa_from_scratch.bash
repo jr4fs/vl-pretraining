@@ -15,12 +15,13 @@ cp $0 $output/run.bash
 # See Readme.md for option details.
 CUDA_VISIBLE_DEVICES=$1 PYTHONPATH=$PYTHONPATH:./src \
     python src/tasks/vqa.py \
-    --train train --valid minival,nominival  \
+    --train train,nominival --valid minival  \
     --llayers 1 --xlayers 1 --rlayers 1 \
     --fromScratch \
-    --batchSize 32 --optim bert --lr 5e-5 --epochs 1 \
-    --tqdm --output $output ${@:3}
-
+    --batchSize 256 --optim bert --lr 1e-4 --epochs 1 \
+    --tqdm --output $output ${@:3} \
+    #--load snap/vqa/lxr111_multilabel_full_run/
+# -batchSize 256 --optim bert --lr 1e-4 --epochs 20 
 while [ "$1" != "" ]; do
     case $1 in
     --sampling_ids)

@@ -5,4 +5,4 @@ conda activate lxmert
 # See Readme.md for option details.
 PYTHONPATH=$PYTHONPATH:./src \
     python src/dataset_selection/datamaps/calculate_datamap_stats.py \
-    --base_path snap/vqa/lxr111_multiclass_full_run/
+    --base_path snap/vqa/lxrtiny/

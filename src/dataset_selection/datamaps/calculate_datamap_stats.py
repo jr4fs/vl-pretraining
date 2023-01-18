@@ -68,8 +68,13 @@ def preprocess_multilabel_datamaps_stats(stats):
                 #example['Target'] = target_list
                 example['GT Probability'] = max_prob
                 epoch_stats_preprocessed.append(example)
+            elif len(target_list) == 1:
+                if target_list[0] != '':
+                    epoch_stats_preprocessed.append(example)
+                else:
+                    continue
             else:
-                epoch_stats_preprocessed.append(example)
+                continue
         preprocessed_stats.append(epoch_stats_preprocessed)
     return preprocessed_stats
 
