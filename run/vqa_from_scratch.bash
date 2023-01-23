@@ -18,7 +18,7 @@ CUDA_VISIBLE_DEVICES=$1 PYTHONPATH=$PYTHONPATH:./src \
     --train train,nominival --valid minival  \
     --llayers 1 --xlayers 1 --rlayers 1 \
     --fromScratch \
-    --batchSize 256 --optim bert --lr 1e-4 --epochs 1 \
+    --batchSize 256 --optim bert --lr 1e-4 --epochs 20 \
     --tqdm --output $output ${@:3} \
     #--load snap/vqa/lxr111_multilabel_full_run/
 # -batchSize 256 --optim bert --lr 1e-4 --epochs 20 

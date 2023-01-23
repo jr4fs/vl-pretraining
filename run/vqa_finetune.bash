@@ -15,7 +15,8 @@ CUDA_VISIBLE_DEVICES=$1 PYTHONPATH=$PYTHONPATH:./src \
     --train train,nominival --valid minival  \
     --llayers 9 --xlayers 5 --rlayers 5 \
     --loadLXMERTQA snap/pretrained/model \
-    --batchSize 32 --optim bert --lr 5e-5 --epochs 10 \
+    --batchSize 32 --optim bert --lr 5e-5 --epochs 4 \
+    --multilabel \
     --tqdm --output $output ${@:3}
 
 # # The name of this experiment.
