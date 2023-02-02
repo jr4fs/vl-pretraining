@@ -134,7 +134,8 @@ class VQA:
                     softmax = torch.nn.Softmax(dim=1)
                     logit_softmax = softmax(logit)
                     gt_preds_probability_softmax = torch.squeeze(logit_softmax.gather(1, torch.unsqueeze(target, 1))) # Batchwise
-                    score, label = logit_softmax.max(1)
+                    #score, label = logit_softmax.max(1)
+                    score, label = logit.max(1)
                 else:
                     sigmoid = torch.nn.Sigmoid()
                     logit_sigmoid = sigmoid(logit)
@@ -253,7 +254,8 @@ class VQA:
                 logit = self.model(feats, boxes, sent)
                 if args.multiclass == True:
                     softmax = torch.nn.Softmax()
-                    score, label = softmax(logit).max(1)
+                    #score, label = softmax(logit).max(1)
+                    score, label = logit.max(1)
                 else:
                     score, label = logit.max(1)
                 for qid, l in zip(ques_id, label.cpu().numpy()):
