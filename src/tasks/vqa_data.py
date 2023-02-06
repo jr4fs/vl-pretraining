@@ -401,10 +401,33 @@ class VQADataset:
 
             else:
                 print("Loading full multilabel classification dataset")
+                if self.sampling_ids != None:
+                    with open(self.sampling_ids, 'rb') as f:
+                        self.sampled_ids = pickle.load(f)
+                    print("ids length: ", len(self.sampled_ids))
+
+                # for datum in loaded_data:
+                #     # if 'label' in datum:
+                #     #     if len(datum['label']) > 0:
+                #     self.data.append(datum)
+
+                # Loading datasets
+                loaded_data = []
+                for split in self.splits:
+                    loaded_data.extend(json.load(open("data/vqa/%s.json" % split)))
+                #print("Load %d data from split(s) %s." % (len(self.data), self.name))
+                self.data = []
+            
                 for datum in loaded_data:
-                    # if 'label' in datum:
-                    #     if len(datum['label']) > 0:
-                    self.data.append(datum)
+                    if 'minival' in self.splits:
+                            self.data.append(datum)
+                    else:
+                        if self.sampling_ids != None:                            
+                            if datum['question_id'] in self.sampled_ids:
+                                self.data.append(datum)
+                        else:
+                            self.data.append(datum)   
+
             print("Load %d data from split(s) %s." % (len(self.data), self.name))
 
             # Convert list to dict (for evaluation)
@@ -417,23 +440,6 @@ class VQADataset:
             self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
             self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
             assert len(self.ans2label) == len(self.label2ans)
-
-                # # Loading datasets
-                # self.data = []
-                # for split in self.splits:
-                #     self.data.extend(json.load(open("data/vqa/%s.json" % split)))
-                # print("Load %d data from split(s) %s." % (len(self.data), self.name))
-
-                # # Convert list to dict (for evaluation)
-                # self.id2datum = {
-                #     datum['question_id']: datum
-                #     for datum in self.data
-                # }
-
-                # # Answers
-                # self.ans2label = json.load(open("data/vqa/trainval_ans2label.json"))
-                # self.label2ans = json.load(open("data/vqa/trainval_label2ans.json"))
-                # assert len(self.ans2label) == len(self.label2ans)
 
     @property
     def num_answers(self):

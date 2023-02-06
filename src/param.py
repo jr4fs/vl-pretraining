@@ -95,13 +95,13 @@ def parse_args():
     # Datamaps
     parser.add_argument("--base_path", default='snap/vqa/LXR111/animals/other/vqa_lxr111_animals_fromScratch_20epochs_breeds/', type=str, help='Path to trained model')
     parser.add_argument("--datamap_title", default='Trained from Scratch on VQA-Multiclass', type=str, help='Title of datamap plot')
-    parser.add_argument("--multilabel_datamaps", action='store_const', default=False, const=True)
+    parser.add_argument("--multilabel_datamaps", action='store_const', default=True, const=False)
 
     # Sampling
     parser.add_argument("--sampling_method", default='min_variability', type=str, help='Sampling algorithm - beta, random, max_variability, min_variability')
     parser.add_argument("--sampling_model", default='LXR111', type=str, help='Name of model you are sampling variability values from')
     parser.add_argument("--training_budget", default=30, type=int, help='Percentage of data sampled')
-    parser.add_argument("--sampling_dataset", default='myo-food', type=str, help='animals, sports, myo-food, myo-sports')
+    parser.add_argument("--sampling_dataset", default='multilabel_full', type=str, help='animals, sports, myo-food, myo-sports, multilabel_full')
     parser.add_argument("--include_all_classes", action='store_const', default=False, const=True )
     
     # Beta sampling

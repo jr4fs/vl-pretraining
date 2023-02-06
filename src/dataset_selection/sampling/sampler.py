@@ -39,6 +39,10 @@ from global_max_confidence_sampling import *
 from global_min_confidence_sampling import *
 from global_min_variability_sampling import * 
 from global_max_variability_sampling import * 
+from global_min_variability_sampling_multilabel import * 
+from global_max_variability_sampling_multilabel import * 
+from global_random_multilabel import *
+from beta_sampling_multilabel import * 
 
 if __name__ == "__main__":
     print("SEED sampler.py: ", args.seed)
@@ -49,12 +53,13 @@ if __name__ == "__main__":
     print("sampling dataset: ", args.sampling_dataset)
     df = pd.read_pickle(base_path+"datamap_metrics.pkl")
     #budgets = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    budgets = [10, 20, 30]
+    budgets = [10]
     if sampling_method == 'beta':
         #beta_sampling(df, args.alpha, args.beta, args.sampling_model, args.training_budget, norm=args.norm, bandwidth=args.bandwidth, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
         params = [(1, 2), (2, 1), (1, 1),(2, 2)]
         #params = [(1, 1)]
-        norms = ['pvals', 'var_counts', 'gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
+        norms = ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
+        # norms = ['pvals', 'var_counts', 'gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
         #norms = ['exponential', 'gaussian', 'var_counts']
         for norm in norms:
             print("Norm: ", norm)
@@ -62,6 +67,18 @@ if __name__ == "__main__":
                 for param in params:
                     df = pd.read_pickle(base_path+"datamap_metrics.pkl")
                     beta_sampling(df, param[0], param[1], args.sampling_model, budget, norm=norm, bandwidth=args.bandwidth, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
+    elif sampling_method == 'beta_multilabel':
+        #params = [(1, 2), (2, 1), (1, 1),(2, 2)]
+        params = [(2,1)]
+        #norms = ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
+        norms = ['tophat']
+        # norms = ['pvals', 'var_counts', 'gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
+        for norm in norms:
+            print("Norm: ", norm)
+            for budget in budgets:
+                for param in params:
+                    df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+                    beta_sampling_multilabel(df, param[0], param[1], args.sampling_model, budget, norm=norm, bandwidth=args.bandwidth, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
     elif sampling_method == 'random':
         for budget in budgets:
             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
@@ -102,5 +119,17 @@ if __name__ == "__main__":
         for budget in budgets:
             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
             global_max_variability(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
+    elif sampling_method == 'global_min_variability_multilabel':
+        for budget in budgets:
+            df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+            global_min_variability_multilabel(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
+    elif sampling_method == 'global_max_variability_multilabel':
+        for budget in budgets:
+            df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+            global_max_variability_multilabel(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
+    elif sampling_method == 'global_random_multilabel':
+        for budget in budgets:
+            df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+            global_random_multilabel(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
     else:
         print("Sampling method not implemented")
