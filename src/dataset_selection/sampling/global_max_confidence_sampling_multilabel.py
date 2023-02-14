@@ -28,7 +28,7 @@ import pickle
 from sklearn.neighbors import KernelDensity
 from param import args
 
-def global_max_variability_multilabel(df, model, training_budget, include_all_classes=False, dataset='animals'):
+def global_max_confidence_multilabel(df, model, training_budget, include_all_classes=False, dataset='animals'):
     targets = df['Target'].tolist()
     targets = [i[0] for i in targets]
     df['Target'] = targets
@@ -43,7 +43,7 @@ def global_max_variability_multilabel(df, model, training_budget, include_all_cl
     unique_targets = df['Target'].unique()
     
 
-    df_sorted = df.sort_values(by=['variability'], ascending=False)
+    df_sorted = df.sort_values(by=['confidence'], ascending=False)
     question_ids = np.array(df_sorted['question_id'].to_list())
     variabilities = np.array(df_sorted['variability'].tolist())
     confidence = np.array(df_sorted['confidence'].tolist())
@@ -74,13 +74,15 @@ def global_max_variability_multilabel(df, model, training_budget, include_all_cl
     #         for target_excluded in intersect:
     #             df_filtered = orig_df[orig_df['Target'] == target_excluded]
     #             sampled_question_ids.extend(df_filtered['question_id'].to_list())
-    #     save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/global_max_variability/include_all_classes/seed_'+str(args.seed)+'/budget_'+str(training_budget)+'.pkl'
-    #else:
-    save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/global_max_variability/seed_'+str(args.seed)+'/budget_'+str(training_budget)+'.pkl'
+    #     save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/global_max_confidence/include_all_classes/seed_'+str(args.seed)+'/budget_'+str(training_budget)+'.pkl'
+    # else:
+    #     save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/global_max_confidence/seed_'+str(args.seed)+'/budget_'+str(training_budget)+'.pkl'
+    save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/global_max_confidence/seed_'+str(args.seed)+'/budget_'+str(training_budget)+'.pkl'
 
 
     # unique_targets_sample = orig_df[orig_df['question_id'].isin(sampled_question_ids)]
     # unique_targets = set(unique_targets_sample['Target'].unique())
+
 
     targets_multilabel =[] # unique targets in vqa dataset 
     for i in targets_sample:
@@ -96,10 +98,11 @@ def global_max_variability_multilabel(df, model, training_budget, include_all_cl
     targets_excluded = unique_targets - sampled_targets_unique
     print("TARGETS EXCLUDED: ", len(targets_excluded))
 
+
     with open(save_path, 'wb') as f:
         pickle.dump(list(set(sampled_question_ids)), f)
 
-    print("unique targets global max variability ", len(sampled_targets_unique))
-    print('samples - global max variability: ', len(set(sampled_question_ids)))
-    print('all_samples - global max variability: ', len(question_ids))
+    print("unique targets global max confidence ", len(set(sampled_targets_unique)))
+    print('samples - global max confidence: ', len(set(sampled_question_ids)))
+    print('all_samples - global max confidence: ', len(question_ids))
     #return sampled_question_ids
