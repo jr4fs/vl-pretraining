@@ -70,7 +70,7 @@ if __name__ == "__main__":
                     beta_sampling(df, param[0], param[1], args.sampling_model, budget, norm=norm, bandwidth=args.bandwidth, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
     elif sampling_method == 'beta_multilabel':
         #params = [(1, 2), (2, 1), (1, 1),(2, 2)]
-        params = [(2,1)]
+        params = [(2,1), (1,2)]
         #norms = ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
         norms = ['tophat']
         # norms = ['pvals', 'var_counts', 'gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']

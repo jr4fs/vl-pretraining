@@ -44,7 +44,6 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
 
     beta_distribution = scipy.stats.beta(alpha, beta)
     p_vals = beta_distribution.pdf(variabilities)
-    #plt.plot(variabilities, p_vals, label='pdf')
     if norm == 'pvals':
         p_vals /= p_vals.sum()
         plt.plot(variabilities, p_vals, label='pdf')
@@ -89,8 +88,8 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
     elif norm in ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']:
         vars_kde =np.array(variabilities).reshape(-1, 1)
         kde = KernelDensity(bandwidth=bandwidth, kernel=norm)
-        kde.fit(vars_kde)
-        # score_samples returns the log of the probability density
+        kde.fit(vars_kde) # Fit the Kernel Density model on the data
+        # score_samples computes the log-likelihood of each sample under the model.
         logprob = kde.score_samples(vars_kde)
         p_vals /= np.exp(logprob)
         p_vals /= p_vals.sum()

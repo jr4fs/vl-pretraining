@@ -6,6 +6,6 @@ conda activate lxmert
 PYTHONPATH=$PYTHONPATH:./src \
     python src/dataset_selection/sampling/sampler.py \
     --base_path snap/vqa/lxr111_multilabel_full_run_3/ \
-    --sampling_method global_max_confidence_multilabel \
+    --sampling_method beta_multilabel \
     --sampling_dataset multilabel_full \
     --seed 965

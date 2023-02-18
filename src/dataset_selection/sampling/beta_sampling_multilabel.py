@@ -45,7 +45,7 @@ def beta_sampling_multilabel(df, alpha, beta, model, training_budget, norm='pval
     all_ids = df['question_id'].to_list()
     num_total_samples = round(len(all_ids) * (training_budget * 0.01))
     question_ids = np.array(df['question_id'].tolist())
-    variabilities = np.array(df['variability'].tolist())
+    variabilities = np.array(df['variability'].tolist()) * 2
     confidence = np.array(df['confidence'].tolist())
     targets = np.array(df['Target'].tolist())
 
