@@ -51,6 +51,8 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
             save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_pvals/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
         else:
             save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/beta_pvals/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
+    # the probability is different than the PDF, the pdf can have a value greater than 1, do we need the probability value which you get by differentiating the pdf 
+    # 
     elif norm == 'var_counts':
         # normalize by counts in variability histogram
         test = px.histogram(df, x='variability')
@@ -91,8 +93,9 @@ def beta_sampling(df, alpha, beta, model, training_budget, norm='pvals', bandwid
         kde.fit(vars_kde) # Fit the Kernel Density model on the data
         # score_samples computes the log-likelihood of each sample under the model.
         logprob = kde.score_samples(vars_kde)
-        p_vals /= np.exp(logprob)
+        p_vals /= np.exp(logprob) # probablilty at any point at continuous distrubiton is 0, for every variabiltiy, we need to compute probabiltiy at interval around it, and use that for normalization 
         p_vals /= p_vals.sum()
+        # instead of doing KDE, for beta, you can get CDF directly, you have to integrate the PDF to get the CDF, 
         if include_all_classes == True:
             save_path = 'src/dataset_selection/sampling/samples/'+model+'/'+dataset+'/beta/include_all_classes/beta_kernel/'+norm+'/seed_'+str(args.seed)+'/alpha_'+str(alpha)+'_beta_'+str(beta)+'_budget_'+str(training_budget)+'.pkl'
         else:
