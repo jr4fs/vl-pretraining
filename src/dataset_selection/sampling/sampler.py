@@ -44,6 +44,7 @@ from global_max_variability_sampling_multilabel import *
 from global_random_multilabel import *
 from beta_sampling_multilabel import * 
 from global_max_confidence_sampling_multilabel import *
+from global_min_confidence_sampling_multilabel import *
 
 if __name__ == "__main__":
     print("SEED sampler.py: ", args.seed)
@@ -116,6 +117,10 @@ if __name__ == "__main__":
         for budget in budgets:
             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
             global_min_confidence(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
+    elif sampling_method == 'global_min_confidence_multilabel':
+        for budget in budgets:
+            df = pd.read_pickle(base_path+"datamap_metrics.pkl")
+            global_min_confidence_multilabel(df, args.sampling_model, budget, include_all_classes=args.include_all_classes, dataset=args.sampling_dataset)
     elif sampling_method == 'global_min_variability':
         for budget in budgets:
             df = pd.read_pickle(base_path+"datamap_metrics.pkl")
