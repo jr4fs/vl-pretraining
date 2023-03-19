@@ -585,6 +585,7 @@ class VQAEvaluator:
                 score = 0.
                 if ans in label:
                     score += label[ans]
+                
 
                 result.append({
                     'question_id': ques_id,
