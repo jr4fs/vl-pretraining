@@ -572,12 +572,29 @@ class VQAEvaluator:
         :param quesid2ans: dict of quesid --> ans
         :param path: The desired path of saved file.
         """
+
         with open(path, 'w') as f:
             result = []
             for ques_id, ans in quesid2ans.items():
+                datum = self.dataset.id2datum[ques_id]
+                answer_type = datum['answer_type']
+                img_id = datum['img_id']
+                label = datum['label']
+                question_type = datum['question_type']
+                question = datum['sent']
+                score = 0.
+                if ans in label:
+                    score += label[ans]
+
                 result.append({
                     'question_id': ques_id,
-                    'answer': ans
+                    'answer': ans,
+                    'answer_type': answer_type,
+                    'img_id': img_id,
+                    'label': label,
+                    'question_type': question_type,
+                    'question': question,
+                    'score': score
                 })
             json.dump(result, f, indent=4, sort_keys=True)
 

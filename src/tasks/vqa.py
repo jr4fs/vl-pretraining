@@ -195,7 +195,15 @@ class VQA:
                             all_probs.append(str(x))
 
                         #ans_gt = dset.label2ans[np.squeeze(target.cpu().numpy()[idx].astype(int))]
-                        
+                        # datum = dset.id2datum[ques_id[idx]]
+                        # answer_type = datum['answer_type']
+                        # question_type = datum['question_type']
+                        # label = datum['label']
+                        # score= 0.0
+                        # if preds in label:
+                        #     score += label[preds]
+
+
                         training_stats.append({
                             "Epoch": int(epoch),
                             "Question ID": int(ques_id[idx]),
