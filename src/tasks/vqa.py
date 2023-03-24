@@ -277,6 +277,7 @@ class VQA:
             with torch.no_grad():
                 feats, boxes = feats.cuda(), boxes.cuda()
                 logit = self.model(feats, boxes, sent)
+                print('LOGIT: ', logit.shape)
                 if args.multiclass == True:
                     softmax = torch.nn.Softmax()
                     #score, label = softmax(logit).max(1)
@@ -286,6 +287,7 @@ class VQA:
                 for qid, l in zip(ques_id, label.cpu().numpy()):
                     if train_label2ans != None:
                     #ans = dset.label2ans[l]
+                        print("TRAIN ANS: ", len(train_label2ans))
                         ans = train_label2ans[l]
                     else:
                         ans = dset.label2ans[l]
@@ -297,7 +299,7 @@ class VQA:
     def evaluate(self, eval_tuple: DataTuple, train_label2ans= None, dump=None):
         """Evaluate all data in data_tuple."""
 
-        quesid2ans = self.predict(eval_tuple, dump, train_label2ans)
+        quesid2ans = self.predict(eval_tuple, train_label2ans, dump)
         return eval_tuple.evaluator.evaluate(quesid2ans)
 
     @staticmethod
@@ -381,10 +383,9 @@ if __name__ == "__main__":
             if args.test == 'gqa_ood_val':
                 print("GQA OOD")
                 result = vqa.evaluate(
-                        get_gqa_tuple('train,valid,testdev', args.subset, bs=512,
-                                shuffle=False, drop_last=False, 
-                                dump=os.path.join(args.output, 'minival_predict.json')
-                ), train_label2ans=vqa.train_tuple.dataset.label2ans, 
+                        get_gqa_tuple('train,valid,testdev', subset=args.test, bs=512,
+                                shuffle=False, drop_last=False), 
+                    train_label2ans=vqa.train_tuple.dataset.label2ans, 
                     dump=os.path.join(args.output, 'minival_predict.json')
                 )
 
