@@ -17,16 +17,21 @@ from tasks.vqa_data import VQADataset, VQATorchDataset, VQAEvaluator
 DataTuple = collections.namedtuple("DataTuple", 'dataset loader evaluator')
 import json 
 import os
+from tasks.gqa_data import GQADataset, GQATorchDataset, GQAEvaluator
 
 # run = neptune.init(
 #     project="vqa-training/vqa-training",
 #     api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
 # )  # your credentials
 
-run = neptune.init(
-    project="vqa-training/vqa-training-myo",
-    api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
-)  # your credentials
+# run = neptune.init(
+#     project="vqa-training/vqa-training-myo",
+#     api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ==",
+# )  # your credentials
+
+run = neptune.init_run(project='vqa-training/vqa-training-myo', 
+                       api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTJlZTEzNS00M2M1LTQwODMtYWQ3OS0zYTMxZGY3NTYwMjIifQ=="
+)
 
 def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=False, sampling_ids=None) -> DataTuple:
     dset = VQADataset(splits, subset, sampling_ids)
@@ -45,6 +50,18 @@ def get_data_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=Fa
         shuffle=shuffle, num_workers=args.num_workers,
         drop_last=drop_last, pin_memory=True
     )
+    return DataTuple(dataset=dset, loader=data_loader, evaluator=evaluator)
+
+def get_gqa_tuple(splits: str, subset: str, bs:int, shuffle=False, drop_last=False) -> DataTuple:
+    dset = GQADataset(splits, subset)
+    tset = GQATorchDataset(dset)
+    evaluator = GQAEvaluator(dset)
+    data_loader = DataLoader(
+        tset, batch_size=bs,
+        shuffle=shuffle, num_workers=args.num_workers,
+        drop_last=drop_last, pin_memory=True
+    )
+
     return DataTuple(dataset=dset, loader=data_loader, evaluator=evaluator)
 
 class VQA:
@@ -244,7 +261,7 @@ class VQA:
         self.save("LAST")
         #return best_valid * 100.
 
-    def predict(self, eval_tuple: DataTuple, dump=None):
+    def predict(self, eval_tuple: DataTuple, train_label2ans=None, dump=None):
         """
         Predict the answers to questions in a data split.
 
@@ -265,17 +282,22 @@ class VQA:
                     #score, label = softmax(logit).max(1)
                     score, label = logit.max(1)
                 else:
-                    score, label = logit.max(1)
+                    score, label = logit.max(1) # this will output predictions wrt the vqa classes
                 for qid, l in zip(ques_id, label.cpu().numpy()):
-                    ans = dset.label2ans[l]
+                    if train_label2ans != None:
+                    #ans = dset.label2ans[l]
+                        ans = train_label2ans[l]
+                    else:
+                        ans = dset.label2ans[l]
                     quesid2ans[qid.item()] = ans
         if dump is not None:
             evaluator.dump_result(quesid2ans, dump)
         return quesid2ans
 
-    def evaluate(self, eval_tuple: DataTuple, dump=None):
+    def evaluate(self, eval_tuple: DataTuple, train_label2ans= None, dump=None):
         """Evaluate all data in data_tuple."""
-        quesid2ans = self.predict(eval_tuple, dump)
+
+        quesid2ans = self.predict(eval_tuple, dump, train_label2ans)
         return eval_tuple.evaluator.evaluate(quesid2ans)
 
     @staticmethod
@@ -356,12 +378,25 @@ if __name__ == "__main__":
         elif 'val' in args.test:    
             # Since part of valididation data are used in pre-training/fine-tuning,
             # only validate on the minival set.
-            result = vqa.evaluate(
-                get_data_tuple('minival', args.subset, bs=950,
-                               shuffle=False, drop_last=False),
-                dump=os.path.join(args.output, 'minival_predict.json')
-            )
-            print(result)
+            if args.test == 'gqa_ood_val':
+                print("GQA OOD")
+                result = vqa.evaluate(
+                        get_gqa_tuple('train,valid,testdev', args.subset, bs=512,
+                                shuffle=False, drop_last=False, 
+                                dump=os.path.join(args.output, 'minival_predict.json')
+                ), train_label2ans=vqa.train_tuple.dataset.label2ans, 
+                    dump=os.path.join(args.output, 'minival_predict.json')
+                )
+
+                print(result)
+            else:
+                result = vqa.evaluate(
+                    get_data_tuple('minival', args.subset, bs=950,
+                                shuffle=False, drop_last=False),
+                    dump=os.path.join(args.output, 'minival_predict.json')
+                )
+                print(result)
+            
         else:
             assert False, "No such test option for %s" % args.test
     else:

@@ -140,6 +140,33 @@ class GQADataset:
                 datum['question_id']: datum
                 for datum in self.data
             }
+        elif subset == 'gqa_ood_val':
+            print("Loading OOD split for GQA")
+            filtered_file = open('data/gqa/trainval_ood_label2ans.json', "r")
+            self.filtered = json.loads(filtered_file.read())
+            self.ans2label = json.load(open("data/gqa/trainval_ood_ans2label.json"))
+            self.label2ans = json.load(open("data/gqa/trainval_ood_label2ans.json"))
+            assert len(self.ans2label) == len(self.label2ans)
+            for ans, label in self.ans2label.items():
+                assert self.label2ans[label] == ans
+
+            loaded_data = []
+            for split in self.splits:
+                loaded_data.extend(json.load(open("data/gqa/%s.json" % split)))
+            self.data = []
+            unique_labels = {}
+            for datum in loaded_data:
+                if 'label' in datum and len(datum['label'] == 1):
+                    for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
+                        if key in self.filtered:
+                            self.data.append(datum)
+                        
+            print("Load %d data from ood split(s) %s." % (len(self.data), self.name))
+            # List to dict (for evaluation and others)
+            self.id2datum = {
+                datum['question_id']: datum
+                for datum in self.data
+            }
         else:
             # Loading datasets to data
             self.data = []
