@@ -156,7 +156,7 @@ class GQADataset:
             self.data = []
             unique_labels = {}
             for datum in loaded_data:
-                if 'label' in datum and len(datum['label'] == 1):
+                if 'label' in datum and len(datum['label'])==1:
                     for key, value in datum['label'].items(): # Iterate over all the items in dictionary to find keys with max value
                         if key in self.filtered:
                             self.data.append(datum)

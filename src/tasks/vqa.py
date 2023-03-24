@@ -277,7 +277,6 @@ class VQA:
             with torch.no_grad():
                 feats, boxes = feats.cuda(), boxes.cuda()
                 logit = self.model(feats, boxes, sent)
-                print('LOGIT: ', logit.shape)
                 if args.multiclass == True:
                     softmax = torch.nn.Softmax()
                     #score, label = softmax(logit).max(1)
@@ -287,11 +286,10 @@ class VQA:
                 for qid, l in zip(ques_id, label.cpu().numpy()):
                     if train_label2ans != None:
                     #ans = dset.label2ans[l]
-                        print("TRAIN ANS: ", len(train_label2ans))
                         ans = train_label2ans[l]
                     else:
                         ans = dset.label2ans[l]
-                    quesid2ans[qid.item()] = ans
+                    quesid2ans[qid] = ans
         if dump is not None:
             evaluator.dump_result(quesid2ans, dump)
         return quesid2ans
