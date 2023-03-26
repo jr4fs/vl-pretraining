@@ -287,9 +287,10 @@ class VQA:
                     if train_label2ans != None:
                     #ans = dset.label2ans[l]
                         ans = train_label2ans[l]
+                        quesid2ans[qid] = ans
                     else:
                         ans = dset.label2ans[l]
-                    quesid2ans[qid] = ans
+                        quesid2ans[qid.item()] = ans
         if dump is not None:
             evaluator.dump_result(quesid2ans, dump)
         return quesid2ans
@@ -297,7 +298,7 @@ class VQA:
     def evaluate(self, eval_tuple: DataTuple, train_label2ans= None, dump=None):
         """Evaluate all data in data_tuple."""
 
-        quesid2ans = self.predict(eval_tuple, train_label2ans, dump)
+        quesid2ans = self.predict(eval_tuple, train_label2ans=train_label2ans, dump=dump)
         return eval_tuple.evaluator.evaluate(quesid2ans)
 
     @staticmethod

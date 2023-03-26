@@ -13,3 +13,6 @@ src/__pycache__/
 src/tasks/__pycache__/
 .neptune/async/
 data/
+src/dataset_selection/datamaps/qualitative_analysis/model_predictions.ipynb
+src/dataset_selection/datamaps/.ipynb_checkpoints/
+src/dataset_selection/datamaps/qualitative_analysis/.ipynb_checkpoints/model_predictions-checkpoint.ipynb
