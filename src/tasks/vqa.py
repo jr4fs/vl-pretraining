@@ -381,8 +381,14 @@ if __name__ == "__main__":
             # only validate on the minival set.
             if args.test == 'gqa_ood_val':
                 print("GQA OOD")
+#                 result = vqa.evaluate(
+#                         get_gqa_tuple('train,valid,testdev', subset=args.test, bs=512,
+#                                 shuffle=False, drop_last=False), 
+#                     train_label2ans=vqa.train_tuple.dataset.label2ans, 
+#                     dump=os.path.join(args.output, 'minival_predict.json')
+#                 )
                 result = vqa.evaluate(
-                        get_gqa_tuple('train,valid,testdev', subset=args.test, bs=512,
+                        get_gqa_tuple('testdev', subset=None, bs=512,
                                 shuffle=False, drop_last=False), 
                     train_label2ans=vqa.train_tuple.dataset.label2ans, 
                     dump=os.path.join(args.output, 'minival_predict.json')
