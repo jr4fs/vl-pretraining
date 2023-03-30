@@ -395,6 +395,13 @@ if __name__ == "__main__":
                 )
 
                 print(result)
+            elif 'train' in args.test:
+                result = vqa.evaluate(
+                    get_data_tuple('train', args.subset, bs=950,
+                                shuffle=False, drop_last=False),
+                    dump=os.path.join(args.output, 'train_predict.json')
+                )
+                print(result)   
             else:
                 result = vqa.evaluate(
                     get_data_tuple('minival', args.subset, bs=950,
