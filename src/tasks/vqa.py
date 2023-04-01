@@ -205,20 +205,23 @@ class VQA:
                         for target_idx in target_indices_list:
                             #print("target idx: ", target_idx)
                             all_ans_gt.append(dset.label2ans[target_idx])
-                        probs_sigmoid = gt_preds_probability_sigmoid.detach().cpu().numpy()[idx]
+                            
+                       
                         
-                        probs = probs_sigmoid[np.nonzero(probs_sigmoid)]
+                        all_probs_sigmoid = logit_sigmoid.detach().cpu().numpy()[idx]
+                        all_probs_sigmoid_list = []
+                        for prob_sigmoid in all_probs_sigmoid:
+                            all_probs_sigmoid_list.append(str(prob_sigmoid))
+                        
+                        probs_sigmoid = gt_preds_probability_sigmoid.detach().cpu().numpy()[idx]
+                        probs = probs_sigmoid[np.nonzero(probs_sigmoid)] # get values at the ground truth targets
                         for x in probs:
                             all_probs.append(str(x))
 
-                        #ans_gt = dset.label2ans[np.squeeze(target.cpu().numpy()[idx].astype(int))]
-                        # datum = dset.id2datum[ques_id[idx]]
-                        # answer_type = datum['answer_type']
-                        # question_type = datum['question_type']
-                        # label = datum['label']
-                        # score= 0.0
-                        # if preds in label:
-                        #     score += label[preds]
+                        datum = dset.id2datum[ques_id[idx]]
+                        answer_type = datum['answer_type']
+                        question_type = datum['question_type']
+                        label = datum['label']
 
 
                         training_stats.append({
@@ -228,7 +231,11 @@ class VQA:
                             "Question": str(question),
                             "Target": ', '.join(all_ans_gt),
                             "Prediction": str(preds),
-                            "GT Probability": ', '.join(all_probs)
+                            "GT Probability": ', '.join(all_probs),
+                            "All GT Probability": ', '.join(all_probs_sigmoid_list),
+                            "Answer Type": str(answer_type),
+                            "Question Type": str(question_type),
+                            "Label": label
                             }
                     )
 
