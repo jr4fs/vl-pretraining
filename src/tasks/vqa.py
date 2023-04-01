@@ -192,9 +192,7 @@ class VQA:
                     for idx, question in enumerate(sent):
                         preds = dset.label2ans[np.squeeze(label.cpu().numpy()[idx].astype(int))]
                         target_numpy = target_bool.cpu().numpy()[idx]
-                        #print("target: ", target_numpy.shape)
                         targets_indices = np.nonzero(target_numpy) # get indices of groundtruth 
-                        #print("target indices: ", targets_indices)
                         target_indices_list = []
                         for i in targets_indices[0]:
                             target_indices_list.append(i)
@@ -218,10 +216,10 @@ class VQA:
                         for x in probs:
                             all_probs.append(str(x))
 
-                        datum = dset.id2datum[ques_id[idx]]
+                        datum = dset.id2datum[ques_id[idx].item()]
                         answer_type = datum['answer_type']
                         question_type = datum['question_type']
-                        label = datum['label']
+                        label_scores = datum['label']
 
 
                         training_stats.append({
@@ -235,7 +233,7 @@ class VQA:
                             "All GT Probability": ', '.join(all_probs_sigmoid_list),
                             "Answer Type": str(answer_type),
                             "Question Type": str(question_type),
-                            "Label": label
+                            "Label": label_scores
                             }
                     )
 
