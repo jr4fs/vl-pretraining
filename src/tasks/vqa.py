@@ -203,13 +203,18 @@ class VQA:
                         for target_idx in target_indices_list:
                             #print("target idx: ", target_idx)
                             all_ans_gt.append(dset.label2ans[target_idx])
-                            
-                       
+                        
                         
                         all_probs_sigmoid = logit_sigmoid.detach().cpu().numpy()[idx]
+                        top_ans = []
                         all_probs_sigmoid_list = []
-                        for prob_sigmoid in all_probs_sigmoid:
+                        top_idx = np.argpartition(all_probs_sigmoid, -10)[-10:]
+                        top_ten_probs = all_probs_sigmoid[top_idx]
+                        for prob_sigmoid in top_ten_probs:
                             all_probs_sigmoid_list.append(str(prob_sigmoid))
+                        for top in top_idx:
+                            top_ans.append(dset.label2ans[top])
+
                         
                         probs_sigmoid = gt_preds_probability_sigmoid.detach().cpu().numpy()[idx]
                         probs = probs_sigmoid[np.nonzero(probs_sigmoid)] # get values at the ground truth targets
@@ -230,7 +235,8 @@ class VQA:
                             "Target": ', '.join(all_ans_gt),
                             "Prediction": str(preds),
                             "GT Probability": ', '.join(all_probs),
-                            "All GT Probability": ', '.join(all_probs_sigmoid_list),
+                            "Top Probabilities": ', '.join(all_probs_sigmoid_list),
+                            "Top Answers": ', '.join(top_ans),
                             "Answer Type": str(answer_type),
                             "Question Type": str(question_type),
                             "Label": label_scores
@@ -258,6 +264,7 @@ class VQA:
             with open(self.output + "/log.log", 'a') as f:
                 f.write(log_str)
                 f.flush()
+            self.save("Epoch"+str(epoch))
 
         with open(self.output+'/datamaps_stats.json', 'w') as json_file:
             json.dump(training_stats, json_file, 
