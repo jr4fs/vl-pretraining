@@ -125,8 +125,9 @@ class VQA:
         all_loss = []
         valid_scores = []
         train_scores = []
-        training_stats = []
+        # training_stats = []
         for epoch in range(args.epochs):
+            training_stats = []
             quesid2ans = {}
 
             for i, (ques_id, feats, boxes, sent, target, img_id) in iter_wrapper(enumerate(loader)):
@@ -266,10 +267,24 @@ class VQA:
                 f.flush()
             self.save("Epoch"+str(epoch))
 
-        with open(self.output+'/datamaps_stats.json', 'w') as json_file:
-            json.dump(training_stats, json_file, 
-                                indent=4,  
-                                separators=(',',': '))
+
+            # save training dymamics 
+            filename = self.output+'/datamaps_stats.json'
+            prev_dynamics = []
+            if path.isfile(filename) is False:
+                with open(filename, 'w') as json_file:
+                    json.dump(training_stats, json_file, 
+                                        indent=4,  
+                                        separators=(',',': '))
+            else:
+                with open(filename) as fp:
+                    prev_dynamics = json.load(fp)
+                prev_dynamics.extend(training_stats)
+                with open(filename, 'w') as json_file:
+                    json.dump(prev_dynamics, json_file, 
+                                        indent=4,  
+                                        separators=(',',': '))
+
         self.save("LAST")
         #return best_valid * 100.
 
