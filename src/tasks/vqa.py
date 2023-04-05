@@ -18,6 +18,7 @@ DataTuple = collections.namedtuple("DataTuple", 'dataset loader evaluator')
 import json 
 import os
 from tasks.gqa_data import GQADataset, GQATorchDataset, GQAEvaluator
+from os import path
 
 # run = neptune.init(
 #     project="vqa-training/vqa-training",
