@@ -298,6 +298,12 @@ class VQA:
         :return: A dict of question_id to answer.
         """
         self.model.eval()
+        # for m in self.model.modules():
+        #     print(m.__class__.__name__)
+        #     if m.__class__.__name__.startswith('Dropout'):
+        #         print("HERE")
+                
+        #         m.train()
         dset, loader, evaluator = eval_tuple
         quesid2ans = {}
         for i, datum_tuple in enumerate(loader):
@@ -425,7 +431,7 @@ if __name__ == "__main__":
                 print(result)
             elif 'train' in args.test:
                 result = vqa.evaluate(
-                    get_data_tuple('train', args.subset, bs=950,
+                    get_data_tuple('train', args.subset, bs=256,
                                 shuffle=False, drop_last=False),
                     dump=os.path.join(args.output, 'train_predict.json')
                 )
